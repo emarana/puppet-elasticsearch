@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe 'elasticsearch::role' do
+describe 'elasticsearch-legacy::role' do
   let(:title) { 'elastic_role' }
 
   let(:pre_condition) do
     <<~EOS
-      class { 'elasticsearch':
+      class { 'elasticsearch-legacy':
         security_plugin => 'shield',
       }
     EOS
@@ -47,10 +47,10 @@ describe 'elasticsearch::role' do
       end
 
       context 'with default parameters' do
-        it { should contain_elasticsearch__role('elastic_role') }
-        it { should contain_elasticsearch_role('elastic_role') }
+        it { should contain_elasticsearch-legacy__role('elastic_role') }
+        it { should contain_elasticsearch-legacy_role('elastic_role') }
         it do
-          should contain_elasticsearch_role_mapping('elastic_role').with(
+          should contain_elasticsearch-legacy_role_mapping('elastic_role').with(
             'ensure' => 'present',
             'mappings' => [
               'cn=users,dc=example,dc=com',
@@ -65,62 +65,62 @@ describe 'elasticsearch::role' do
         describe 'when present' do
           let(:pre_condition) do
             <<~EOS
-              class { 'elasticsearch':
+              class { 'elasticsearch-legacy':
                 security_plugin => 'shield',
               }
-              elasticsearch::instance { 'es-security-role': }
-              elasticsearch::plugin { 'shield': instances => 'es-security-role' }
-              elasticsearch::template { 'foo': content => {"foo" => "bar"} }
-              elasticsearch::user { 'elastic':
+              elasticsearch-legacy::instance { 'es-security-role': }
+              elasticsearch-legacy::plugin { 'shield': instances => 'es-security-role' }
+              elasticsearch-legacy::template { 'foo': content => {"foo" => "bar"} }
+              elasticsearch-legacy::user { 'elastic':
                 password => 'foobar',
                 roles => ['elastic_role'],
               }
             EOS
           end
 
-          it { should contain_elasticsearch__plugin('shield') }
-          it { should contain_elasticsearch__role('elastic_role')
+          it { should contain_elasticsearch-legacy__plugin('shield') }
+          it { should contain_elasticsearch-legacy__role('elastic_role')
             .that_comes_before([
-            'Elasticsearch::Template[foo]',
-            'Elasticsearch::User[elastic]'
+            'elasticsearch-legacy::Template[foo]',
+            'elasticsearch-legacy::User[elastic]'
           ]).that_requires([
-            'Elasticsearch::Plugin[shield]'
+            'elasticsearch-legacy::Plugin[shield]'
           ])}
 
           include_examples 'instance', 'es-security-role', :systemd
           it { should contain_file(
-            '/etc/elasticsearch/es-security-role/shield'
+            '/etc/elasticsearch-legacy/es-security-role/shield'
           ) }
         end
 
         describe 'when absent' do
           let(:pre_condition) do
             <<~EOS
-              class { 'elasticsearch':
+              class { 'elasticsearch-legacy':
                 security_plugin => 'shield',
               }
-              elasticsearch::instance { 'es-security-role': }
-              elasticsearch::plugin { 'shield':
+              elasticsearch-legacy::instance { 'es-security-role': }
+              elasticsearch-legacy::plugin { 'shield':
                 ensure => 'absent',
                 instances => 'es-security-role',
               }
-              elasticsearch::template { 'foo': content => {"foo" => "bar"} }
-              elasticsearch::user { 'elastic':
+              elasticsearch-legacy::template { 'foo': content => {"foo" => "bar"} }
+              elasticsearch-legacy::user { 'elastic':
                 password => 'foobar',
                 roles => ['elastic_role'],
               }
             EOS
           end
 
-          it { should contain_elasticsearch__plugin('shield') }
+          it { should contain_elasticsearch-legacy__plugin('shield') }
           include_examples 'instance', 'es-security-role', :systemd
           # TODO: Uncomment once upstream issue is fixed.
           # https://github.com/rodjek/rspec-puppet/issues/418
-          # it { should contain_elasticsearch__shield__role('elastic_role')
+          # it { should contain_elasticsearch-legacy__shield__role('elastic_role')
           #   .that_comes_before([
-          #   'Elasticsearch::Template[foo]',
-          #   'Elasticsearch::Plugin[shield]',
-          #   'Elasticsearch::Shield::User[elastic]'
+          #   'elasticsearch-legacy::Template[foo]',
+          #   'elasticsearch-legacy::Plugin[shield]',
+          #   'elasticsearch-legacy::Shield::User[elastic]'
           # ])}
         end
       end

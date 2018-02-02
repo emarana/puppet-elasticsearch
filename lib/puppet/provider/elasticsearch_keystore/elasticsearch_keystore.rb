@@ -1,7 +1,7 @@
-Puppet::Type.type(:elasticsearch_keystore).provide(
-  :elasticsearch_keystore
+Puppet::Type.type(:elasticsearch-legacy_keystore).provide(
+  :elasticsearch-legacy_keystore
 ) do
-  desc 'Provider for `elasticsearch-keystore` based secret management.'
+  desc 'Provider for `elasticsearch-legacy-keystore` based secret management.'
 
   def self.defaults_dir
     @defaults_dir ||= case Facter.value('osfamily')
@@ -15,28 +15,28 @@ Puppet::Type.type(:elasticsearch_keystore).provide(
   def self.home_dir
     @home_dir ||= case Facter.value('osfamily')
                   when 'OpenBSD'
-                    '/usr/local/elasticsearch'
+                    '/usr/local/elasticsearch-legacy'
                   else
-                    '/usr/share/elasticsearch'
+                    '/usr/share/elasticsearch-legacy'
                   end
   end
 
   attr_accessor :defaults_dir, :home_dir
 
-  commands :keystore => "#{home_dir}/bin/elasticsearch-keystore"
+  commands :keystore => "#{home_dir}/bin/elasticsearch-legacy-keystore"
 
-  def self.run_keystore(args, instance, configdir = '/etc/elasticsearch', stdin = nil)
+  def self.run_keystore(args, instance, configdir = '/etc/elasticsearch-legacy', stdin = nil)
     options = {
       :custom_environment => {
-        'ES_INCLUDE' => File.join(defaults_dir, "elasticsearch-#{instance}"),
+        'ES_INCLUDE' => File.join(defaults_dir, "elasticsearch-legacy-#{instance}"),
         'ES_PATH_CONF' => "#{configdir}/#{instance}"
       },
-      :uid => 'elasticsearch',
-      :gid => 'elasticsearch'
+      :uid => 'elasticsearch-legacy',
+      :gid => 'elasticsearch-legacy'
     }
 
     unless stdin.nil?
-      stdinfile = Tempfile.new('elasticsearch-keystore')
+      stdinfile = Tempfile.new('elasticsearch-legacy-keystore')
       stdinfile << stdin
       stdinfile.flush
       options[:stdinfile] = stdinfile.path
@@ -55,8 +55,8 @@ Puppet::Type.type(:elasticsearch_keystore).provide(
   end
 
   def self.present_keystores
-    Dir[File.join(%w[/ etc elasticsearch *])].select do |directory|
-      File.exist? File.join(directory, 'elasticsearch.keystore')
+    Dir[File.join(%w[/ etc elasticsearch-legacy *])].select do |directory|
+      File.exist? File.join(directory, 'elasticsearch-legacy.keystore')
     end.map do |instance|
       settings = run_keystore(['list'], File.basename(instance)).split("\n")
       {
@@ -94,7 +94,7 @@ Puppet::Type.type(:elasticsearch_keystore).provide(
       @property_flush[:settings] = resource[:settings]
     when :absent
       File.delete(File.join([
-        '/', 'etc', 'elasticsearch', resource[:instance], 'elasticsearch.keystore'
+        '/', 'etc', 'elasticsearch-legacy', resource[:instance], 'elasticsearch-legacy.keystore'
       ]))
     end
 

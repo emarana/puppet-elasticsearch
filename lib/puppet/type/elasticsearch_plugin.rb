@@ -1,4 +1,4 @@
-Puppet::Type.newtype(:elasticsearch_plugin) do
+Puppet::Type.newtype(:elasticsearch-legacy_plugin) do
   @doc = 'Plugin installation type'
 
   ensurable
@@ -8,16 +8,16 @@ Puppet::Type.newtype(:elasticsearch_plugin) do
   end
 
   newparam(:configdir) do
-    desc 'Path to the elasticsearch configuration directory (ES_PATH_CONF).'
-    defaultto '/etc/elasticsearch'
+    desc 'Path to the elasticsearch-legacy configuration directory (ES_PATH_CONF).'
+    defaultto '/etc/elasticsearch-legacy'
 
     validate do |value|
       raise Puppet::Error, 'path expected' if value.nil?
     end
   end
 
-  newparam(:elasticsearch_package_name) do
-    desc 'Name of the system Elasticsearch package.'
+  newparam(:elasticsearch-legacy_package_name) do
+    desc 'Name of the system elasticsearch-legacy package.'
   end
 
   newparam(:java_opts) do
@@ -43,7 +43,7 @@ Puppet::Type.newtype(:elasticsearch_plugin) do
 
   newparam(:plugin_dir) do
     desc 'Path to the Plugins directory'
-    defaultto '/usr/share/elasticsearch/plugins'
+    defaultto '/usr/share/elasticsearch-legacy/plugins'
   end
 
   newparam(:plugin_path) do

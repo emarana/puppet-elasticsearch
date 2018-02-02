@@ -1,6 +1,6 @@
 require 'puppet/provider/elastic_user_command'
 
-Puppet::Type.type(:elasticsearch_user).provide(
+Puppet::Type.type(:elasticsearch-legacy_user).provide(
   :users,
   :parent => Puppet::Provider::ElasticUserCommand
 ) do
@@ -11,5 +11,5 @@ Puppet::Type.type(:elasticsearch_user).provide(
   mk_resource_methods
 
   commands :users_cli => "#{homedir}/bin/x-pack/users"
-  commands :es => "#{homedir}/bin/elasticsearch"
+  commands :es => "#{homedir}/bin/elasticsearch-legacy"
 end

@@ -2,12 +2,12 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', '..'))
 
 require 'puppet_x/elastic/deep_to_i'
 require 'puppet_x/elastic/deep_implode'
-require 'puppet_x/elastic/elasticsearch_rest_resource'
+require 'puppet_x/elastic/elasticsearch-legacy_rest_resource'
 
-Puppet::Type.newtype(:elasticsearch_pipeline) do
-  extend ElasticsearchRESTResource
+Puppet::Type.newtype(:elasticsearch-legacy_pipeline) do
+  extend elasticsearch-legacyRESTResource
 
-  desc 'Manages Elasticsearch ingest pipelines.'
+  desc 'Manages elasticsearch-legacy ingest pipelines.'
 
   ensurable
 

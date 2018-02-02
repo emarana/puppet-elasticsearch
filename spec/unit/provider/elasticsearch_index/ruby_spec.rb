@@ -1,6 +1,6 @@
-require_relative '../../../helpers/unit/provider/elasticsearch_rest_shared_examples'
+require_relative '../../../helpers/unit/provider/elasticsearch-legacy_rest_shared_examples'
 
-describe Puppet::Type.type(:elasticsearch_index).provider(:ruby) do
+describe Puppet::Type.type(:elasticsearch-legacy_index).provider(:ruby) do
   let(:name) { 'test-index' }
 
   let(:example_1) do
@@ -109,7 +109,7 @@ describe Puppet::Type.type(:elasticsearch_index).provider(:ruby) do
     )
   end
 
-  let(:resource) { Puppet::Type::Elasticsearch_index.new props }
+  let(:resource) { Puppet::Type::elasticsearch-legacy_index.new props }
   let(:provider) { described_class.new resource }
   let(:props) do
     {

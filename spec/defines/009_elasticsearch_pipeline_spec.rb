@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe 'elasticsearch::pipeline', :type => 'define' do
+describe 'elasticsearch-legacy::pipeline', :type => 'define' do
   let(:title) { 'testpipeline' }
   let(:pre_condition) do
-    'class { "elasticsearch" : }'
+    'class { "elasticsearch-legacy" : }'
   end
 
   on_supported_os(
@@ -51,7 +51,7 @@ describe 'elasticsearch::pipeline', :type => 'define' do
         end
         let(:pre_condition) do
           <<-EOS
-            class { 'elasticsearch' :
+            class { 'elasticsearch-legacy' :
               api_protocol => 'https',
               api_host => '127.0.0.1',
               api_port => 9201,
@@ -66,10 +66,10 @@ describe 'elasticsearch::pipeline', :type => 'define' do
         end
 
         it do
-          should contain_elasticsearch__pipeline(title)
+          should contain_elasticsearch-legacy__pipeline(title)
           should contain_es_instance_conn_validator("#{title}-ingest-pipeline")
-            .that_comes_before("elasticsearch_pipeline[#{title}]")
-          should contain_elasticsearch_pipeline(title).with(
+            .that_comes_before("elasticsearch-legacy_pipeline[#{title}]")
+          should contain_elasticsearch-legacy_pipeline(title).with(
             :ensure => 'present',
             :content => {},
             :protocol => 'https',
@@ -93,7 +93,7 @@ describe 'elasticsearch::pipeline', :type => 'define' do
         end
 
         it 'removes pipelines' do
-          should contain_elasticsearch_pipeline(title).with(:ensure => 'absent')
+          should contain_elasticsearch-legacy_pipeline(title).with(:ensure => 'absent')
         end
       end
     end

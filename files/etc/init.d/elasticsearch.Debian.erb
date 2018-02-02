@@ -1,20 +1,20 @@
 #!/bin/bash
 #
-# /etc/init.d/elasticsearch-<%= @resource[:instance] %> -- startup script for Elasticsearch
+# /etc/init.d/elasticsearch-legacy-<%= @resource[:instance] %> -- startup script for elasticsearch-legacy
 #
 ### BEGIN INIT INFO
-# Provides:          elasticsearch-<%= @resource[:instance] %>
+# Provides:          elasticsearch-legacy-<%= @resource[:instance] %>
 # Required-Start:    $network $remote_fs $named
 # Required-Stop:     $network $remote_fs $named
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Starts elasticsearch-<%= @resource[:instance] %>
-# Description:       Starts elasticsearch-<%= @resource[:instance] %> using start-stop-daemon
+# Short-Description: Starts elasticsearch-legacy-<%= @resource[:instance] %>
+# Description:       Starts elasticsearch-legacy-<%= @resource[:instance] %> using start-stop-daemon
 ### END INIT INFO
 
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
-NAME=elasticsearch-<%= @resource[:instance] %>
-DESC="Elasticsearch Server <%= @resource[:instance] %>"
+NAME=elasticsearch-legacy-<%= @resource[:instance] %>
+DESC="elasticsearch-legacy Server <%= @resource[:instance] %>"
 DEFAULT=/etc/default/$NAME
 
 if [ `id -u` -ne 0 ]; then
@@ -32,9 +32,9 @@ fi
 
 # The following variables can be overwritten in $DEFAULT
 
-# Run Elasticsearch as this user ID and group ID
-ES_USER=elasticsearch
-ES_GROUP=elasticsearch
+# Run elasticsearch-legacy as this user ID and group ID
+ES_USER=elasticsearch-legacy
+ES_GROUP=elasticsearch-legacy
 
 # The first existing directory is used for JAVA_HOME (if JAVA_HOME is not defined in $DEFAULT)
 JDK_DIRS="/usr/lib/jvm/java-8-oracle /usr/lib/jvm/java-8-openjdk /usr/lib/jvm/java-8-openjdk-amd64/ /usr/lib/jvm/java-8-openjdk-armhf /usr/lib/jvm/java-8-openjdk-i386/ /usr/lib/jvm/java-7-oracle /usr/lib/jvm/java-7-openjdk /usr/lib/jvm/java-7-openjdk-amd64/ /usr/lib/jvm/java-7-openjdk-armhf /usr/lib/jvm/java-7-openjdk-i386/ /usr/lib/jvm/java-6-sun /usr/lib/jvm/java-6-openjdk /usr/lib/jvm/java-6-openjdk-amd64 /usr/lib/jvm/java-6-openjdk-armhf /usr/lib/jvm/java-6-openjdk-i386 /usr/lib/jvm/default-java"
@@ -48,7 +48,7 @@ for jdir in $JDK_DIRS; do
 done
 export JAVA_HOME
 
-# Directory where the Elasticsearch binary distribution resides
+# Directory where the elasticsearch-legacy binary distribution resides
 #ES_HOME=/usr/share/$NAME
 
 # Additional Java OPTS
@@ -60,16 +60,16 @@ MAX_OPEN_FILES=65536
 # Maximum amount of locked memory
 #MAX_LOCKED_MEMORY=
 
-# Elasticsearch log directory
+# elasticsearch-legacy log directory
 #LOG_DIR=/var/log/$NAME
 
-# Elasticsearch data directory
+# elasticsearch-legacy data directory
 #DATA_DIR=/var/lib/$NAME
 
-# Elasticsearch work directory
+# elasticsearch-legacy work directory
 WORK_DIR=/tmp/$NAME
 
-# Elasticsearch configuration directory
+# elasticsearch-legacy configuration directory
 #CONF_DIR=/etc/$NAME
 
 # Maximum number of VMA (Virtual Memory Areas) a process can own
@@ -84,7 +84,7 @@ fi
 
 # Define other required variables
 PID_FILE=/var/run/$NAME.pid
-DAEMON=$ES_HOME/bin/elasticsearch
+DAEMON=$ES_HOME/bin/elasticsearch-legacy
 DAEMON_OPTS="-d -p $PID_FILE <%= opt_flags.join(' ') %>"
 
 export ES_HEAP_SIZE
@@ -98,7 +98,7 @@ export ES_PATH_CONF
 export ES_GC_LOG_FILE
 
 if [ ! -x "$DAEMON" ]; then
-	echo "The elasticsearch startup script does not exists or it is not executable, tried: $DAEMON"
+	echo "The elasticsearch-legacy startup script does not exists or it is not executable, tried: $DAEMON"
 	exit 1
 fi
 
@@ -121,7 +121,7 @@ case "$1" in
 
 	log_daemon_msg "Starting $DESC"
 
-	pid=`pidofproc -p $PID_FILE elasticsearch`
+	pid=`pidofproc -p $PID_FILE elasticsearch-legacy`
 	if [ -n "$pid" ] ; then
 		log_begin_msg "Already running."
 		log_end_msg 0
@@ -190,7 +190,7 @@ case "$1" in
 	log_end_msg 0
 	;;
   status)
-	status_of_proc -p $PID_FILE elasticsearch elasticsearch && exit 0 || exit $?
+	status_of_proc -p $PID_FILE elasticsearch-legacy elasticsearch-legacy && exit 0 || exit $?
 	;;
   restart|force-reload)
 	if [ -f "$PID_FILE" ]; then

@@ -4,7 +4,7 @@ require 'puppet/provider/elastic_yaml'
 # files.
 class Puppet::Provider::ElasticUserRoles < Puppet::Provider::ElasticYaml
   # Override the ancestor `parse` method to process a users/roles file
-  # managed by the Elasticsearch user tools.
+  # managed by the elasticsearch-legacy user tools.
   def self.parse(text)
     text.split("\n").map(&:strip).select do |line|
       # Strip comments

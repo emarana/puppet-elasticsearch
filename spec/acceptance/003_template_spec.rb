@@ -1,7 +1,7 @@
 require 'spec_helper_acceptance'
 require 'json'
 
-describe 'elasticsearch::template', :with_cleanup do
+describe 'elasticsearch-legacy::template', :with_cleanup do
   before :all do
     shell "mkdir -p #{default['distmoduledir']}/another/files"
 
@@ -18,23 +18,23 @@ describe 'elasticsearch::template', :with_cleanup do
     context 'from source', :with_cleanup do
       it 'should run successfully' do
         pp = <<-EOS
-          class { 'elasticsearch':
+          class { 'elasticsearch-legacy':
             config => {
-              'node.name' => 'elasticsearch001',
+              'node.name' => 'elasticsearch-legacy001',
               'cluster.name' => '#{test_settings['cluster_name']}',
               'network.host' => '0.0.0.0',
             },
             repo_version => '#{test_settings['repo_version']}',
           }
 
-          elasticsearch::instance { 'es-01':
+          elasticsearch-legacy::instance { 'es-01':
             config => {
-              'node.name' => 'elasticsearch001',
+              'node.name' => 'elasticsearch-legacy001',
               'http.port' => '#{test_settings['port_a']}'
             }
           }
 
-          elasticsearch::template { 'foo':
+          elasticsearch-legacy::template { 'foo':
             ensure => 'present',
             source => 'puppet:///modules/another/good.json'
           }
@@ -67,23 +67,23 @@ describe 'elasticsearch::template', :with_cleanup do
     describe 'from content' do
       it 'should run successfully' do
         pp = <<-EOS
-          class { 'elasticsearch':
+          class { 'elasticsearch-legacy':
             config => {
-              'node.name' => 'elasticsearch001',
+              'node.name' => 'elasticsearch-legacy001',
               'cluster.name' => '#{test_settings['cluster_name']}',
               'network.host' => '0.0.0.0',
             },
             repo_version => '#{test_settings['repo_version']}',
           }
 
-          elasticsearch::instance { 'es-01':
+          elasticsearch-legacy::instance { 'es-01':
             config => {
-              'node.name' => 'elasticsearch001',
+              'node.name' => 'elasticsearch-legacy001',
               'http.port' => '#{test_settings['port_a']}'
             }
           }
 
-          elasticsearch::template { 'foo':
+          elasticsearch-legacy::template { 'foo':
             ensure => 'present',
             content => '#{JSON.dump(test_settings['template'])}'
           }
@@ -117,23 +117,23 @@ describe 'elasticsearch::template', :with_cleanup do
   describe 'invalid json template' do
     it 'should fail to apply cleanly' do
       pp = <<-EOS
-        class { 'elasticsearch':
+        class { 'elasticsearch-legacy':
           config => {
-            'node.name' => 'elasticsearch001',
+            'node.name' => 'elasticsearch-legacy001',
             'cluster.name' => '#{test_settings['cluster_name']}',
             'network.host' => '0.0.0.0',
           },
           repo_version => '#{test_settings['repo_version']}',
         }
 
-        elasticsearch::instance { 'es-01':
+        elasticsearch-legacy::instance { 'es-01':
           config => {
-            'node.name' => 'elasticsearch001',
+            'node.name' => 'elasticsearch-legacy001',
             'http.port' => '#{test_settings['port_a']}'
           }
         }
 
-        elasticsearch::template { 'foo':
+        elasticsearch-legacy::template { 'foo':
           ensure => 'present',
           file => 'puppet:///modules/another/bad.json'
         }

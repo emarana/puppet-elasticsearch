@@ -4,7 +4,7 @@ require 'json'
 describe 'Integration testing' do
   let(:manifest) do
     <<-MANIFEST
-      class { 'elasticsearch':
+      class { 'elasticsearch-legacy':
         config => {
           'cluster.name' => '#{test_settings['cluster_name']}',
           'network.host' => '0.0.0.0',
@@ -15,9 +15,9 @@ describe 'Integration testing' do
         security_plugin => 'x-pack',
       }
 
-      elasticsearch::instance { 'es-01':
+      elasticsearch-legacy::instance { 'es-01':
         config => {
-          'node.name' => 'elasticsearch001',
+          'node.name' => 'elasticsearch-legacy001',
           'http.port' => '#{test_settings['port_a']}'
         }
       }
@@ -40,7 +40,7 @@ describe 'Integration testing' do
                        JSON.dump(test_settings['template_snapshot'])[0..-5]
   end
 
-  describe 'Setup Elasticsearch', :main => true do
+  describe 'Setup elasticsearch-legacy', :main => true do
     it 'should run successfully' do
       # Run it twice and test for idempotency
       apply_manifest(manifest, :catch_failures => true)
@@ -74,12 +74,12 @@ describe 'Integration testing' do
       end
     end
 
-    describe file('/etc/elasticsearch/es-01/elasticsearch.yml') do
+    describe file('/etc/elasticsearch-legacy/es-01/elasticsearch-legacy.yml') do
       it { should be_file }
-      it { should contain 'name: elasticsearch001' }
+      it { should contain 'name: elasticsearch-legacy001' }
     end
 
-    describe file('/usr/share/elasticsearch/templates_import') do
+    describe file('/usr/share/elasticsearch-legacy/templates_import') do
       it { should be_directory }
     end
   end
@@ -88,7 +88,7 @@ describe 'Integration testing' do
     describe 'Insert a template with valid json content' do
       let(:pp) do
         manifest + <<~TEMPLATE
-          elasticsearch::template { 'foo':
+          elasticsearch-legacy::template { 'foo':
             ensure => 'present',
             source => 'puppet:///modules/another/good.json'
           }
@@ -123,7 +123,7 @@ describe 'Integration testing' do
     describe 'Insert a template with bad json content' do
       let(:pp) do
         manifest + <<~TEMPLATE
-          elasticsearch::template { 'foo':
+          elasticsearch-legacy::template { 'foo':
             ensure => 'present',
             source => 'puppet:///modules/another/bad.json'
           }
@@ -140,12 +140,12 @@ describe 'Integration testing' do
     describe 'installing x-pack' do
       let(:pp) do
         manifest + <<~XPACK
-          elasticsearch::plugin { 'x-pack' :
+          elasticsearch-legacy::plugin { 'x-pack' :
             instances => 'es-01',
-            url => "https://snapshots.elastic.co/downloads/elasticsearch-plugins/x-pack/x-pack-#{RSpec.configuration.snapshot_version}.zip",
+            url => "https://snapshots.elastic.co/downloads/elasticsearch-legacy-plugins/x-pack/x-pack-#{RSpec.configuration.snapshot_version}.zip",
           }
 
-          Elasticsearch::Instance['es-01'] {
+          elasticsearch-legacy::Instance['es-01'] {
             ssl                  => true,
             ca_certificate       => '#{@tls[:ca][:cert][:path]}',
             certificate          => '#{@tls[:clients].first[:cert][:path]}',
@@ -153,7 +153,7 @@ describe 'Integration testing' do
             keystore_password    => '#{@keystore_password}',
           }
 
-          elasticsearch::user { '#{test_settings['security_user']}':
+          elasticsearch-legacy::user { '#{test_settings['security_user']}':
             password => '#{test_settings['security_password']}',
             roles => ['superuser'],
           }

@@ -23,4 +23,4 @@ fixtures:
       ref: 1.0.2
     java_ks: puppetlabs/java_ks
   symlinks:
-    elasticsearch: "#{source_dir}"
+    elasticsearch-legacy: "#{source_dir}"

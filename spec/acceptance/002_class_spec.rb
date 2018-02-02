@@ -1,11 +1,11 @@
 require 'spec_helper_acceptance'
 require 'json'
 
-describe '::elasticsearch' do
+describe '::elasticsearch-legacy' do
   describe 'single instance' do
     describe 'manifest' do
       pp = <<-EOS
-        class { 'elasticsearch':
+        class { 'elasticsearch-legacy':
           config => {
             'cluster.name' => '#{test_settings['cluster_name']}',
             'network.host' => '0.0.0.0',
@@ -13,9 +13,9 @@ describe '::elasticsearch' do
           repo_version => '#{test_settings['repo_version']}',
         }
 
-        elasticsearch::instance { 'es-01':
+        elasticsearch-legacy::instance { 'es-01':
           config => {
-            'node.name' => 'elasticsearch001',
+            'node.name' => 'elasticsearch-legacy001',
             'http.port' => '#{test_settings['port_a']}'
           }
         }
@@ -43,25 +43,25 @@ describe '::elasticsearch' do
       its(:content) { should match(/[0-9]+/) }
     end
 
-    describe file('/etc/elasticsearch/es-01/elasticsearch.yml') do
+    describe file('/etc/elasticsearch-legacy/es-01/elasticsearch-legacy.yml') do
       it { should be_file }
-      it { should contain 'name: elasticsearch001' }
-      it { should contain '/var/lib/elasticsearch/es-01' }
+      it { should contain 'name: elasticsearch-legacy001' }
+      it { should contain '/var/lib/elasticsearch-legacy/es-01' }
     end
 
-    describe file('/usr/share/elasticsearch/templates_import') do
+    describe file('/usr/share/elasticsearch-legacy/templates_import') do
       it { should be_directory }
     end
 
-    describe file('/var/lib/elasticsearch/es-01') do
+    describe file('/var/lib/elasticsearch-legacy/es-01') do
       it { should be_directory }
     end
 
-    describe file('/usr/share/elasticsearch/scripts') do
+    describe file('/usr/share/elasticsearch-legacy/scripts') do
       it { should be_directory }
     end
 
-    describe file('/etc/elasticsearch/es-01/scripts') do
+    describe file('/etc/elasticsearch-legacy/es-01/scripts') do
       it { should be_symlink }
     end
 
@@ -84,7 +84,7 @@ describe '::elasticsearch' do
           expect(
             json['settings']['path']
           ).to include(
-            'data' => '/var/lib/elasticsearch/es-01'
+            'data' => '/var/lib/elasticsearch-legacy/es-01'
           )
         end
       end
@@ -94,7 +94,7 @@ describe '::elasticsearch' do
   describe 'multiple instances' do
     it 'should run successfully' do
       pp = <<-EOS
-        class { 'elasticsearch':
+        class { 'elasticsearch-legacy':
           config => {
             'cluster.name' => '#{test_settings['cluster_name']}',
             'network.host' => '0.0.0.0',
@@ -102,16 +102,16 @@ describe '::elasticsearch' do
           repo_version => '#{test_settings['repo_version']}',
         }
 
-        elasticsearch::instance { 'es-01':
+        elasticsearch-legacy::instance { 'es-01':
           config => {
-            'node.name' => 'elasticsearch001',
+            'node.name' => 'elasticsearch-legacy001',
             'http.port' => '#{test_settings['port_a']}'
           }
         }
 
-        elasticsearch::instance { 'es-02':
+        elasticsearch-legacy::instance { 'es-02':
           config => {
-            'node.name' => 'elasticsearch002',
+            'node.name' => 'elasticsearch-legacy002',
             'http.port' => '#{test_settings['port_b']}'
           }
         }
@@ -179,37 +179,37 @@ describe '::elasticsearch' do
       end
     end
 
-    describe file('/etc/elasticsearch/es-01/elasticsearch.yml') do
+    describe file('/etc/elasticsearch-legacy/es-01/elasticsearch-legacy.yml') do
       it { should be_file }
-      it { should contain 'name: elasticsearch001' }
+      it { should contain 'name: elasticsearch-legacy001' }
     end
 
-    describe file('/etc/elasticsearch/es-02/elasticsearch.yml') do
+    describe file('/etc/elasticsearch-legacy/es-02/elasticsearch-legacy.yml') do
       it { should be_file }
-      it { should contain 'name: elasticsearch002' }
+      it { should contain 'name: elasticsearch-legacy002' }
     end
   end
 
   describe 'module removal' do
     it 'should run successfully' do
       pp = <<-EOS
-        class { 'elasticsearch': ensure => 'absent' }
-        elasticsearch::instance { 'es-01': ensure => 'absent' }
-        elasticsearch::instance { 'es-02': ensure => 'absent' }
+        class { 'elasticsearch-legacy': ensure => 'absent' }
+        elasticsearch-legacy::instance { 'es-01': ensure => 'absent' }
+        elasticsearch-legacy::instance { 'es-02': ensure => 'absent' }
       EOS
 
       apply_manifest pp, :catch_failures => true
     end
 
-    describe file('/etc/elasticsearch/es-01') do
+    describe file('/etc/elasticsearch-legacy/es-01') do
       it { should_not be_directory }
     end
 
-    describe file('/etc/elasticsearch/es-02') do
+    describe file('/etc/elasticsearch-legacy/es-02') do
       it { should_not be_directory }
     end
 
-    describe file('/etc/elasticsearch/es-03') do
+    describe file('/etc/elasticsearch-legacy/es-03') do
       it { should_not be_directory }
     end
 

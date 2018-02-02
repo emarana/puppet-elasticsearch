@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe 'elasticsearch::plugin', :type => 'define' do
-  let(:title) { 'mobz/elasticsearch-head/1.0.0' }
+describe 'elasticsearch-legacy::plugin', :type => 'define' do
+  let(:title) { 'mobz/elasticsearch-legacy-head/1.0.0' }
 
   on_supported_os(
     :hardwaremodels => ['x86_64'],
@@ -18,7 +18,7 @@ describe 'elasticsearch::plugin', :type => 'define' do
 
     let(:pre_condition) do
       <<-EOS
-        class { "elasticsearch":
+        class { "elasticsearch-legacy":
           config => {
             "node" => {
               "name" => "test"
@@ -32,7 +32,7 @@ describe 'elasticsearch::plugin', :type => 'define' do
       context 'present' do
         let(:params) do {
           :ensure => 'present',
-          :configdir => '/etc/elasticsearch',
+          :configdir => '/etc/elasticsearch-legacy',
           :instances => 'es-plugin'
         } end
 
@@ -53,13 +53,13 @@ describe 'elasticsearch::plugin', :type => 'define' do
           :instances => 'es-plugin'
         } end
 
-        it { should contain_elasticsearch__plugin(
-          'mobz/elasticsearch-head/1.0.0'
-        ).with_configdir('/etc/elasticsearch') }
+        it { should contain_elasticsearch-legacy__plugin(
+          'mobz/elasticsearch-legacy-head/1.0.0'
+        ).with_configdir('/etc/elasticsearch-legacy') }
 
-        it { should contain_elasticsearch_plugin(
-          'mobz/elasticsearch-head/1.0.0'
-        ).with_configdir('/etc/elasticsearch') }
+        it { should contain_elasticsearch-legacy_plugin(
+          'mobz/elasticsearch-legacy-head/1.0.0'
+        ).with_configdir('/etc/elasticsearch-legacy') }
       end
     end
 
@@ -71,16 +71,16 @@ describe 'elasticsearch::plugin', :type => 'define' do
           :instances  => 'es-plugin'
         } end
 
-        it { should contain_elasticsearch__plugin(
-          'mobz/elasticsearch-head/1.0.0'
+        it { should contain_elasticsearch-legacy__plugin(
+          'mobz/elasticsearch-legacy-head/1.0.0'
         ) }
-        it { should contain_elasticsearch_plugin(
-          'mobz/elasticsearch-head/1.0.0'
+        it { should contain_elasticsearch-legacy_plugin(
+          'mobz/elasticsearch-legacy-head/1.0.0'
         ) }
         it { should contain_file(
-          '/usr/share/elasticsearch/plugins/head'
+          '/usr/share/elasticsearch-legacy/plugins/head'
         ).that_requires(
-          'Elasticsearch_plugin[mobz/elasticsearch-head/1.0.0]'
+          'elasticsearch-legacy_plugin[mobz/elasticsearch-legacy-head/1.0.0]'
         ) }
       end
 
@@ -91,18 +91,18 @@ describe 'elasticsearch::plugin', :type => 'define' do
           :instances  => 'es-plugin'
         } end
 
-        it { should contain_elasticsearch__plugin(
-          'mobz/elasticsearch-head/1.0.0'
+        it { should contain_elasticsearch-legacy__plugin(
+          'mobz/elasticsearch-legacy-head/1.0.0'
         ) }
-        it { should contain_elasticsearch_plugin(
-          'mobz/elasticsearch-head/1.0.0'
+        it { should contain_elasticsearch-legacy_plugin(
+          'mobz/elasticsearch-legacy-head/1.0.0'
         ).with(
           :ensure => 'absent'
         ) }
         it { should contain_file(
-          '/usr/share/elasticsearch/plugins/head'
+          '/usr/share/elasticsearch-legacy/plugins/head'
         ).that_requires(
-          'Elasticsearch_plugin[mobz/elasticsearch-head/1.0.0]'
+          'elasticsearch-legacy_plugin[mobz/elasticsearch-legacy-head/1.0.0]'
         ) }
       end
     end
@@ -112,11 +112,11 @@ describe 'elasticsearch::plugin', :type => 'define' do
         let(:params) do {
           :ensure     => 'present',
           :instances  => 'es-plugin',
-          :url        => 'https://github.com/mobz/elasticsearch-head/archive/master.zip'
+          :url        => 'https://github.com/mobz/elasticsearch-legacy-head/archive/master.zip'
         } end
 
-        it { should contain_elasticsearch__plugin('mobz/elasticsearch-head/1.0.0') }
-        it { should contain_elasticsearch_plugin('mobz/elasticsearch-head/1.0.0').with(:ensure => 'present', :url => 'https://github.com/mobz/elasticsearch-head/archive/master.zip') }
+        it { should contain_elasticsearch-legacy__plugin('mobz/elasticsearch-legacy-head/1.0.0') }
+        it { should contain_elasticsearch-legacy_plugin('mobz/elasticsearch-legacy-head/1.0.0').with(:ensure => 'present', :url => 'https://github.com/mobz/elasticsearch-legacy-head/archive/master.zip') }
       end
     end
 
@@ -128,9 +128,9 @@ describe 'elasticsearch::plugin', :type => 'define' do
         :source    => 'puppet:///path/to/my/plugin.zip'
       } end
 
-      it { should contain_elasticsearch__plugin('head') }
-      it { should contain_file('/opt/elasticsearch/swdl/plugin.zip').with(:source => 'puppet:///path/to/my/plugin.zip', :before => 'Elasticsearch_plugin[head]') }
-      it { should contain_elasticsearch_plugin('head').with(:ensure => 'present', :source => '/opt/elasticsearch/swdl/plugin.zip') }
+      it { should contain_elasticsearch-legacy__plugin('head') }
+      it { should contain_file('/opt/elasticsearch-legacy/swdl/plugin.zip').with(:source => 'puppet:///path/to/my/plugin.zip', :before => 'elasticsearch-legacy_plugin[head]') }
+      it { should contain_elasticsearch-legacy_plugin('head').with(:ensure => 'present', :source => '/opt/elasticsearch-legacy/swdl/plugin.zip') }
     end
 
     describe 'service restarts' do
@@ -144,16 +144,16 @@ describe 'elasticsearch::plugin', :type => 'define' do
       context 'restart_on_change set to false (default)' do
         let(:pre_condition) do
           <<-EOS
-            class { "elasticsearch": }
+            class { "elasticsearch-legacy": }
 
-            elasticsearch::instance { 'es-plugin': }
+            elasticsearch-legacy::instance { 'es-plugin': }
           EOS
         end
 
-        it { should_not contain_elasticsearch_plugin(
+        it { should_not contain_elasticsearch-legacy_plugin(
           'head'
         ).that_notifies(
-          'Elasticsearch::Service[es-plugin]'
+          'elasticsearch-legacy::Service[es-plugin]'
         )}
 
         include_examples 'instance', 'es-plugin', :sysv
@@ -162,18 +162,18 @@ describe 'elasticsearch::plugin', :type => 'define' do
       context 'restart_on_change set to true' do
         let(:pre_condition) do
           <<-EOS
-            class { "elasticsearch":
+            class { "elasticsearch-legacy":
               restart_on_change => true,
             }
 
-            elasticsearch::instance { 'es-plugin': }
+            elasticsearch-legacy::instance { 'es-plugin': }
           EOS
         end
 
-        it { should contain_elasticsearch_plugin(
+        it { should contain_elasticsearch-legacy_plugin(
           'head'
         ).that_notifies(
-          'Elasticsearch::Service[es-plugin]'
+          'elasticsearch-legacy::Service[es-plugin]'
         )}
 
         include_examples 'instance', 'es-plugin', :sysv
@@ -182,18 +182,18 @@ describe 'elasticsearch::plugin', :type => 'define' do
       context 'restart_plugin_change set to false (default)' do
         let(:pre_condition) do
           <<-EOS
-            class { "elasticsearch":
+            class { "elasticsearch-legacy":
               restart_plugin_change => false,
             }
 
-            elasticsearch::instance { 'es-plugin': }
+            elasticsearch-legacy::instance { 'es-plugin': }
           EOS
         end
 
-        it { should_not contain_elasticsearch_plugin(
+        it { should_not contain_elasticsearch-legacy_plugin(
           'head'
         ).that_notifies(
-          'Elasticsearch::Service[es-plugin]'
+          'elasticsearch-legacy::Service[es-plugin]'
         )}
 
         include_examples 'instance', 'es-plugin', :sysv
@@ -202,18 +202,18 @@ describe 'elasticsearch::plugin', :type => 'define' do
       context 'restart_plugin_change set to true' do
         let(:pre_condition) do
           <<-EOS
-            class { "elasticsearch":
+            class { "elasticsearch-legacy":
               restart_plugin_change => true,
             }
 
-            elasticsearch::instance { 'es-plugin': }
+            elasticsearch-legacy::instance { 'es-plugin': }
           EOS
         end
 
-        it { should contain_elasticsearch_plugin(
+        it { should contain_elasticsearch-legacy_plugin(
           'head'
         ).that_notifies(
-          'Elasticsearch::Service[es-plugin]'
+          'elasticsearch-legacy::Service[es-plugin]'
         )}
 
         include_examples 'instance', 'es-plugin', :sysv
@@ -232,7 +232,7 @@ describe 'elasticsearch::plugin', :type => 'define' do
             :proxy_port     => 8080
           } end
 
-          it { should contain_elasticsearch_plugin(
+          it { should contain_elasticsearch-legacy_plugin(
             'head'
           ).with_proxy(
             'http://es.local:8080'
@@ -247,13 +247,13 @@ describe 'elasticsearch::plugin', :type => 'define' do
 
           let(:pre_condition) do
             <<-EOS
-              class { 'elasticsearch':
+              class { 'elasticsearch-legacy':
                 proxy_url => 'https://es.local:8080',
               }
             EOS
           end
 
-          it { should contain_elasticsearch_plugin(
+          it { should contain_elasticsearch-legacy_plugin(
             'head'
           ).with_proxy(
             'https://es.local:8080'
@@ -272,7 +272,7 @@ describe 'elasticsearch::plugin', :type => 'define' do
             :proxy_password => 'password'
           } end
 
-          it { should contain_elasticsearch_plugin(
+          it { should contain_elasticsearch-legacy_plugin(
             'head'
           ).with_proxy(
             'http://elastic:password@es.local:8080'
@@ -287,13 +287,13 @@ describe 'elasticsearch::plugin', :type => 'define' do
 
           let(:pre_condition) do
             <<-EOS
-              class { 'elasticsearch':
+              class { 'elasticsearch-legacy':
                 proxy_url => 'http://elastic:password@es.local:8080',
               }
             EOS
           end
 
-          it { should contain_elasticsearch_plugin(
+          it { should contain_elasticsearch-legacy_plugin(
             'head'
           ).with_proxy(
             'http://elastic:password@es.local:8080'
@@ -307,8 +307,8 @@ describe 'elasticsearch::plugin', :type => 'define' do
         let(:title) { 'head' }
         let(:pre_condition) do
           <<-EOS
-            class { 'elasticsearch': }
-            elasticsearch::instance { 'es-plugin': }
+            class { 'elasticsearch-legacy': }
+            elasticsearch-legacy::instance { 'es-plugin': }
           EOS
         end
 
@@ -316,10 +316,10 @@ describe 'elasticsearch::plugin', :type => 'define' do
           :instances => 'es-plugin'
         } end
 
-        it { should contain_elasticsearch__plugin(
+        it { should contain_elasticsearch-legacy__plugin(
           'head'
         ).that_comes_before(
-          'Elasticsearch::Instance[es-plugin]'
+          'elasticsearch-legacy::Instance[es-plugin]'
         )}
 
         include_examples 'instance', 'es-plugin', :sysv

@@ -1,6 +1,6 @@
 require 'puppet/provider/elastic_user_roles'
 
-Puppet::Type.type(:elasticsearch_user_roles).provide(
+Puppet::Type.type(:elasticsearch-legacy_user_roles).provide(
   :shield,
   :parent => Puppet::Provider::ElasticUserRoles
 ) do

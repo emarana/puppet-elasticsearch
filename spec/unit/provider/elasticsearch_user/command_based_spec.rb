@@ -1,7 +1,7 @@
 require 'spec_helper_rspec'
 
 [:esusers, :users].each do |provider|
-  describe Puppet::Type.type(:elasticsearch_user).provider(provider) do
+  describe Puppet::Type.type(:elasticsearch-legacy_user).provider(provider) do
 
     describe 'instances' do
       it 'should have an instance method' do

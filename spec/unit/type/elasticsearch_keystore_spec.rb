@@ -1,6 +1,6 @@
 require 'spec_helper_rspec'
 
-describe Puppet::Type.type(:elasticsearch_keystore) do
+describe Puppet::Type.type(:elasticsearch-legacy_keystore) do
   let(:resource_name) { 'es-01' }
 
   describe 'validating attributes' do

@@ -1,6 +1,6 @@
 # This file is managed by Puppet -- <%= @name %>
 #
-# Set the 'jvm_options' parameter on the elasticsearch class to change this file.
+# Set the 'jvm_options' parameter on the elasticsearch-legacy class to change this file.
 <%
 def set_default(options, match_string, default)
   options.detect {|o| o.include?(match_string)} || options.push(default)

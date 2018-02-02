@@ -1,7 +1,7 @@
 require 'puppet/parameter/boolean'
 
-# Provides common properties and parameters for REST-based Elasticsearch types
-module ElasticsearchRESTResource
+# Provides common properties and parameters for REST-based elasticsearch-legacy types
+module elasticsearch-legacyRESTResource
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/CyclomaticComplexity
   # rubocop:disable Metrics/MethodLength
@@ -16,7 +16,7 @@ module ElasticsearchRESTResource
     end
 
     extender.newparam(:host) do
-      desc 'Hostname or address of Elasticsearch instance.'
+      desc 'Hostname or address of elasticsearch-legacy instance.'
       defaultto 'localhost'
 
       validate do |value|
@@ -27,11 +27,11 @@ module ElasticsearchRESTResource
     end
 
     extender.newparam(:password) do
-      desc 'Optional HTTP basic auth plaintext password for Elasticsearch.'
+      desc 'Optional HTTP basic auth plaintext password for elasticsearch-legacy.'
     end
 
     extender.newparam(:port) do
-      desc 'Port to use for Elasticsearch HTTP API operations.'
+      desc 'Port to use for elasticsearch-legacy HTTP API operations.'
       defaultto 9200
 
       munge do |value|
@@ -54,12 +54,12 @@ module ElasticsearchRESTResource
     end
 
     extender.newparam(:protocol) do
-      desc 'Protocol to use for communication with Elasticsearch.'
+      desc 'Protocol to use for communication with elasticsearch-legacy.'
       defaultto 'http'
     end
 
     extender.newparam(:timeout) do
-      desc 'HTTP timeout for reading/writing content to Elasticsearch.'
+      desc 'HTTP timeout for reading/writing content to elasticsearch-legacy.'
       defaultto 10
 
       munge do |value|
@@ -80,7 +80,7 @@ module ElasticsearchRESTResource
     end
 
     extender.newparam(:username) do
-      desc 'Optional HTTP basic auth username for Elasticsearch.'
+      desc 'Optional HTTP basic auth username for elasticsearch-legacy.'
     end
 
     extender.newparam(

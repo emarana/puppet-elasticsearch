@@ -1,4 +1,4 @@
-#  This define allows you to create or remove an elasticsearch instance
+#  This define allows you to create or remove an elasticsearch-legacy instance
 #
 # @param ensure
 #   Controls if the managed resources shall be `present` or `absent`.
@@ -17,17 +17,17 @@
 #   ca_certificate.
 #
 # @param config
-#   Elasticsearch configuration hash.
+#   elasticsearch-legacy configuration hash.
 #
 # @param configdir
-#   Path to directory containing the elasticsearch configuration.
-#   Use this setting if your packages deviate from the norm (/etc/elasticsearch).
+#   Path to directory containing the elasticsearch-legacy configuration.
+#   Use this setting if your packages deviate from the norm (/etc/elasticsearch-legacy).
 #
 # @param daily_rolling_date_pattern
 #   File pattern for the file appender log when file_rolling_type is `dailyRollingFile`
 #
 # @param datadir
-#   Allows you to set the data directory of Elasticsearch
+#   Allows you to set the data directory of elasticsearch-legacy
 #
 # @param datadir_instance_directories
 #   Control whether individual directories for instances will be created within
@@ -38,7 +38,7 @@
 #   saved to ${cluster.name}_deprecation.log in the elastic search log folder.
 #
 # @param deprecation_logging_level
-#   Default deprecation logging level for Elasticsearch.
+#   Default deprecation logging level for elasticsearch-legacy.
 #
 # @param file_rolling_type
 #   Configuration for the file appender rotation. It can be `dailyRollingFile`
@@ -72,11 +72,11 @@
 #   Instead of a hash you can supply a puppet:// file source for the logging.yml file
 #
 # @param logging_level
-#   Default logging level for Elasticsearch.
+#   Default logging level for elasticsearch-legacy.
 #
 # @param logging_template
 #  Use a custom logging template - just supply the reative path, ie
-#  $module_name/elasticsearch/logging.yml.erb
+#  $module_name/elasticsearch-legacy/logging.yml.erb
 #
 # @param private_key
 #   Path to the key associated with this node's certificate.
@@ -93,11 +93,11 @@
 #
 # @param secrets
 #   Optional configuration hash of key/value pairs to store in the instance's
-#   Elasticsearch keystore file. If unset, the keystore is left unmanaged.
+#   elasticsearch-legacy keystore file. If unset, the keystore is left unmanaged.
 #
 # @param security_plugin
 #   Which security plugin will be used to manage users, roles, and
-#   certificates. Inherited from top-level Elasticsearch class.
+#   certificates. Inherited from top-level elasticsearch-legacy class.
 #
 # @param service_flags
 #   Service flags used for the OpenBSD service configuration, defaults to undef.
@@ -121,47 +121,47 @@
 #   Source for the Shield system key. Valid values are any that are
 #   supported for the file resource `source` parameter.
 #
-# @author Richard Pijnenburg <richard.pijnenburg@elasticsearch.com>
+# @author Richard Pijnenburg <richard.pijnenburg@elasticsearch-legacy.com>
 # @author Tyler Langlois <tyler.langlois@elastic.co>
 #
-define elasticsearch::instance (
-  Enum['absent', 'present']          $ensure                        = $elasticsearch::ensure,
+define elasticsearch-legacy::instance (
+  Enum['absent', 'present']          $ensure                        = $elasticsearch-legacy::ensure,
   Optional[Stdlib::Absolutepath]     $ca_certificate                = undef,
   Optional[Stdlib::Absolutepath]     $certificate                   = undef,
   Optional[Hash]                     $config                        = undef,
-  Stdlib::Absolutepath               $configdir                     = "${elasticsearch::configdir}/${name}",
-  String                             $daily_rolling_date_pattern    = $elasticsearch::daily_rolling_date_pattern,
-  Optional[Elasticsearch::Multipath] $datadir                       = undef,
-  Boolean                            $datadir_instance_directories  = $elasticsearch::datadir_instance_directories,
+  Stdlib::Absolutepath               $configdir                     = "${elasticsearch-legacy::configdir}/${name}",
+  String                             $daily_rolling_date_pattern    = $elasticsearch-legacy::daily_rolling_date_pattern,
+  Optional[elasticsearch-legacy::Multipath] $datadir                       = undef,
+  Boolean                            $datadir_instance_directories  = $elasticsearch-legacy::datadir_instance_directories,
   Boolean                            $deprecation_logging           = false,
   String                             $deprecation_logging_level     = 'DEBUG',
-  String                             $file_rolling_type             = $elasticsearch::file_rolling_type,
+  String                             $file_rolling_type             = $elasticsearch-legacy::file_rolling_type,
   Hash                               $init_defaults                 = {},
   Optional[Stdlib::Absolutepath]     $init_defaults_file            = undef,
-  String                             $init_template                 = $elasticsearch::init_template,
-  Array[String]                      $jvm_options                   = $elasticsearch::jvm_options,
+  String                             $init_template                 = $elasticsearch-legacy::init_template,
+  Array[String]                      $jvm_options                   = $elasticsearch-legacy::jvm_options,
   Optional[String]                   $keystore_password             = undef,
   Optional[Stdlib::Absolutepath]     $keystore_path                 = undef,
-  Stdlib::Absolutepath               $logdir                        = "${elasticsearch::logdir}/${name}",
+  Stdlib::Absolutepath               $logdir                        = "${elasticsearch-legacy::logdir}/${name}",
   Hash                               $logging_config                = {},
   Optional[String]                   $logging_file                  = undef,
-  String                             $logging_level                 = $elasticsearch::default_logging_level,
+  String                             $logging_level                 = $elasticsearch-legacy::default_logging_level,
   Optional[String]                   $logging_template              = undef,
   Optional[Stdlib::Absolutepath]     $private_key                   = undef,
-  Boolean                            $purge_secrets                 = $elasticsearch::purge_secrets,
-  Integer                            $rolling_file_max_backup_index = $elasticsearch::rolling_file_max_backup_index,
-  String                             $rolling_file_max_file_size    = $elasticsearch::rolling_file_max_file_size,
+  Boolean                            $purge_secrets                 = $elasticsearch-legacy::purge_secrets,
+  Integer                            $rolling_file_max_backup_index = $elasticsearch-legacy::rolling_file_max_backup_index,
+  String                             $rolling_file_max_file_size    = $elasticsearch-legacy::rolling_file_max_file_size,
   Optional[Hash]                     $secrets                       = undef,
-  Optional[Enum['shield', 'x-pack']] $security_plugin               = $elasticsearch::security_plugin,
+  Optional[Enum['shield', 'x-pack']] $security_plugin               = $elasticsearch-legacy::security_plugin,
   Optional[String]                   $service_flags                 = undef,
   Boolean                            $ssl                           = false,
-  Elasticsearch::Status              $status                        = $elasticsearch::status,
-  Optional[String]                   $system_key                    = $elasticsearch::system_key,
+  elasticsearch-legacy::Status              $status                        = $elasticsearch-legacy::status,
+  Optional[String]                   $system_key                    = $elasticsearch-legacy::system_key,
 ) {
 
   File {
-    owner => $elasticsearch::elasticsearch_user,
-    group => $elasticsearch::elasticsearch_group,
+    owner => $elasticsearch-legacy::elasticsearch-legacy_user,
+    group => $elasticsearch-legacy::elasticsearch-legacy_group,
   }
 
   Exec {
@@ -180,8 +180,8 @@ define elasticsearch::instance (
     }
   }
 
-  $notify_service = $elasticsearch::restart_config_change ? {
-    true  => Elasticsearch::Service[$name],
+  $notify_service = $elasticsearch-legacy::restart_config_change ? {
+    true  => elasticsearch-legacy::Service[$name],
     false => undef,
   }
 
@@ -203,13 +203,13 @@ define elasticsearch::instance (
     # String or array for data dir(s)
     if ($datadir == undef) {
       if ($datadir_instance_directories) {
-        if (is_array($elasticsearch::datadir)) {
-          $instance_datadir = array_suffix($elasticsearch::datadir, "/${name}")
+        if (is_array($elasticsearch-legacy::datadir)) {
+          $instance_datadir = array_suffix($elasticsearch-legacy::datadir, "/${name}")
         } else {
-          $instance_datadir = "${elasticsearch::datadir}/${name}"
+          $instance_datadir = "${elasticsearch-legacy::datadir}/${name}"
         }
       } else {
-        $instance_datadir = $elasticsearch::datadir
+        $instance_datadir = $elasticsearch-legacy::datadir
       }
     } else {
       $instance_datadir = $datadir
@@ -220,13 +220,13 @@ define elasticsearch::instance (
       $logging_source = $logging_file
       $logging_content = undef
       $_log4j_content = undef
-    } elsif ($elasticsearch::logging_file != undef) {
-      $logging_source = $elasticsearch::logging_file
+    } elsif ($elasticsearch-legacy::logging_file != undef) {
+      $logging_source = $elasticsearch-legacy::logging_file
       $logging_content = undef
       $_log4j_content = undef
     } else {
 
-      $main_logging_config = deep_implode($elasticsearch::logging_config)
+      $main_logging_config = deep_implode($elasticsearch-legacy::logging_config)
       $instance_logging_config = deep_implode($logging_config)
 
       $logging_hash = merge(
@@ -243,17 +243,17 @@ define elasticsearch::instance (
       if ($logging_template != undef ) {
         $logging_content = template($logging_template)
         $_log4j_content = template($logging_template)
-      } elsif ($elasticsearch::logging_template != undef) {
-        $logging_content = template($elasticsearch::logging_template)
-        $_log4j_content = template($elasticsearch::logging_template)
+      } elsif ($elasticsearch-legacy::logging_template != undef) {
+        $logging_content = template($elasticsearch-legacy::logging_template)
+        $_log4j_content = template($elasticsearch-legacy::logging_template)
       } else {
-        $logging_content = template("${module_name}/etc/elasticsearch/logging.yml.erb")
-        $_log4j_content = template("${module_name}/etc/elasticsearch/log4j2.properties.erb")
+        $logging_content = template("${module_name}/etc/elasticsearch-legacy/logging.yml.erb")
+        $_log4j_content = template("${module_name}/etc/elasticsearch-legacy/log4j2.properties.erb")
       }
       $logging_source = undef
     }
 
-    $main_config = deep_implode($elasticsearch::config)
+    $main_config = deep_implode($elasticsearch-legacy::config)
 
     $instance_datadir_config = { 'path.data' => $instance_datadir }
 
@@ -292,7 +292,7 @@ define elasticsearch::instance (
       }
 
       # Trust CA Certificate
-      java_ks { "elasticsearch_instance_${name}_keystore_ca":
+      java_ks { "elasticsearch-legacy_instance_${name}_keystore_ca":
         ensure       => 'latest',
         certificate  => $ca_certificate,
         target       => $_keystore_path,
@@ -301,7 +301,7 @@ define elasticsearch::instance (
       }
 
       # Load node certificate and private key
-      java_ks { "elasticsearch_instance_${name}_keystore_node":
+      java_ks { "elasticsearch-legacy_instance_${name}_keystore_node":
         ensure      => 'latest',
         certificate => $certificate,
         private_key => $private_key,
@@ -310,61 +310,61 @@ define elasticsearch::instance (
       }
     } else { $tls_config = {} }
 
-    exec { "mkdir_logdir_elasticsearch_${name}":
+    exec { "mkdir_logdir_elasticsearch-legacy_${name}":
       command => "mkdir -p ${logdir}",
       creates => $logdir,
-      require => Class['elasticsearch::package'],
+      require => Class['elasticsearch-legacy::package'],
       before  => File[$logdir],
     }
 
     file { $logdir:
       ensure  => 'directory',
-      owner   => $elasticsearch::elasticsearch_user,
+      owner   => $elasticsearch-legacy::elasticsearch-legacy_user,
       group   => undef,
       mode    => '0755',
-      require => Class['elasticsearch::package'],
-      before  => Elasticsearch::Service[$name],
+      require => Class['elasticsearch-legacy::package'],
+      before  => elasticsearch-legacy::Service[$name],
     }
 
     if ($datadir_instance_directories) {
-      exec { "mkdir_datadir_elasticsearch_${name}":
+      exec { "mkdir_datadir_elasticsearch-legacy_${name}":
         command => "mkdir -p ${dirs}",
         creates => $instance_datadir,
-        require => Class['elasticsearch::package'],
-        before  => Elasticsearch::Service[$name],
+        require => Class['elasticsearch-legacy::package'],
+        before  => elasticsearch-legacy::Service[$name],
       }
       -> file { $instance_datadir:
         ensure  => 'directory',
-        owner   => $elasticsearch::elasticsearch_user,
+        owner   => $elasticsearch-legacy::elasticsearch-legacy_user,
         group   => undef,
         mode    => '0755',
-        require => Class['elasticsearch::package'],
-        before  => Elasticsearch::Service[$name],
+        require => Class['elasticsearch-legacy::package'],
+        before  => elasticsearch-legacy::Service[$name],
       }
     }
 
-    exec { "mkdir_configdir_elasticsearch_${name}":
+    exec { "mkdir_configdir_elasticsearch-legacy_${name}":
       command => "mkdir -p ${configdir}",
-      creates => $elasticsearch::configdir,
-      require => Class['elasticsearch::package'],
-      before  => Elasticsearch::Service[$name],
+      creates => $elasticsearch-legacy::configdir,
+      require => Class['elasticsearch-legacy::package'],
+      before  => elasticsearch-legacy::Service[$name],
     }
 
     file { $configdir:
       ensure  => 'directory',
       mode    => '0755',
-      purge   => $elasticsearch::purge_configdir,
-      force   => $elasticsearch::purge_configdir,
-      require => [ Exec["mkdir_configdir_elasticsearch_${name}"], Class['elasticsearch::package'] ],
-      before  => Elasticsearch::Service[$name],
+      purge   => $elasticsearch-legacy::purge_configdir,
+      force   => $elasticsearch-legacy::purge_configdir,
+      require => [ Exec["mkdir_configdir_elasticsearch-legacy_${name}"], Class['elasticsearch-legacy::package'] ],
+      before  => elasticsearch-legacy::Service[$name],
     }
 
     file { "${configdir}/jvm.options":
-      before  => Elasticsearch::Service[$name],
-      content => template("${module_name}/etc/elasticsearch/jvm.options.erb"),
-      group   => $elasticsearch::elasticsearch_group,
+      before  => elasticsearch-legacy::Service[$name],
+      content => template("${module_name}/etc/elasticsearch-legacy/jvm.options.erb"),
+      group   => $elasticsearch-legacy::elasticsearch-legacy_group,
       notify  => $notify_service,
-      owner   => $elasticsearch::elasticsearch_user,
+      owner   => $elasticsearch-legacy::elasticsearch-legacy_user,
     }
 
     file {
@@ -374,32 +374,32 @@ define elasticsearch::instance (
         source  => $logging_source,
         mode    => '0644',
         notify  => $notify_service,
-        require => Class['elasticsearch::package'],
-        before  => Elasticsearch::Service[$name];
+        require => Class['elasticsearch-legacy::package'],
+        before  => elasticsearch-legacy::Service[$name];
       "${configdir}/log4j2.properties":
         ensure  => file,
         content => $_log4j_content,
         source  => $logging_source,
         mode    => '0644',
         notify  => $notify_service,
-        require => Class['elasticsearch::package'],
-        before  => Elasticsearch::Service[$name];
+        require => Class['elasticsearch-legacy::package'],
+        before  => elasticsearch-legacy::Service[$name];
     }
 
     file { "${configdir}/scripts":
       ensure => 'link',
-      target => "${elasticsearch::homedir}/scripts",
+      target => "${elasticsearch-legacy::homedir}/scripts",
     }
 
     if $security_plugin != undef {
       file { "${configdir}/${security_plugin}":
         ensure  => 'directory',
         mode    => '0755',
-        source  => "${elasticsearch::configdir}/${security_plugin}",
+        source  => "${elasticsearch-legacy::configdir}/${security_plugin}",
         recurse => 'remote',
         owner   => 'root',
         group   => '0',
-        before  => Elasticsearch::Service[$name],
+        before  => elasticsearch-legacy::Service[$name],
         notify  => $notify_service,
       }
     }
@@ -409,7 +409,7 @@ define elasticsearch::instance (
         ensure  => 'file',
         source  => $system_key,
         mode    => '0400',
-        before  => Elasticsearch::Service[$name],
+        before  => elasticsearch-legacy::Service[$name],
         require => File["${configdir}/${security_plugin}"],
       }
     }
@@ -431,11 +431,11 @@ define elasticsearch::instance (
     }
 
     $init_defaults_new = merge(
-      { 'DATA_DIR'  => $elasticsearch::_datadir_default },
-      $elasticsearch::init_defaults,
+      { 'DATA_DIR'  => $elasticsearch-legacy::_datadir_default },
+      $elasticsearch-legacy::init_defaults,
       {
         'CONF_DIR'       => $configdir,
-        'ES_HOME'        => $elasticsearch::homedir,
+        'ES_HOME'        => $elasticsearch-legacy::homedir,
         'ES_JVM_OPTIONS' => "${configdir}/jvm.options",
         'ES_PATH_CONF'   => $configdir,
         'LOG_DIR'        => $logdir,
@@ -443,26 +443,26 @@ define elasticsearch::instance (
       $init_defaults
     )
 
-    $user = $elasticsearch::elasticsearch_user
-    $group = $elasticsearch::elasticsearch_group
+    $user = $elasticsearch-legacy::elasticsearch-legacy_user
+    $group = $elasticsearch-legacy::elasticsearch-legacy_group
 
     datacat_fragment { "main_config_${name}":
-      target => "${configdir}/elasticsearch.yml",
+      target => "${configdir}/elasticsearch-legacy.yml",
       data   => $instance_conf,
     }
 
-    datacat { "${configdir}/elasticsearch.yml":
-      template => "${module_name}/etc/elasticsearch/elasticsearch.yml.erb",
+    datacat { "${configdir}/elasticsearch-legacy.yml":
+      template => "${module_name}/etc/elasticsearch-legacy/elasticsearch-legacy.yml.erb",
       notify   => $notify_service,
-      require  => Class['elasticsearch::package'],
-      owner    => $elasticsearch::elasticsearch_user,
-      group    => $elasticsearch::elasticsearch_group,
+      require  => Class['elasticsearch-legacy::package'],
+      owner    => $elasticsearch-legacy::elasticsearch-legacy_user,
+      group    => $elasticsearch-legacy::elasticsearch-legacy_group,
       mode     => '0440',
     }
 
-    if ($elasticsearch::secrets != undef or $secrets != undef) {
-      if ($elasticsearch::secrets != undef) {
-        $main_secrets = $elasticsearch::secrets
+    if ($elasticsearch-legacy::secrets != undef or $secrets != undef) {
+      if ($elasticsearch-legacy::secrets != undef) {
+        $main_secrets = $elasticsearch-legacy::secrets
       } else {
         $main_secrets = {}
       }
@@ -473,15 +473,15 @@ define elasticsearch::instance (
         $instance_secrets = {}
       }
 
-      elasticsearch_keystore { $name :
-        configdir => $elasticsearch::configdir,
+      elasticsearch-legacy_keystore { $name :
+        configdir => $elasticsearch-legacy::configdir,
         purge     => $purge_secrets,
         settings  => merge($main_secrets, $instance_secrets),
         notify    => $notify_service,
       }
     }
 
-    $require_service = Class['elasticsearch::package']
+    $require_service = Class['elasticsearch-legacy::package']
     $before_service  = undef
 
   } else {
@@ -498,7 +498,7 @@ define elasticsearch::instance (
     $init_defaults_new = {}
   }
 
-  elasticsearch::service { $name:
+  elasticsearch-legacy::service { $name:
     ensure             => $ensure,
     status             => $status,
     service_flags      => $service_flags,

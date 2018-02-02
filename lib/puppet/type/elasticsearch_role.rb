@@ -1,5 +1,5 @@
-Puppet::Type.newtype(:elasticsearch_role) do
-  desc 'Type to model Elasticsearch roles.'
+Puppet::Type.newtype(:elasticsearch-legacy_role) do
+  desc 'Type to model elasticsearch-legacy roles.'
 
   ensurable
 

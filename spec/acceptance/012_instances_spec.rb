@@ -1,11 +1,11 @@
 require 'spec_helper_acceptance'
 require 'json'
 
-describe 'elasticsearch::instance' do
+describe 'elasticsearch-legacy::instance' do
   describe 'two instances' do
     describe 'manifest' do
       pp = <<-EOS
-        class { 'elasticsearch':
+        class { 'elasticsearch-legacy':
           config => {
             'cluster.name' => '#{test_settings['cluster_name']}',
             'network.host' => '0.0.0.0',
@@ -13,16 +13,16 @@ describe 'elasticsearch::instance' do
           repo_version => '#{test_settings['repo_version']}',
         }
 
-        elasticsearch::instance { 'es-01':
+        elasticsearch-legacy::instance { 'es-01':
           config => {
-            'node.name' => 'elasticsearch001',
+            'node.name' => 'elasticsearch-legacy001',
             'http.port' => '#{test_settings['port_a']}'
           }
         }
 
-        elasticsearch::instance { 'es-02':
+        elasticsearch-legacy::instance { 'es-02':
           config => {
-            'node.name' => 'elasticsearch002',
+            'node.name' => 'elasticsearch-legacy002',
             'http.port' => '#{test_settings['port_b']}'
           }
         }
@@ -56,21 +56,21 @@ describe 'elasticsearch::instance' do
       its(:content) { should match(/[0-9]+/) }
     end
 
-    describe file('/etc/elasticsearch/es-01/elasticsearch.yml') do
+    describe file('/etc/elasticsearch-legacy/es-01/elasticsearch-legacy.yml') do
       it { should be_file }
-      it { should contain 'name: elasticsearch001' }
+      it { should contain 'name: elasticsearch-legacy001' }
     end
 
-    describe file('/etc/elasticsearch/es-02/elasticsearch.yml') do
+    describe file('/etc/elasticsearch-legacy/es-02/elasticsearch-legacy.yml') do
       it { should be_file }
-      it { should contain 'name: elasticsearch002' }
+      it { should contain 'name: elasticsearch-legacy002' }
     end
 
-    describe file('/etc/elasticsearch/es-01/scripts') do
+    describe file('/etc/elasticsearch-legacy/es-01/scripts') do
       it { should be_symlink }
     end
 
-    describe file('/etc/elasticsearch/es-02/scripts') do
+    describe file('/etc/elasticsearch-legacy/es-02/scripts') do
       it { should be_symlink }
     end
 
@@ -110,7 +110,7 @@ describe 'elasticsearch::instance' do
   describe 'removing instance 2', :with_cleanup do
     describe 'manifest' do
       pp = <<-EOS
-        class { 'elasticsearch':
+        class { 'elasticsearch-legacy':
           config => {
             'cluster.name' => '#{test_settings['cluster_name']}',
             'network.host' => '0.0.0.0',
@@ -118,14 +118,14 @@ describe 'elasticsearch::instance' do
           repo_version => '#{test_settings['repo_version']}',
         }
 
-        elasticsearch::instance { 'es-01':
+        elasticsearch-legacy::instance { 'es-01':
           config => {
-            'node.name' => 'elasticsearch001',
+            'node.name' => 'elasticsearch-legacy001',
             'http.port' => '#{test_settings['port_a']}'
           }
         }
 
-        elasticsearch::instance { 'es-02':
+        elasticsearch-legacy::instance { 'es-02':
           ensure => 'absent'
         }
       EOS
@@ -135,7 +135,7 @@ describe 'elasticsearch::instance' do
       end
     end
 
-    describe file('/etc/elasticsearch/es-02') do
+    describe file('/etc/elasticsearch-legacy/es-02') do
       it { should_not be_directory }
     end
 
@@ -154,9 +154,9 @@ describe 'elasticsearch::instance' do
       its(:content) { should match(/[0-9]+/) }
     end
 
-    describe file('/etc/elasticsearch/es-01/elasticsearch.yml') do
+    describe file('/etc/elasticsearch-legacy/es-01/elasticsearch-legacy.yml') do
       it { should be_file }
-      it { should contain 'name: elasticsearch001' }
+      it { should contain 'name: elasticsearch-legacy001' }
     end
 
     describe port(test_settings['port_a']) do

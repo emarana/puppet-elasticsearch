@@ -1,4 +1,4 @@
 ---
-elasticsearch::download_tool: 'curl --insecure -o'
-elasticsearch::elasticsearch_user: elasticsearch
-elasticsearch::elasticsearch_group: elasticsearch
+elasticsearch-legacy::download_tool: 'curl --insecure -o'
+elasticsearch-legacy::elasticsearch-legacy_user: elasticsearch-legacy
+elasticsearch-legacy::elasticsearch-legacy_group: elasticsearch-legacy

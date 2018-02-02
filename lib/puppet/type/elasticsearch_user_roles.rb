@@ -1,5 +1,5 @@
-Puppet::Type.newtype(:elasticsearch_user_roles) do
-  desc 'Type to model Elasticsearch user roles.'
+Puppet::Type.newtype(:elasticsearch-legacy_user_roles) do
+  desc 'Type to model elasticsearch-legacy user roles.'
 
   ensurable
 
@@ -14,7 +14,7 @@ Puppet::Type.newtype(:elasticsearch_user_roles) do
     end
   end
 
-  autorequire(:elasticsearch_user) do
+  autorequire(:elasticsearch-legacy_user) do
     self[:name]
   end
 end

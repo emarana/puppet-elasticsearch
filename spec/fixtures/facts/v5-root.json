@@ -1,6 +1,6 @@
 {
   "name" : "v5",
-  "cluster_name" : "elasticsearch",
+  "cluster_name" : "elasticsearch-legacy",
   "cluster_uuid" : "1ENUnFlUQcmF6qko-PjpHw",
   "version" : {
     "number" : "5.5.0",

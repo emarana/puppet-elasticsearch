@@ -5,13 +5,13 @@ require 'puppet/file_serving/metadata'
 
 require 'puppet_x/elastic/deep_implode'
 require 'puppet_x/elastic/deep_to_i'
-require 'puppet_x/elastic/elasticsearch_rest_resource'
+require 'puppet_x/elastic/elasticsearch-legacy_rest_resource'
 
 # rubocop:disable Metrics/BlockLength
-Puppet::Type.newtype(:elasticsearch_template) do
-  extend ElasticsearchRESTResource
+Puppet::Type.newtype(:elasticsearch-legacy_template) do
+  extend elasticsearch-legacyRESTResource
 
-  desc 'Manages Elasticsearch index templates.'
+  desc 'Manages elasticsearch-legacy index templates.'
 
   ensurable
 
@@ -27,7 +27,7 @@ Puppet::Type.newtype(:elasticsearch_template) do
     end
 
     munge do |value|
-      # The Elasticsearch API will return default empty values for
+      # The elasticsearch-legacy API will return default empty values for
       # order, aliases, and mappings if they aren't defined in the
       # user mapping, so we need to set defaults here to keep the
       # `in` and `should` states consistent if the user hasn't

@@ -4,7 +4,7 @@ require 'timeout'
 module Puppet
   # Namespace for miscellaneous tools
   module Util
-    # Helper class to assist with talking to the Elasticsearch service ports.
+    # Helper class to assist with talking to the elasticsearch-legacy service ports.
     class EsInstanceValidator
       attr_reader :instance_server
       attr_reader :instance_port
@@ -21,7 +21,7 @@ module Puppet
         end
       end
 
-      # Utility method; attempts to make an https connection to the Elasticsearch instance.
+      # Utility method; attempts to make an https connection to the elasticsearch-legacy instance.
       # This is abstracted out into a method so that it can be called multiple times
       # for retry attempts.
       #
@@ -32,7 +32,7 @@ module Puppet
             TCPSocket.new(@instance_server, @instance_port).close
             true
           rescue Errno::EADDRNOTAVAIL, Errno::ECONNREFUSED, Errno::EHOSTUNREACH => e
-            Puppet.debug "Unable to connect to Elasticsearch instance (#{@instance_server}:#{@instance_port}): #{e.message}"
+            Puppet.debug "Unable to connect to elasticsearch-legacy instance (#{@instance_server}:#{@instance_port}): #{e.message}"
             false
           end
         end

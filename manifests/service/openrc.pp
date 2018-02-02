@@ -33,15 +33,15 @@
 #   be useful if a cluster management software is used to decide when to start
 #   the service plus assuring it is running on the desired node.
 #
-# @author Richard Pijnenburg <richard.pijnenburg@elasticsearch.com>
+# @author Richard Pijnenburg <richard.pijnenburg@elasticsearch-legacy.com>
 # @author Tyler Langlois <tyler.langlois@elastic.co>
 #
-define elasticsearch::service::openrc (
-  Enum['absent', 'present'] $ensure             = $elasticsearch::ensure,
+define elasticsearch-legacy::service::openrc (
+  Enum['absent', 'present'] $ensure             = $elasticsearch-legacy::ensure,
   Hash                      $init_defaults      = {},
   Optional[String]          $init_defaults_file = undef,
   Optional[String]          $init_template      = undef,
-  Elasticsearch::Status     $status             = $elasticsearch::status,
+  elasticsearch-legacy::Status     $status             = $elasticsearch-legacy::status,
 ) {
 
   #### Service management
@@ -81,21 +81,21 @@ define elasticsearch::service::openrc (
 
   }
 
-  if(has_key($init_defaults, 'ES_USER') and $init_defaults['ES_USER'] != $elasticsearch::elasticsearch_user) {
-    fail('Found ES_USER setting for init_defaults but is not same as elasticsearch_user setting. Please use elasticsearch_user setting.')
+  if(has_key($init_defaults, 'ES_USER') and $init_defaults['ES_USER'] != $elasticsearch-legacy::elasticsearch-legacy_user) {
+    fail('Found ES_USER setting for init_defaults but is not same as elasticsearch-legacy_user setting. Please use elasticsearch-legacy_user setting.')
   }
 
   $new_init_defaults = merge(
     {
-      'ES_USER' => $elasticsearch::elasticsearch_user,
-      'ES_GROUP' => $elasticsearch::elasticsearch_group,
+      'ES_USER' => $elasticsearch-legacy::elasticsearch-legacy_user,
+      'ES_GROUP' => $elasticsearch-legacy::elasticsearch-legacy_group,
       'MAX_OPEN_FILES' => '65536',
     },
     $init_defaults
   )
 
-  $notify_service = $elasticsearch::restart_config_change ? {
-    true  => Service["elasticsearch-instance-${name}"],
+  $notify_service = $elasticsearch-legacy::restart_config_change ? {
+    true  => Service["elasticsearch-legacy-instance-${name}"],
     false => undef,
   }
 
@@ -104,21 +104,21 @@ define elasticsearch::service::openrc (
 
     # defaults file content. Either from a hash or file
     if ($init_defaults_file != undef) {
-      file { "${elasticsearch::defaults_location}/elasticsearch.${name}":
+      file { "${elasticsearch-legacy::defaults_location}/elasticsearch-legacy.${name}":
         ensure => $ensure,
         source => $init_defaults_file,
         owner  => 'root',
         group  => '0',
         mode   => '0644',
-        before => Service["elasticsearch-instance-${name}"],
+        before => Service["elasticsearch-legacy-instance-${name}"],
         notify => $notify_service,
       }
     } else {
       augeas { "defaults_${name}":
-        incl    => "${elasticsearch::defaults_location}/elasticsearch.${name}",
+        incl    => "${elasticsearch-legacy::defaults_location}/elasticsearch-legacy.${name}",
         lens    => 'Shellvars.lns',
         changes => template("${module_name}/etc/sysconfig/defaults.erb"),
-        before  => Service["elasticsearch-instance-${name}"],
+        before  => Service["elasticsearch-legacy-instance-${name}"],
         notify  => $notify_service,
       }
     }
@@ -126,19 +126,19 @@ define elasticsearch::service::openrc (
     # init file from template
     if ($init_template != undef) {
 
-      elasticsearch_service_file { "/etc/init.d/elasticsearch.${name}":
+      elasticsearch-legacy_service_file { "/etc/init.d/elasticsearch-legacy.${name}":
         ensure       => $ensure,
         content      => file($init_template),
         instance     => $name,
         notify       => $notify_service,
-        package_name => $elasticsearch::package_name,
+        package_name => $elasticsearch-legacy::package_name,
       }
-      -> file { "/etc/init.d/elasticsearch.${name}":
+      -> file { "/etc/init.d/elasticsearch-legacy.${name}":
         ensure => $ensure,
         owner  => 'root',
         group  => '0',
         mode   => '0755',
-        before => Service["elasticsearch-instance-${name}"],
+        before => Service["elasticsearch-legacy-instance-${name}"],
         notify => $notify_service,
       }
 
@@ -146,14 +146,14 @@ define elasticsearch::service::openrc (
 
   } elsif ($status != 'unmanaged') {
 
-    file { "/etc/init.d/elasticsearch.${name}":
+    file { "/etc/init.d/elasticsearch-legacy.${name}":
       ensure    => 'absent',
-      subscribe => Service["elasticsearch-instance-${name}"],
+      subscribe => Service["elasticsearch-legacy-instance-${name}"],
     }
 
-    file { "${elasticsearch::defaults_location}/elasticsearch.${name}":
+    file { "${elasticsearch-legacy::defaults_location}/elasticsearch-legacy.${name}":
       ensure    => 'absent',
-      subscribe => Service["elasticsearch.${$name}"],
+      subscribe => Service["elasticsearch-legacy.${$name}"],
     }
 
   }
@@ -162,10 +162,10 @@ define elasticsearch::service::openrc (
   if ( $status != 'unmanaged') {
 
     # action
-    service { "elasticsearch-instance-${name}":
+    service { "elasticsearch-legacy-instance-${name}":
       ensure => $service_ensure,
       enable => $service_enable,
-      name   => "elasticsearch.${name}",
+      name   => "elasticsearch-legacy.${name}",
     }
   }
 }

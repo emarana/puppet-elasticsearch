@@ -4,7 +4,7 @@ require 'json'
 describe 'hiera' do
   let :base_manifest do
     <<-EOS
-      class { 'elasticsearch':
+      class { 'elasticsearch-legacy':
         repo_version => '#{test_settings['repo_version']}',
         restart_on_change => true,
       }
@@ -23,12 +23,12 @@ describe 'hiera' do
       end
     end
 
-    describe service('elasticsearch-es-hiera-single') do
+    describe service('elasticsearch-legacy-es-hiera-single') do
       it { should be_enabled }
       it { should be_running }
     end
 
-    describe file('/etc/elasticsearch/es-hiera-single/elasticsearch.yml') do
+    describe file('/etc/elasticsearch-legacy/es-hiera-single/elasticsearch-legacy.yml') do
       it { should be_file }
       it { should contain 'name: es-hiera-single' }
     end
@@ -62,7 +62,7 @@ describe 'hiera' do
       end
     end
 
-    describe file('/usr/share/elasticsearch/plugins/head/') do
+    describe file('/usr/share/elasticsearch-legacy/plugins/head/') do
       it { should be_directory }
     end
 
@@ -98,22 +98,22 @@ describe 'hiera' do
       end
     end
 
-    describe service('elasticsearch-es-hiera-multiple-1') do
+    describe service('elasticsearch-legacy-es-hiera-multiple-1') do
       it { should be_enabled }
       it { should be_running }
     end
 
-    describe service('elasticsearch-es-hiera-multiple-2') do
+    describe service('elasticsearch-legacy-es-hiera-multiple-2') do
       it { should be_enabled }
       it { should be_running }
     end
 
-    describe file('/etc/elasticsearch/es-hiera-multiple-1/elasticsearch.yml') do
+    describe file('/etc/elasticsearch-legacy/es-hiera-multiple-1/elasticsearch-legacy.yml') do
       it { should be_file }
       it { should contain 'name: es-hiera-multiple-1' }
     end
 
-    describe file('/etc/elasticsearch/es-hiera-multiple-2/elasticsearch.yml') do
+    describe file('/etc/elasticsearch-legacy/es-hiera-multiple-2/elasticsearch-legacy.yml') do
       it { should be_file }
       it { should contain 'name: es-hiera-multiple-2' }
     end
@@ -155,11 +155,11 @@ describe 'hiera' do
     write_hiera_config([])
 
     apply_manifest <<-EOS
-      class { 'elasticsearch': ensure => 'absent' }
-      elasticsearch::instance { 'es-hiera-single': }
-      elasticsearch::instance { 'es-hiera-multiple-1': }
-      elasticsearch::instance { 'es-hiera-multiple-2': }
-      Elasticsearch::Instance { ensure => 'absent' }
+      class { 'elasticsearch-legacy': ensure => 'absent' }
+      elasticsearch-legacy::instance { 'es-hiera-single': }
+      elasticsearch-legacy::instance { 'es-hiera-multiple-1': }
+      elasticsearch-legacy::instance { 'es-hiera-multiple-2': }
+      elasticsearch-legacy::Instance { ensure => 'absent' }
     EOS
   end
 end

@@ -1,5 +1,5 @@
 #  This define allows you to insert, update or delete scripts that are used
-#  within Elasticsearch.
+#  within elasticsearch-legacy.
 #
 # @param ensure
 #   Controls the state of the script file resource to manage.
@@ -11,26 +11,26 @@
 # @param source
 #   Puppet source of the script
 #
-# @author Richard Pijnenburg <richard.pijnenburg@elasticsearch.com>
+# @author Richard Pijnenburg <richard.pijnenburg@elasticsearch-legacy.com>
 # @author Tyler Langlois <tyler.langlois@elastic.co>
 #
-define elasticsearch::script (
+define elasticsearch-legacy::script (
   String                                     $source,
   String                                     $ensure  = 'present',
   Optional[Variant[Boolean, Enum['remote']]] $recurse = undef,
 ) {
-  if ! defined(Class['elasticsearch']) {
-    fail('You must include the elasticsearch base class before using defined resources')
+  if ! defined(Class['elasticsearch-legacy']) {
+    fail('You must include the elasticsearch-legacy base class before using defined resources')
   }
 
   $filename_array = split($source, '/')
   $basefilename = $filename_array[-1]
 
-  file { "${elasticsearch::homedir}/scripts/${basefilename}":
+  file { "${elasticsearch-legacy::homedir}/scripts/${basefilename}":
     ensure  => $ensure,
     source  => $source,
-    owner   => $elasticsearch::elasticsearch_user,
-    group   => $elasticsearch::elasticsearch_group,
+    owner   => $elasticsearch-legacy::elasticsearch-legacy_user,
+    group   => $elasticsearch-legacy::elasticsearch-legacy_group,
     recurse => $recurse,
     mode    => '0644',
   }

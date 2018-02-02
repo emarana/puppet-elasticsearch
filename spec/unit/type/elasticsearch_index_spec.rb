@@ -1,7 +1,7 @@
-require_relative '../../helpers/unit/type/elasticsearch_rest_shared_examples'
+require_relative '../../helpers/unit/type/elasticsearch-legacy_rest_shared_examples'
 
 # rubocop:disable Metrics/BlockLength
-describe Puppet::Type.type(:elasticsearch_index) do
+describe Puppet::Type.type(:elasticsearch-legacy_index) do
   let(:resource_name) { 'test-index' }
 
   include_examples 'REST API types', 'index', :settings

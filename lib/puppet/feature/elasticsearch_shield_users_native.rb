@@ -1,9 +1,9 @@
 require 'puppet/util/feature'
 require 'puppet/util/package'
 
-shield_plugin_dir = '/usr/share/elasticsearch/plugins/shield'
+shield_plugin_dir = '/usr/share/elasticsearch-legacy/plugins/shield'
 
-Puppet.features.add(:elasticsearch_shield_users_native) {
+Puppet.features.add(:elasticsearch-legacy_shield_users_native) {
   File.exists? shield_plugin_dir and
     Dir[shield_plugin_dir + '/*.jar'].map do |file|
       File.basename(file, '.jar').split('-')

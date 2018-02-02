@@ -1,13 +1,13 @@
-# Elasticsearch Puppet Module
+# elasticsearch-legacy Puppet Module
 
-[![Puppet Forge endorsed](https://img.shields.io/puppetforge/e/elastic/elasticsearch.svg)](https://forge.puppetlabs.com/elastic/elasticsearch)
-[![Puppet Forge Version](https://img.shields.io/puppetforge/v/elastic/elasticsearch.svg)](https://forge.puppetlabs.com/elastic/elasticsearch)
-[![Puppet Forge Downloads](https://img.shields.io/puppetforge/dt/elastic/elasticsearch.svg)](https://forge.puppetlabs.com/elastic/elasticsearch)
+[![Puppet Forge endorsed](https://img.shields.io/puppetforge/e/elastic/elasticsearch-legacy.svg)](https://forge.puppetlabs.com/elastic/elasticsearch-legacy)
+[![Puppet Forge Version](https://img.shields.io/puppetforge/v/elastic/elasticsearch-legacy.svg)](https://forge.puppetlabs.com/elastic/elasticsearch-legacy)
+[![Puppet Forge Downloads](https://img.shields.io/puppetforge/dt/elastic/elasticsearch-legacy.svg)](https://forge.puppetlabs.com/elastic/elasticsearch-legacy)
 
 #### Table of Contents
 
 1. [Module description - What the module does and why it is useful](#module-description)
-2. [Setup - The basics of getting started with Elasticsearch](#setup)
+2. [Setup - The basics of getting started with elasticsearch-legacy](#setup)
   * [The module manages the following](#the-module-manages-the-following)
   * [Requirements](#requirements)
 3. [Usage - Configuration options and additional functionality](#usage)
@@ -19,24 +19,24 @@
 
 ## Module description
 
-This module sets up [Elasticsearch](https://www.elastic.co/overview/elasticsearch/) instances with additional resource for plugins, templates, and more.
+This module sets up [elasticsearch-legacy](https://www.elastic.co/overview/elasticsearch-legacy/) instances with additional resource for plugins, templates, and more.
 
-This module is actively tested against Elasticsearch 2.x, 5.x, and 6.x.
+This module is actively tested against elasticsearch-legacy 2.x, 5.x, and 6.x.
 
 ## Setup
 
 ### The module manages the following
 
-* Elasticsearch repository files.
-* Elasticsearch package.
-* Elasticsearch configuration file.
-* Elasticsearch service.
-* Elasticsearch plugins.
-* Elasticsearch templates.
-* Elasticsearch ingest pipelines.
-* Elasticsearch index settings.
-* Elasticsearch Shield/X-Pack users, roles, and certificates.
-* Elasticsearch keystores.
+* elasticsearch-legacy repository files.
+* elasticsearch-legacy package.
+* elasticsearch-legacy configuration file.
+* elasticsearch-legacy service.
+* elasticsearch-legacy plugins.
+* elasticsearch-legacy templates.
+* elasticsearch-legacy ingest pipelines.
+* elasticsearch-legacy index settings.
+* elasticsearch-legacy Shield/X-Pack users, roles, and certificates.
+* elasticsearch-legacy keystores.
 
 ### Requirements
 
@@ -45,7 +45,7 @@ This module is actively tested against Elasticsearch 2.x, 5.x, and 6.x.
 * [Augeas](http://augeas.net/)
 * [puppetlabs-java_ks](https://forge.puppetlabs.com/puppetlabs/java_ks) for Shield/X-Pack certificate management (optional).
 
-In addition, remember that Elasticsearch requires Java to be installed.
+In addition, remember that elasticsearch-legacy requires Java to be installed.
 We recommend managing your Java installation with the [puppetlabs-java](https://forge.puppetlabs.com/puppetlabs/java) module.
 
 #### Repository management
@@ -55,30 +55,30 @@ When using the repository management, the following module dependencies are requ
 * Debian/Ubuntu: [Puppetlabs/apt](http://forge.puppetlabs.com/puppetlabs/apt)
 * OpenSuSE/SLES: [Darin/zypprepo](https://forge.puppetlabs.com/darin/zypprepo)
 
-### Beginning with Elasticsearch
+### Beginning with elasticsearch-legacy
 
-Declare the top-level `elasticsearch` class (managing repositories) and set up an instance:
+Declare the top-level `elasticsearch-legacy` class (managing repositories) and set up an instance:
 
 ```puppet
 include ::java
 
-class { 'elasticsearch': }
-elasticsearch::instance { 'es-01': }
+class { 'elasticsearch-legacy': }
+elasticsearch-legacy::instance { 'es-01': }
 ```
 
-**Note**: Elasticsearch 6.x requires a recent version of the JVM.
+**Note**: elasticsearch-legacy 6.x requires a recent version of the JVM.
 
 ## Usage
 
 ### Main class
 
-Most top-level parameters in the `elasticsearch` class are set to reasonable defaults.
+Most top-level parameters in the `elasticsearch-legacy` class are set to reasonable defaults.
 The following are some parameters that may be useful to override:
 
 #### Install a specific version
 
 ```puppet
-class { 'elasticsearch':
+class { 'elasticsearch-legacy':
   version => '6.0.0'
 }
 ```
@@ -87,11 +87,11 @@ Note: This will only work when using the repository.
 
 #### Automatically restarting the service (default set to false)
 
-By default, the module will not restart Elasticsearch when the configuration file, package, or plugins change.
+By default, the module will not restart elasticsearch-legacy when the configuration file, package, or plugins change.
 This can be overridden globally with the following option:
 
 ```puppet
-class { 'elasticsearch':
+class { 'elasticsearch-legacy':
   restart_on_change => true
 }
 ```
@@ -101,7 +101,7 @@ Or controlled with the more granular options: `restart_config_change`, `restart_
 #### Automatic upgrades (default set to false)
 
 ```puppet
-class { 'elasticsearch':
+class { 'elasticsearch-legacy':
   autoupgrade => true
 }
 ```
@@ -109,7 +109,7 @@ class { 'elasticsearch':
 #### Removal/Decommissioning
 
 ```puppet
-class { 'elasticsearch':
+class { 'elasticsearch-legacy':
   ensure => 'absent'
 }
 ```
@@ -117,18 +117,18 @@ class { 'elasticsearch':
 #### Install everything but disable service(s) afterwards
 
 ```puppet
-class { 'elasticsearch':
+class { 'elasticsearch-legacy':
   status => 'disabled'
 }
 ```
 
 #### API Settings
 
-Some resources, such as `elasticsearch::template`, require communicating with the Elasticsearch REST API.
+Some resources, such as `elasticsearch-legacy::template`, require communicating with the elasticsearch-legacy REST API.
 By default, these API settings are set to:
 
 ```puppet
-class { 'elasticsearch':
+class { 'elasticsearch-legacy':
   api_protocol            => 'http',
   api_host                => 'localhost',
   api_port                => 9200,
@@ -141,15 +141,15 @@ class { 'elasticsearch':
 }
 ```
 
-Each of these can be set at the top-level `elasticsearch` class and inherited for each resource or overridden on a per-resource basis.
+Each of these can be set at the top-level `elasticsearch-legacy` class and inherited for each resource or overridden on a per-resource basis.
 
 #### Dynamically Created Resources
 
 This module supports managing all of its defined types through top-level parameters to better support Hiera and Puppet Enterprise.
-For example, to manage an instance and index template directly from the `elasticsearch` class:
+For example, to manage an instance and index template directly from the `elasticsearch-legacy` class:
 
 ```puppet
-class { 'elasticsearch':
+class { 'elasticsearch-legacy':
   instances => {
     'es-01' => {
       'config' => {
@@ -177,7 +177,7 @@ This module works with the concept of instances. For service to start you need t
 #### Quick setup
 
 ```puppet
-elasticsearch::instance { 'es-01': }
+elasticsearch-legacy::instance { 'es-01': }
 ```
 
 This will set up its own data directory and set the node name to `$hostname-$instance_name`
@@ -187,7 +187,7 @@ This will set up its own data directory and set the node name to `$hostname-$ins
 Instance specific options can be given:
 
 ```puppet
-elasticsearch::instance { 'es-01':
+elasticsearch-legacy::instance { 'es-01':
   config        => { }, # Configuration hash
   init_defaults => { }, # Init defaults hash
   datadir       => [ ], # Data directory
@@ -198,13 +198,13 @@ See [Advanced features](#advanced-features) for more information.
 
 ### Plugins
 
-This module can help manage [a variety of plugins](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/modules-plugins.html#known-plugins).
+This module can help manage [a variety of plugins](http://www.elasticsearch-legacy.org/guide/en/elasticsearch-legacy/reference/current/modules-plugins.html#known-plugins).
 Note that `module_dir` is where the plugin will install itself to and must match that published by the plugin author; it is not where you would like to install it yourself.
 
 #### From an official repository
 
 ```puppet
-elasticsearch::plugin { 'x-pack':
+elasticsearch-legacy::plugin { 'x-pack':
   instances => 'instance_name'
 }
 ```
@@ -212,8 +212,8 @@ elasticsearch::plugin { 'x-pack':
 #### From a custom url
 
 ```puppet
-elasticsearch::plugin { 'jetty':
-  url        => 'https://oss-es-plugins.s3.amazonaws.com/elasticsearch-jetty/elasticsearch-jetty-1.2.1.zip',
+elasticsearch-legacy::plugin { 'jetty':
+  url        => 'https://oss-es-plugins.s3.amazonaws.com/elasticsearch-legacy-jetty/elasticsearch-legacy-jetty-1.2.1.zip',
   instances  => 'instance_name'
 }
 ```
@@ -222,7 +222,7 @@ elasticsearch::plugin { 'jetty':
 
 You can also use a proxy if required by setting the `proxy_host` and `proxy_port` options:
 ```puppet
-elasticsearch::plugin { 'lmenezes/elasticsearch-kopf',
+elasticsearch-legacy::plugin { 'lmenezes/elasticsearch-legacy-kopf',
   instances  => 'instance_name',
   proxy_host => 'proxy.host.com',
   proxy_port => 3128
@@ -233,7 +233,7 @@ Proxies that require usernames and passwords are similarly supported with the `p
 
 Plugin name formats that are supported include:
 
-* `elasticsearch/plugin/version` (for official elasticsearch plugins downloaded from download.elastic.co)
+* `elasticsearch-legacy/plugin/version` (for official elasticsearch-legacy plugins downloaded from download.elastic.co)
 * `groupId/artifactId/version` (for community plugins downloaded from maven central or OSS Sonatype)
 * `username/repository` (for site plugins downloaded from github master)
 
@@ -242,29 +242,29 @@ Plugin name formats that are supported include:
 When you specify a certain plugin version, you can upgrade that plugin by specifying the new version.
 
 ```puppet
-elasticsearch::plugin { 'elasticsearch/elasticsearch-cloud-aws/2.1.1': }
+elasticsearch-legacy::plugin { 'elasticsearch-legacy/elasticsearch-legacy-cloud-aws/2.1.1': }
 ```
 
 And to upgrade, you would simply change it to
 
 ```puppet
-elasticsearch::plugin { 'elasticsearch/elasticsearch-cloud-aws/2.4.1': }
+elasticsearch-legacy::plugin { 'elasticsearch-legacy/elasticsearch-legacy-cloud-aws/2.4.1': }
 ```
 
 Please note that this does not work when you specify 'latest' as a version number.
 
 #### ES 2.x, 5.x, and 6.x official plugins
-For the Elasticsearch commercial plugins you can refer them to the simple name.
+For the elasticsearch-legacy commercial plugins you can refer them to the simple name.
 
-See [Plugin installation](https://www.elastic.co/guide/en/elasticsearch/plugins/current/installation.html) for more details.
+See [Plugin installation](https://www.elastic.co/guide/en/elasticsearch-legacy/plugins/current/installation.html) for more details.
 
 ### Scripts
 
-Installs [scripts](http://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html) to be used by Elasticsearch.
+Installs [scripts](http://www.elastic.co/guide/en/elasticsearch-legacy/reference/current/modules-scripting.html) to be used by elasticsearch-legacy.
 These scripts are shared across all defined instances on the same host.
 
 ```puppet
-elasticsearch::script { 'myscript':
+elasticsearch-legacy::script { 'myscript':
   ensure => 'present',
   source => 'puppet:///path/to/my/script.groovy'
 }
@@ -273,7 +273,7 @@ elasticsearch::script { 'myscript':
 Script directories can also be recursively managed for large collections of scripts:
 
 ```puppet
-elasticsearch::script { 'myscripts_dir':
+elasticsearch-legacy::script { 'myscripts_dir':
   ensure  => 'directory,
   source  => 'puppet:///path/to/myscripts_dir'
   recurse => 'remote',
@@ -282,11 +282,11 @@ elasticsearch::script { 'myscripts_dir':
 
 ### Templates
 
-By default templates use the top-level `elasticsearch::api_*` settings to communicate with Elasticsearch.
+By default templates use the top-level `elasticsearch-legacy::api_*` settings to communicate with elasticsearch-legacy.
 The following is an example of how to override these settings:
 
 ```puppet
-elasticsearch::template { 'templatename':
+elasticsearch-legacy::template { 'templatename':
   api_protocol            => 'https',
   api_host                => $::ipaddress,
   api_port                => 9201,
@@ -302,20 +302,20 @@ elasticsearch::template { 'templatename':
 
 #### Add a new template using a file
 
-This will install and/or replace the template in Elasticsearch:
+This will install and/or replace the template in elasticsearch-legacy:
 
 ```puppet
-elasticsearch::template { 'templatename':
+elasticsearch-legacy::template { 'templatename':
   source => 'puppet:///path/to/template.json',
 }
 ```
 
 #### Add a new template using content
 
-This will install and/or replace the template in Elasticsearch:
+This will install and/or replace the template in elasticsearch-legacy:
 
 ```puppet
-elasticsearch::template { 'templatename':
+elasticsearch-legacy::template { 'templatename':
   content => {
     'template' => "*",
     'settings' => {
@@ -328,7 +328,7 @@ elasticsearch::template { 'templatename':
 Plain JSON strings are also supported.
 
 ```puppet
-elasticsearch::template { 'templatename':
+elasticsearch-legacy::template { 'templatename':
   content => '{"template":"*","settings":{"number_of_replicas":0}}'
 }
 ```
@@ -336,7 +336,7 @@ elasticsearch::template { 'templatename':
 #### Delete a template
 
 ```puppet
-elasticsearch::template { 'templatename':
+elasticsearch-legacy::template { 'templatename':
   ensure => 'absent'
 }
 ```
@@ -344,17 +344,17 @@ elasticsearch::template { 'templatename':
 ### Ingestion Pipelines
 
 Pipelines behave similar to templates in that their contents can be controlled
-over the Elasticsearch REST API with a custom Puppet resource.
+over the elasticsearch-legacy REST API with a custom Puppet resource.
 API parameters follow the same rules as templates (those settings can either be
-controlled at the top-level in the `elasticsearch` class or set per-resource).
+controlled at the top-level in the `elasticsearch-legacy` class or set per-resource).
 
 #### Adding a new pipeline
 
-This will install and/or replace an ingestion pipeline in Elasticsearch
+This will install and/or replace an ingestion pipeline in elasticsearch-legacy
 (ingestion settings are compared against the present configuration):
 
 ```puppet
-elasticsearch::pipeline { 'addfoo':
+elasticsearch-legacy::pipeline { 'addfoo':
   content => {
     'description' => 'Add the foo field',
     'processors' => [{
@@ -370,7 +370,7 @@ elasticsearch::pipeline { 'addfoo':
 #### Delete a pipeline
 
 ```puppet
-elasticsearch::pipeline { 'addfoo':
+elasticsearch-legacy::pipeline { 'addfoo':
   ensure => 'absent'
 }
 ```
@@ -389,7 +389,7 @@ Note that some settings (such as `number_of_shards`) can only be set at index
 creation time.
 
 ```puppet
-elasticsearch::index { 'foo':
+elasticsearch-legacy::index { 'foo':
   settings => {
     'index' => {
       'number_of_replicas' => 0
@@ -401,7 +401,7 @@ elasticsearch::index { 'foo':
 #### Delete an index
 
 ```puppet
-elasticsearch::index { 'foo':
+elasticsearch-legacy::index { 'foo':
   ensure => 'absent'
 }
 ```
@@ -427,25 +427,25 @@ class { 'kibana4' :
 
 ### Package installation
 
-There are two different ways of installing Elasticsearch:
+There are two different ways of installing elasticsearch-legacy:
 
 #### Repository
 
 This option allows you to use an existing repository for package installation.
-The `repo_version` corresponds with the `major.minor` version of Elasticsearch for versions before 2.x.
+The `repo_version` corresponds with the `major.minor` version of elasticsearch-legacy for versions before 2.x.
 
 ```puppet
-class { 'elasticsearch':
+class { 'elasticsearch-legacy':
   manage_repo  => true,
   repo_version => '1.4',
 }
 ```
 
-For 2.x versions of Elasticsearch onward, use the major version of Elasticsearch suffixed by an `x`.
+For 2.x versions of elasticsearch-legacy onward, use the major version of elasticsearch-legacy suffixed by an `x`.
 For example:
 
 ```puppet
-class { 'elasticsearch':
+class { 'elasticsearch-legacy':
   manage_repo  => true,
   repo_version => '6.x',
 }
@@ -454,7 +454,7 @@ class { 'elasticsearch':
 For users who may wish to install via a local repository (for example, through a mirror), the `repo_baseurl` parameter is available:
 
 ```puppet
-class { 'elasticsearch':
+class { 'elasticsearch-legacy':
   manage_repo => true,
   repo_baseurl => 'https://repo.local/yum'
 }
@@ -467,39 +467,39 @@ When a repository is not available or preferred you can install the packages fro
 ##### http/https/ftp
 
 ```puppet
-class { 'elasticsearch':
-  package_url => 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.2.deb',
+class { 'elasticsearch-legacy':
+  package_url => 'https://download.elasticsearch-legacy.org/elasticsearch-legacy/elasticsearch-legacy/elasticsearch-legacy-1.4.2.deb',
   proxy_url   => 'http://proxy.example.com:8080/',
 }
 ```
 
 Setting `proxy_url` to a location will enable download using the provided proxy
 server.
-This parameter is also used by `elasticsearch::plugin`.
+This parameter is also used by `elasticsearch-legacy::plugin`.
 Setting the port in the `proxy_url` is mandatory.
 `proxy_url` defaults to `undef` (proxy disabled).
 
 ##### puppet://
 ```puppet
-class { 'elasticsearch':
-  package_url => 'puppet:///path/to/elasticsearch-1.4.2.deb'
+class { 'elasticsearch-legacy':
+  package_url => 'puppet:///path/to/elasticsearch-legacy-1.4.2.deb'
 }
 ```
 
 ##### Local file
 
 ```puppet
-class { 'elasticsearch':
-  package_url => 'file:/path/to/elasticsearch-1.4.2.deb'
+class { 'elasticsearch-legacy':
+  package_url => 'file:/path/to/elasticsearch-legacy-1.4.2.deb'
 }
 ```
 
 ### JVM Configuration
 
-When configuring Elasticsearch's memory usage, you can do so by either changing init defaults for Elasticsearch 1.x/2.x (see the [following example](#hash-representation)), or modify it globally in 5.x using `jvm.options`:
+When configuring elasticsearch-legacy's memory usage, you can do so by either changing init defaults for elasticsearch-legacy 1.x/2.x (see the [following example](#hash-representation)), or modify it globally in 5.x using `jvm.options`:
 
 ```puppet
-class { 'elasticsearch':
+class { 'elasticsearch-legacy':
   jvm_options => [
     '-Xms4g',
     '-Xmx4g'
@@ -510,7 +510,7 @@ class { 'elasticsearch':
 `jvm.options` can also be controlled per-instance:
 
 ```puppet
-elasticsearch::instance { 'es-01':
+elasticsearch-legacy::instance { 'es-01':
   jvm_options => [
     '-Xms4g',
     '-Xmx4g'
@@ -524,13 +524,13 @@ Currently only the basic SysV-style [init](https://en.wikipedia.org/wiki/Init) a
 
 #### Defaults File
 
-The *defaults* file (`/etc/defaults/elasticsearch` or `/etc/sysconfig/elasticsearch`) for the Elasticsearch service can be populated as necessary.
+The *defaults* file (`/etc/defaults/elasticsearch-legacy` or `/etc/sysconfig/elasticsearch-legacy`) for the elasticsearch-legacy service can be populated as necessary.
 This can either be a static file resource or a simple key value-style  [hash](http://docs.puppetlabs.com/puppet/latest/reference/lang_datatypes.html#hashes) object, the latter being particularly well-suited to pulling out of a data source such as Hiera.
 
 ##### File source
 
 ```puppet
-class { 'elasticsearch':
+class { 'elasticsearch-legacy':
   init_defaults_file => 'puppet:///path/to/defaults'
 }
 ```
@@ -541,7 +541,7 @@ $config_hash = {
   'ES_HEAP_SIZE' => '30g',
 }
 
-class { 'elasticsearch':
+class { 'elasticsearch-legacy':
   init_defaults => $config_hash
 }
 ```
@@ -562,41 +562,41 @@ Although this module can handle several types of Shield/X-Pack resources, you ar
 For example, the following manifest will install Elasticseach with a single instance running X-Pack:
 
 ```puppet
-class { 'elasticsearch':
+class { 'elasticsearch-legacy':
   manage_repo     => true,
   repo_version    => '6.x',
   security_plugin => 'x-pack',
 }
 
-elasticsearch::instance { 'es-01': }
-elasticsearch::plugin { 'x-pack': instances => 'es-01' }
+elasticsearch-legacy::instance { 'es-01': }
+elasticsearch-legacy::plugin { 'x-pack': instances => 'es-01' }
 ```
 
 The following manifest will do the same, but with Shield:
 
 ```puppet
-class { 'elasticsearch':
+class { 'elasticsearch-legacy':
   manage_repo     => true,
   repo_version    => '2.x',
   security_plugin => 'shield',
 }
 
-elasticsearch::instance { 'es-01': }
+elasticsearch-legacy::instance { 'es-01': }
 
-Elasticsearch::Plugin { instances => ['es-01'], }
-elasticsearch::plugin { 'license': }
-elasticsearch::plugin { 'shield': }
+elasticsearch-legacy::Plugin { instances => ['es-01'], }
+elasticsearch-legacy::plugin { 'license': }
+elasticsearch-legacy::plugin { 'shield': }
 ```
 
 The following examples will assume the preceding resources are part of your puppet manifest.
 
 #### Roles
 
-Roles in the file realm (the `esusers` realm in Shield) can be managed using the `elasticsearch::role` type.
+Roles in the file realm (the `esusers` realm in Shield) can be managed using the `elasticsearch-legacy::role` type.
 For example, to create a role called `myrole`, you could use the following resource in X-Pack:
 
 ```puppet
-elasticsearch::role { 'myrole':
+elasticsearch-legacy::role { 'myrole':
   privileges => {
     'cluster' => [ 'monitor' ],
     'indices' => [{
@@ -610,7 +610,7 @@ elasticsearch::role { 'myrole':
 And in Shield:
 
 ```puppet
-elasticsearch::role { 'myrole':
+elasticsearch-legacy::role { 'myrole':
   privileges => {
     'cluster' => 'monitor',
     'indices' => {
@@ -627,18 +627,18 @@ See the [Shield](https://www.elastic.co/guide/en/shield/index.html) or [X-Pack](
 If you would like to explicitly purge the default roles (leaving only roles managed by puppet), you can do so by including the following in your manifest:
 
 ```puppet
-resources { 'elasticsearch_role':
+resources { 'elasticsearch-legacy_role':
   purge => true,
 }
 ```
 
 ##### Mappings
 
-Associating mappings with a role for file-based management is done by passing an array of strings to the `mappings` parameter of the `elasticsearch::role` type.
+Associating mappings with a role for file-based management is done by passing an array of strings to the `mappings` parameter of the `elasticsearch-legacy::role` type.
 For example, to define a role with mappings:
 
 ```puppet
-elasticsearch::role { 'logstash':
+elasticsearch-legacy::role { 'logstash':
   mappings   => [
     'cn=group,ou=devteam',
   ],
@@ -661,40 +661,40 @@ elasticsearch::role { 'logstash':
 If you'd like to keep the mappings file purged of entries not under Puppet's control, you should use the following `resources` declaration because mappings are a separate low-level type:
 
 ```puppet
-resources { 'elasticsearch_role_mapping':
+resources { 'elasticsearch-legacy_role_mapping':
   purge => true,
 }
 ```
 
 #### Users
 
-Users can be managed using the `elasticsearch::user` type.
+Users can be managed using the `elasticsearch-legacy::user` type.
 For example, to create a user `mysuser` with membership in `myrole`:
 
 ```puppet
-elasticsearch::user { 'myuser':
+elasticsearch-legacy::user { 'myuser':
   password => 'mypassword',
   roles    => ['myrole'],
 }
 ```
 
-The `password` parameter will also accept password hashes generated from the `esusers`/`users` utility and ensure the password is kept in-sync with the Shield `users` file for all Elasticsearch instances.
+The `password` parameter will also accept password hashes generated from the `esusers`/`users` utility and ensure the password is kept in-sync with the Shield `users` file for all elasticsearch-legacy instances.
 
 ```puppet
-elasticsearch::user { 'myuser':
+elasticsearch-legacy::user { 'myuser':
   password => '$2a$10$IZMnq6DF4DtQ9c4sVovgDubCbdeH62XncmcyD1sZ4WClzFuAdqspy',
   roles    => ['myrole'],
 }
 ```
 
 **Note**: When using the `esusers`/`users` provider (the default for plaintext passwords), Puppet has no way to determine whether the given password is in-sync with the password hashed by Shield/X-Pack.
-In order to work around this, the `elasticsearch::user` resource has been designed to accept refresh events in order to update password values.
+In order to work around this, the `elasticsearch-legacy::user` resource has been designed to accept refresh events in order to update password values.
 This is not ideal, but allows you to instruct the resource to change the password when needed.
 For example, to update the aforementioned user's password, you could include the following your manifest:
 
 ```puppet
 notify { 'update password': } ~>
-elasticsearch::user { 'myuser':
+elasticsearch-legacy::user { 'myuser':
   password => 'mynewpassword',
   roles    => ['myrole'],
 }
@@ -702,10 +702,10 @@ elasticsearch::user { 'myuser':
 
 #### Certificates
 
-SSL/TLS can be enabled by providing an `elasticsearch::instance` type with paths to the certificate and private key files, and a password for the keystore.
+SSL/TLS can be enabled by providing an `elasticsearch-legacy::instance` type with paths to the certificate and private key files, and a password for the keystore.
 
 ```puppet
-elasticsearch::instance { 'es-01':
+elasticsearch-legacy::instance { 'es-01':
   ssl                  => true,
   ca_certificate       => '/path/to/ca.pem',
   certificate          => '/path/to/cert.pem',
@@ -716,15 +716,15 @@ elasticsearch::instance { 'es-01':
 
 **Note**: Setting up a proper CA and certificate infrastructure is outside the scope of this documentation, see the aforementioned Shield or X-Pack guide for more information regarding the generation of these certificate files.
 
-The module will set up a keystore file for the node to use and set the relevant options in `elasticsearch.yml` to enable TLS/SSL using the certificates and key provided.
+The module will set up a keystore file for the node to use and set the relevant options in `elasticsearch-legacy.yml` to enable TLS/SSL using the certificates and key provided.
 
 #### System Keys
 
 Shield/X-Pack system keys can be passed to the module, where they will be placed into individual instance configuration directories.
-This can be set at the `elasticsearch` class and inherited across all instances:
+This can be set at the `elasticsearch-legacy` class and inherited across all instances:
 
 ```puppet
-class { 'elasticsearch':
+class { 'elasticsearch-legacy':
   system_key => 'puppet:///path/to/key',
 }
 ```
@@ -732,40 +732,40 @@ class { 'elasticsearch':
 Or set on a per-instance basis:
 
 ```puppet
-elasticsearch::instance { 'es-01':
+elasticsearch-legacy::instance { 'es-01':
   system_key => '/local/path/to/key',
 }
 ```
 
 ### Data directories
 
-There are several different ways of setting data directories for Elasticsearch.
-In every case the required configuration options are placed in the `elasticsearch.yml` file.
+There are several different ways of setting data directories for elasticsearch-legacy.
+In every case the required configuration options are placed in the `elasticsearch-legacy.yml` file.
 
 #### Default
 
 By default we use:
 
-    /usr/share/elasticsearch/data/$instance_name
+    /usr/share/elasticsearch-legacy/data/$instance_name
 
 Which provides a data directory per instance.
 
 #### Single global data directory
 
 ```puppet
-class { 'elasticsearch':
-  datadir => '/var/lib/elasticsearch-data'
+class { 'elasticsearch-legacy':
+  datadir => '/var/lib/elasticsearch-legacy-data'
 }
 ```
 
 Creates the following for each instance:
 
-    /var/lib/elasticsearch-data/$instance_name
+    /var/lib/elasticsearch-legacy-data/$instance_name
 
 #### Multiple Global data directories
 
 ```puppet
-class { 'elasticsearch':
+class { 'elasticsearch-legacy':
   datadir => [ '/var/lib/es-data1', '/var/lib/es-data2']
 }
 ```
@@ -777,9 +777,9 @@ and
 #### Single instance data directory
 
 ```puppet
-class { 'elasticsearch': }
+class { 'elasticsearch-legacy': }
 
-elasticsearch::instance { 'es-01':
+elasticsearch-legacy::instance { 'es-01':
   datadir => '/var/lib/es-data-es01'
 }
 ```
@@ -791,9 +791,9 @@ Creates the following for this instance:
 #### Multiple instance data directories
 
 ```puppet
-class { 'elasticsearch': }
+class { 'elasticsearch-legacy': }
 
-elasticsearch::instance { 'es-01':
+elasticsearch-legacy::instance { 'es-01':
   datadir => ['/var/lib/es-data1-es01', '/var/lib/es-data2-es01']
 }
 ```
@@ -808,23 +808,23 @@ and
 In some cases, you may want to share a top-level data directory among multiple instances.
 
 ```puppet
-class { 'elasticsearch':
+class { 'elasticsearch-legacy':
   datadir_instance_directories => false,
   config => {
     'node.max_local_storage_nodes' => 2
   }
 }
 
-elasticsearch::instance { 'es-01': }
-elasticsearch::instance { 'es-02': }
+elasticsearch-legacy::instance { 'es-01': }
+elasticsearch-legacy::instance { 'es-02': }
 ```
 
-Will result in the following directories created by Elasticsearch at runtime:
+Will result in the following directories created by elasticsearch-legacy at runtime:
 
-    /var/lib/elasticsearch/nodes/0
-    /var/lib/elasticsearch/nodes/1
+    /var/lib/elasticsearch-legacy/nodes/0
+    /var/lib/elasticsearch-legacy/nodes/1
 
-See [the Elasticsearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html#max-local-storage-nodes) for additional information regarding this configuration.
+See [the elasticsearch-legacy documentation](https://www.elastic.co/guide/en/elasticsearch-legacy/reference/current/modules-node.html#max-local-storage-nodes) for additional information regarding this configuration.
 
 ### Main and instance configurations
 
@@ -835,14 +835,14 @@ The options in the `instance` config hash will merged with the ones from the mai
 #### Simple merging
 
 ```puppet
-class { 'elasticsearch':
+class { 'elasticsearch-legacy':
   config => { 'cluster.name' => 'clustername' }
 }
 
-elasticsearch::instance { 'es-01':
+elasticsearch-legacy::instance { 'es-01':
   config => { 'node.name' => 'nodename' }
 }
-elasticsearch::instance { 'es-02':
+elasticsearch-legacy::instance { 'es-02':
   config => { 'node.name' => 'nodename2' }
 }
 ```
@@ -854,15 +854,15 @@ This example merges the `cluster.name` together with the `node.name` option.
 When duplicate options are provided, the option in the instance config overrides the ones from the main class.
 
 ```puppet
-class { 'elasticsearch':
+class { 'elasticsearch-legacy':
   config => { 'cluster.name' => 'clustername' }
 }
 
-elasticsearch::instance { 'es-01':
+elasticsearch-legacy::instance { 'es-01':
   config => { 'node.name' => 'nodename', 'cluster.name' => 'otherclustername' }
 }
 
-elasticsearch::instance { 'es-02':
+elasticsearch-legacy::instance { 'es-02':
   config => { 'node.name' => 'nodename2' }
 }
 ```
@@ -878,7 +878,7 @@ The `config` hash can be written in 2 different ways:
 Instead of writing the full hash representation:
 
 ```puppet
-class { 'elasticsearch':
+class { 'elasticsearch-legacy':
   config                 => {
    'cluster'             => {
      'name'              => 'ClusterName',
@@ -897,7 +897,7 @@ class { 'elasticsearch':
 ##### Short hash writeup
 
 ```puppet
-class { 'elasticsearch':
+class { 'elasticsearch-legacy':
   config => {
     'cluster' => {
       'name' => 'ClusterName',
@@ -909,16 +909,16 @@ class { 'elasticsearch':
 
 #### Keystore Settings
 
-Recent versions of Elasticsearch include the [elasticsearch-keystore](https://www.elastic.co/guide/en/elasticsearch/reference/current/secure-settings.html) utility to create and manage the `elasticsearch.keystore` file which can store sensitive values for certain settings.
+Recent versions of elasticsearch-legacy include the [elasticsearch-legacy-keystore](https://www.elastic.co/guide/en/elasticsearch-legacy/reference/current/secure-settings.html) utility to create and manage the `elasticsearch-legacy.keystore` file which can store sensitive values for certain settings.
 The settings and values for this file can be controlled by this module.
-Settings follow the behavior of the `config` parameter for the top-level Elasticsearch class and `elasticsearch::instance` defined types.
-That is, you may define keystore settings globally, and all values will be merged with instance-specific settings for final inclusion in the `elasticsearch.keystore` file.
-Note that each hash key is passed to the `elasticsearch-keystore` utility in a straightforward manner, so you should specify the hash passed to `secrets` in flattened form (that is, without full nested hash representation).
+Settings follow the behavior of the `config` parameter for the top-level elasticsearch-legacy class and `elasticsearch-legacy::instance` defined types.
+That is, you may define keystore settings globally, and all values will be merged with instance-specific settings for final inclusion in the `elasticsearch-legacy.keystore` file.
+Note that each hash key is passed to the `elasticsearch-legacy-keystore` utility in a straightforward manner, so you should specify the hash passed to `secrets` in flattened form (that is, without full nested hash representation).
 
 For example, to define cloud plugin credentials for all instances:
 
 ```puppet
-class { 'elasticsearch':
+class { 'elasticsearch-legacy':
   secrets => {
     'cloud.aws.access_key' => 'AKIA....',
     'cloud.aws.secret_key' => 'AKIA....',
@@ -929,7 +929,7 @@ class { 'elasticsearch':
 Or, to instead control these settings for a single instance:
 
 ```puppet
-elasticsearch::instance { 'es-01':
+elasticsearch-legacy::instance { 'es-01':
   secrets => {
     'cloud.aws.access_key' => 'AKIA....',
     'cloud.aws.secret_key' => 'AKIA....',
@@ -940,16 +940,16 @@ elasticsearch::instance { 'es-01':
 ##### Purging Secrets
 
 By default, if a secret setting exists on-disk that is not present in the `secrets` hash, this module will leave it intact.
-If you prefer to keep only secrets in the keystore that are specified in the `secrets` hash, use the `purge_secrets` boolean parameter either on the `elasticsearch` class to set it globally or per-instance.
+If you prefer to keep only secrets in the keystore that are specified in the `secrets` hash, use the `purge_secrets` boolean parameter either on the `elasticsearch-legacy` class to set it globally or per-instance.
 
 ##### Notifying Services
 
-Any changes to keystore secrets will notify running elasticsearch services by respecting the `restart_on_change` and `restart_config_change` parameters.
+Any changes to keystore secrets will notify running elasticsearch-legacy services by respecting the `restart_on_change` and `restart_config_change` parameters.
 
 ## Reference
 
 Class parameters are available in [the auto-generated documentation
-pages](https://elastic.github.io/puppet-elasticsearch/puppet_classes/elasticsearch.html).
+pages](https://elastic.github.io/puppet-elasticsearch-legacy/puppet_classes/elasticsearch-legacy.html).
 Autogenerated documentation for types, providers, and ruby helpers is also
 available on the same documentation site.
 
@@ -981,4 +981,4 @@ Please see the [CONTRIBUTING.md](CONTRIBUTING.md) file for instructions regardin
 
 ## Support
 
-Need help? Join us in [#elasticsearch](https://webchat.freenode.net?channels=%23elasticsearch) on Freenode IRC or on the [discussion forum](https://discuss.elastic.co/).
+Need help? Join us in [#elasticsearch-legacy](https://webchat.freenode.net?channels=%23elasticsearch-legacy) on Freenode IRC or on the [discussion forum](https://discuss.elastic.co/).

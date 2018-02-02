@@ -1,18 +1,18 @@
-# Parent provider for Elasticsearch Shield/X-Pack file-based user management
+# Parent provider for elasticsearch-legacy Shield/X-Pack file-based user management
 # tools.
 class Puppet::Provider::ElasticUserCommand < Puppet::Provider
 
   attr_accessor :homedir
 
-  # Elasticsearch's home directory.
+  # elasticsearch-legacy's home directory.
   #
   # @return String
   def self.homedir
     @homedir ||= case Facter.value('osfamily')
                  when 'OpenBSD'
-                   '/usr/local/elasticsearch'
+                   '/usr/local/elasticsearch-legacy'
                  else
-                   '/usr/share/elasticsearch'
+                   '/usr/share/elasticsearch-legacy'
                  end
   end
 
@@ -20,7 +20,7 @@ class Puppet::Provider::ElasticUserCommand < Puppet::Provider
   def self.command_with_path(args, configdir = nil)
     options = {
       :custom_environment => {
-        'ES_PATH_CONF' => configdir || '/etc/elasticsearch'
+        'ES_PATH_CONF' => configdir || '/etc/elasticsearch-legacy'
       }
     }
 

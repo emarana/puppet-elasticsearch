@@ -1,6 +1,6 @@
 require 'puppet/provider/elastic_yaml'
 
-Puppet::Type.type(:elasticsearch_role_mapping).provide(
+Puppet::Type.type(:elasticsearch-legacy_role_mapping).provide(
   :shield,
   :parent => Puppet::Provider::ElasticYaml,
   :metadata => :mappings

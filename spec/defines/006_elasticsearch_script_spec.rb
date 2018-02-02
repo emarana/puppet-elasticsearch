@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe 'elasticsearch::script', :type => 'define' do
+describe 'elasticsearch-legacy::script', :type => 'define' do
   let(:title) { 'foo' }
   let(:pre_condition) do
     %(
-      class { "elasticsearch":
+      class { "elasticsearch-legacy":
         config => {
           "node" => {"name" => "test" }
         }
@@ -38,8 +38,8 @@ describe 'elasticsearch::script', :type => 'define' do
           :source => 'puppet:///path/to/foo.groovy'
         } end
 
-        it { should contain_elasticsearch__script('foo') }
-        it { should contain_file('/usr/share/elasticsearch/scripts/foo.groovy')
+        it { should contain_elasticsearch-legacy__script('foo') }
+        it { should contain_file('/usr/share/elasticsearch-legacy/scripts/foo.groovy')
           .with(
             :source => 'puppet:///path/to/foo.groovy',
             :ensure => 'present'
@@ -53,9 +53,9 @@ describe 'elasticsearch::script', :type => 'define' do
           :recurse => 'remote'
         } end
 
-        it { should contain_elasticsearch__script('foo') }
+        it { should contain_elasticsearch-legacy__script('foo') }
         it { should contain_file(
-          '/usr/share/elasticsearch/scripts/my_scripts'
+          '/usr/share/elasticsearch-legacy/scripts/my_scripts'
         ).with(
           :ensure  => 'directory',
           :source  => 'puppet:///path/to/my_scripts',
@@ -69,8 +69,8 @@ describe 'elasticsearch::script', :type => 'define' do
           :source => 'puppet:///path/to/foo.groovy'
         } end
 
-        it { should contain_elasticsearch__script('foo') }
-        it { should contain_file('/usr/share/elasticsearch/scripts/foo.groovy')
+        it { should contain_elasticsearch-legacy__script('foo') }
+        it { should contain_file('/usr/share/elasticsearch-legacy/scripts/foo.groovy')
           .with(
             :source => 'puppet:///path/to/foo.groovy',
             :ensure => 'absent'

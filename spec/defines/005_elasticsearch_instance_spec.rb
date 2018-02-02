@@ -1,23 +1,23 @@
 require 'spec_helper'
 
 # rubocop:disable Metrics/LineLength
-describe 'elasticsearch::instance', :type => 'define' do
+describe 'elasticsearch-legacy::instance', :type => 'define' do
   let(:title) { 'es-instance' }
-  let(:pre_condition) { 'class { "elasticsearch": }' }
+  let(:pre_condition) { 'class { "elasticsearch-legacy": }' }
 
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       shared_examples 'systemd' do
-        it { should contain_elasticsearch__service__systemd(title) }
-        it { should contain_elasticsearch_service_file("#{systemd_service_path}/elasticsearch-#{title}.service") }
-        it { should contain_file("#{systemd_service_path}/elasticsearch-#{title}.service") }
+        it { should contain_elasticsearch-legacy__service__systemd(title) }
+        it { should contain_elasticsearch-legacy_service_file("#{systemd_service_path}/elasticsearch-legacy-#{title}.service") }
+        it { should contain_file("#{systemd_service_path}/elasticsearch-legacy-#{title}.service") }
         it { should contain_exec("systemd_reload_#{title}") }
       end
 
       shared_examples 'init' do
-        it { should contain_elasticsearch__service__init(title) }
-        it { should contain_elasticsearch_service_file("/etc/init.d/elasticsearch-#{title}") }
-        it { should contain_file("/etc/init.d/elasticsearch-#{title}") }
+        it { should contain_elasticsearch-legacy__service__init(title) }
+        it { should contain_elasticsearch-legacy_service_file("/etc/init.d/elasticsearch-legacy-#{title}") }
+        it { should contain_file("/etc/init.d/elasticsearch-legacy-#{title}") }
       end
 
       if (facts[:os]['name'] == 'OpenSuSE' and facts[:os]['release']['major'].to_i >= 13) or facts[:os]['name'] == 'SLES'
@@ -79,18 +79,18 @@ describe 'elasticsearch::instance', :type => 'define' do
         facts.merge('scenario' => '', 'common' => '')
       end
 
-      it { should contain_elasticsearch__service(
+      it { should contain_elasticsearch-legacy__service(
         'es-instance'
       ).with(
         :init_template =>
-          "elasticsearch/etc/init.d/elasticsearch.#{initscript}.erb",
+          "elasticsearch-legacy/etc/init.d/elasticsearch-legacy.#{initscript}.erb",
         :init_defaults => {
-          'CONF_DIR'       => '/etc/elasticsearch/es-instance',
-          'ES_PATH_CONF'   => '/etc/elasticsearch/es-instance',
-          'DATA_DIR'       => '/var/lib/elasticsearch',
-          'ES_JVM_OPTIONS' => '/etc/elasticsearch/es-instance/jvm.options',
-          'LOG_DIR'        => '/var/log/elasticsearch/es-instance',
-          'ES_HOME'        => '/usr/share/elasticsearch'
+          'CONF_DIR'       => '/etc/elasticsearch-legacy/es-instance',
+          'ES_PATH_CONF'   => '/etc/elasticsearch-legacy/es-instance',
+          'DATA_DIR'       => '/var/lib/elasticsearch-legacy',
+          'ES_JVM_OPTIONS' => '/etc/elasticsearch-legacy/es-instance/jvm.options',
+          'LOG_DIR'        => '/var/log/elasticsearch-legacy/es-instance',
+          'ES_HOME'        => '/usr/share/elasticsearch-legacy'
         }
       )}
     end # of on os context
@@ -119,181 +119,181 @@ describe 'elasticsearch::instance', :type => 'define' do
       describe 'config file' do
         it { should contain_augeas('defaults_es-instance') }
         it { should contain_datacat_fragment('main_config_es-instance') }
-        it { should contain_datacat('/etc/elasticsearch/es-instance/elasticsearch.yml') }
+        it { should contain_datacat('/etc/elasticsearch-legacy/es-instance/elasticsearch-legacy.yml') }
         it { should contain_datacat_collector(
-          '/etc/elasticsearch/es-instance/elasticsearch.yml'
+          '/etc/elasticsearch-legacy/es-instance/elasticsearch-legacy.yml'
         ) }
-        it { should contain_file('/etc/elasticsearch/es-instance/elasticsearch.yml') }
+        it { should contain_file('/etc/elasticsearch-legacy/es-instance/elasticsearch-legacy.yml') }
       end
 
       describe 'service restarts' do
         context 'do not happen when restart_on_change is false (default)' do
           it { should_not contain_datacat(
-            '/etc/elasticsearch/es-instance/elasticsearch.yml'
-          ).that_notifies('Elasticsearch::Service[es-instance]') }
+            '/etc/elasticsearch-legacy/es-instance/elasticsearch-legacy.yml'
+          ).that_notifies('elasticsearch-legacy::Service[es-instance]') }
           it { should_not contain_file(
-            '/etc/elasticsearch/es-instance/jvm.options'
-          ).that_notifies('Elasticsearch::Service[es-instance]') }
+            '/etc/elasticsearch-legacy/es-instance/jvm.options'
+          ).that_notifies('elasticsearch-legacy::Service[es-instance]') }
           it { should_not contain_package(
-            'elasticsearch'
-          ).that_notifies('Elasticsearch::Service[es-instance]') }
+            'elasticsearch-legacy'
+          ).that_notifies('elasticsearch-legacy::Service[es-instance]') }
         end
 
         context 'happen when restart_on_change is true' do
           let(:pre_condition) do
-            'class { "elasticsearch": restart_on_change => true }'
+            'class { "elasticsearch-legacy": restart_on_change => true }'
           end
 
           it { should contain_datacat(
-            '/etc/elasticsearch/es-instance/elasticsearch.yml'
-          ).that_notifies('Elasticsearch::Service[es-instance]') }
+            '/etc/elasticsearch-legacy/es-instance/elasticsearch-legacy.yml'
+          ).that_notifies('elasticsearch-legacy::Service[es-instance]') }
           it { should contain_file(
-            '/etc/elasticsearch/es-instance/jvm.options'
-          ).that_notifies('Elasticsearch::Service[es-instance]') }
+            '/etc/elasticsearch-legacy/es-instance/jvm.options'
+          ).that_notifies('elasticsearch-legacy::Service[es-instance]') }
           it { should contain_package(
-            'elasticsearch'
-          ).that_notifies('Elasticsearch::Service[es-instance]') }
+            'elasticsearch-legacy'
+          ).that_notifies('elasticsearch-legacy::Service[es-instance]') }
         end
 
         context 'on package change' do
           let(:pre_condition) do
-            'class { "elasticsearch": restart_package_change => true }'
+            'class { "elasticsearch-legacy": restart_package_change => true }'
           end
 
           it { should_not contain_datacat(
-            '/etc/elasticsearch/es-instance/elasticsearch.yml'
-          ).that_notifies('Elasticsearch::Service[es-instance]') }
+            '/etc/elasticsearch-legacy/es-instance/elasticsearch-legacy.yml'
+          ).that_notifies('elasticsearch-legacy::Service[es-instance]') }
           it { should contain_package(
-            'elasticsearch'
-          ).that_notifies('Elasticsearch::Service[es-instance]') }
+            'elasticsearch-legacy'
+          ).that_notifies('elasticsearch-legacy::Service[es-instance]') }
         end
 
         context 'on config change' do
           let(:pre_condition) do
-            'class { "elasticsearch": restart_config_change => true }'
+            'class { "elasticsearch-legacy": restart_config_change => true }'
           end
 
           it { should contain_datacat(
-            '/etc/elasticsearch/es-instance/elasticsearch.yml'
-          ).that_notifies('Elasticsearch::Service[es-instance]') }
+            '/etc/elasticsearch-legacy/es-instance/elasticsearch-legacy.yml'
+          ).that_notifies('elasticsearch-legacy::Service[es-instance]') }
           it { should contain_file(
-          '/etc/elasticsearch/es-instance/jvm.options'
-          ).that_notifies('Elasticsearch::Service[es-instance]') }
+          '/etc/elasticsearch-legacy/es-instance/jvm.options'
+          ).that_notifies('elasticsearch-legacy::Service[es-instance]') }
           it { should_not contain_package(
-            'elasticsearch'
-          ).that_notifies('Elasticsearch::Service[es-instance]') }
+            'elasticsearch-legacy'
+          ).that_notifies('elasticsearch-legacy::Service[es-instance]') }
         end
       end
 
       context 'config dir' do
         context 'default' do
-          it { should contain_exec('mkdir_configdir_elasticsearch_es-instance') }
-          it { should contain_file('/etc/elasticsearch/es-instance').with(:ensure => 'directory') }
+          it { should contain_exec('mkdir_configdir_elasticsearch-legacy_es-instance') }
+          it { should contain_file('/etc/elasticsearch-legacy/es-instance').with(:ensure => 'directory') }
           it { should contain_datacat_fragment('main_config_es-instance') }
-          it { should contain_datacat('/etc/elasticsearch/es-instance/elasticsearch.yml') }
+          it { should contain_datacat('/etc/elasticsearch-legacy/es-instance/elasticsearch-legacy.yml') }
 
-          it { should contain_file('/etc/elasticsearch/es-instance/logging.yml') }
-          it { should contain_file('/etc/elasticsearch/es-instance/log4j2.properties') }
-          it { should contain_file('/etc/elasticsearch/es-instance/jvm.options') }
-          it { should contain_file('/usr/share/elasticsearch/scripts') }
-          it { should contain_file('/etc/elasticsearch/es-instance/scripts').with(:target => '/usr/share/elasticsearch/scripts') }
+          it { should contain_file('/etc/elasticsearch-legacy/es-instance/logging.yml') }
+          it { should contain_file('/etc/elasticsearch-legacy/es-instance/log4j2.properties') }
+          it { should contain_file('/etc/elasticsearch-legacy/es-instance/jvm.options') }
+          it { should contain_file('/usr/share/elasticsearch-legacy/scripts') }
+          it { should contain_file('/etc/elasticsearch-legacy/es-instance/scripts').with(:target => '/usr/share/elasticsearch-legacy/scripts') }
         end
 
         context 'set in main class' do
           let(:pre_condition) { <<-EOS
-            class { "elasticsearch":
-              configdir => "/etc/elasticsearch-config"
+            class { "elasticsearch-legacy":
+              configdir => "/etc/elasticsearch-legacy-config"
             }
           EOS
           }
 
-          it { should contain_exec('mkdir_configdir_elasticsearch_es-instance') }
-          it { should contain_file('/etc/elasticsearch-config').with(:ensure => 'directory') }
-          it { should contain_file('/usr/share/elasticsearch/templates_import').with(:ensure => 'directory') }
-          it { should contain_file('/etc/elasticsearch-config/es-instance').with(:ensure => 'directory') }
+          it { should contain_exec('mkdir_configdir_elasticsearch-legacy_es-instance') }
+          it { should contain_file('/etc/elasticsearch-legacy-config').with(:ensure => 'directory') }
+          it { should contain_file('/usr/share/elasticsearch-legacy/templates_import').with(:ensure => 'directory') }
+          it { should contain_file('/etc/elasticsearch-legacy-config/es-instance').with(:ensure => 'directory') }
           it { should contain_datacat_fragment('main_config_es-instance') }
-          it { should contain_datacat('/etc/elasticsearch-config/es-instance/elasticsearch.yml') }
+          it { should contain_datacat('/etc/elasticsearch-legacy-config/es-instance/elasticsearch-legacy.yml') }
 
-          it { should contain_file('/etc/elasticsearch-config/es-instance/jvm.options') }
-          it { should contain_file('/etc/elasticsearch-config/es-instance/logging.yml') }
-          it { should contain_file('/etc/elasticsearch-config/es-instance/log4j2.properties') }
-          it { should contain_file('/usr/share/elasticsearch/scripts') }
-          it { should contain_file('/etc/elasticsearch-config/es-instance/scripts').with(:target => '/usr/share/elasticsearch/scripts') }
+          it { should contain_file('/etc/elasticsearch-legacy-config/es-instance/jvm.options') }
+          it { should contain_file('/etc/elasticsearch-legacy-config/es-instance/logging.yml') }
+          it { should contain_file('/etc/elasticsearch-legacy-config/es-instance/log4j2.properties') }
+          it { should contain_file('/usr/share/elasticsearch-legacy/scripts') }
+          it { should contain_file('/etc/elasticsearch-legacy-config/es-instance/scripts').with(:target => '/usr/share/elasticsearch-legacy/scripts') }
         end
 
         context 'set in instance' do
           let(:params) do {
-            :configdir => '/etc/elasticsearch-config/es-instance'
+            :configdir => '/etc/elasticsearch-legacy-config/es-instance'
           } end
 
-          it { should contain_exec('mkdir_configdir_elasticsearch_es-instance') }
-          it { should contain_file('/etc/elasticsearch').with(:ensure => 'directory') }
-          it { should contain_file('/etc/elasticsearch-config/es-instance').with(:ensure => 'directory') }
+          it { should contain_exec('mkdir_configdir_elasticsearch-legacy_es-instance') }
+          it { should contain_file('/etc/elasticsearch-legacy').with(:ensure => 'directory') }
+          it { should contain_file('/etc/elasticsearch-legacy-config/es-instance').with(:ensure => 'directory') }
           it { should contain_datacat_fragment('main_config_es-instance') }
-          it { should contain_datacat('/etc/elasticsearch-config/es-instance/elasticsearch.yml') }
+          it { should contain_datacat('/etc/elasticsearch-legacy-config/es-instance/elasticsearch-legacy.yml') }
 
-          it { should contain_file('/etc/elasticsearch-config/es-instance/jvm.options') }
-          it { should contain_file('/etc/elasticsearch-config/es-instance/logging.yml') }
-          it { should contain_file('/etc/elasticsearch-config/es-instance/log4j2.properties') }
-          it { should contain_file('/usr/share/elasticsearch/scripts') }
-          it { should contain_file('/etc/elasticsearch-config/es-instance/scripts').with(:target => '/usr/share/elasticsearch/scripts') }
+          it { should contain_file('/etc/elasticsearch-legacy-config/es-instance/jvm.options') }
+          it { should contain_file('/etc/elasticsearch-legacy-config/es-instance/logging.yml') }
+          it { should contain_file('/etc/elasticsearch-legacy-config/es-instance/log4j2.properties') }
+          it { should contain_file('/usr/share/elasticsearch-legacy/scripts') }
+          it { should contain_file('/etc/elasticsearch-legacy-config/es-instance/scripts').with(:target => '/usr/share/elasticsearch-legacy/scripts') }
         end
       end
 
       context 'data directory' do
         shared_examples 'data directories' do |data_dirs|
           data_dirs.each do |dir|
-            it { should contain_exec('mkdir_logdir_elasticsearch_es-instance') }
-            it { should contain_exec('mkdir_datadir_elasticsearch_es-instance') }
+            it { should contain_exec('mkdir_logdir_elasticsearch-legacy_es-instance') }
+            it { should contain_exec('mkdir_datadir_elasticsearch-legacy_es-instance') }
             it { should contain_file("/var/lib/#{dir}").with(:ensure => 'directory') }
           end
         end
 
         context 'default' do
-          include_examples 'data directories', ['elasticsearch']
+          include_examples 'data directories', ['elasticsearch-legacy']
         end
 
         context 'datadir_instance_directories' do
           let(:pre_condition) do
             <<-EOS
-              class { "elasticsearch":
+              class { "elasticsearch-legacy":
                 datadir_instance_directories => false
               }
             EOS
           end
 
-          it { should contain_exec('mkdir_logdir_elasticsearch_es-instance') }
-          it { should_not contain_exec('mkdir_datadir_elasticsearch_es-instance') }
-          it { should_not contain_file('/var/lib/elasticsearch/es-instance').with(:ensure => 'directory') }
-          it { should contain_file('/var/lib/elasticsearch').with(:ensure => 'directory') }
+          it { should contain_exec('mkdir_logdir_elasticsearch-legacy_es-instance') }
+          it { should_not contain_exec('mkdir_datadir_elasticsearch-legacy_es-instance') }
+          it { should_not contain_file('/var/lib/elasticsearch-legacy/es-instance').with(:ensure => 'directory') }
+          it { should contain_file('/var/lib/elasticsearch-legacy').with(:ensure => 'directory') }
         end
 
         context 'single from main config ' do
           let(:pre_condition) { <<-EOS
-            class { "elasticsearch":
-              datadir => "/var/lib/elasticsearch-data"
+            class { "elasticsearch-legacy":
+              datadir => "/var/lib/elasticsearch-legacy-data"
             }
           EOS
           }
 
           include_examples 'data directories',
-                          ['elasticsearch-data', 'elasticsearch-data/es-instance']
+                          ['elasticsearch-legacy-data', 'elasticsearch-legacy-data/es-instance']
         end
 
         context 'single from instance config' do
           let(:params) do {
-            :datadir => '/var/lib/elasticsearch/data'
+            :datadir => '/var/lib/elasticsearch-legacy/data'
           } end
 
-          include_examples 'data directories', ['elasticsearch/data']
+          include_examples 'data directories', ['elasticsearch-legacy/data']
         end
 
         context 'multiple from main config' do
           let(:pre_condition) { <<-EOS
-            class { "elasticsearch":
+            class { "elasticsearch-legacy":
               datadir => [
-                "/var/lib/elasticsearch-data01",
-                "/var/lib/elasticsearch-data02"
+                "/var/lib/elasticsearch-legacy-data01",
+                "/var/lib/elasticsearch-legacy-data02"
               ]
             }
           EOS
@@ -302,7 +302,7 @@ describe 'elasticsearch::instance', :type => 'define' do
           include_examples(
             'data directories',
             (1..2).map do |n|
-              dir = "elasticsearch-data#{n.to_s.rjust(2, '0')}"
+              dir = "elasticsearch-legacy-data#{n.to_s.rjust(2, '0')}"
               [dir, "#{dir}/es-instance"]
             end.flatten
           )
@@ -311,116 +311,116 @@ describe 'elasticsearch::instance', :type => 'define' do
         context 'multiple from instance config' do
           let(:params) do {
             :datadir => [
-              '/var/lib/elasticsearch-data/01',
-              '/var/lib/elasticsearch-data/02'
+              '/var/lib/elasticsearch-legacy-data/01',
+              '/var/lib/elasticsearch-legacy-data/02'
             ]
           } end
 
           include_examples(
             'data directories',
-            (1..2).map { |n| "elasticsearch-data/#{n.to_s.rjust(2, '0')}" }
+            (1..2).map { |n| "elasticsearch-legacy-data/#{n.to_s.rjust(2, '0')}" }
           )
         end
 
         context 'conflicting setting path.data' do
           let(:params) do {
-            :datadir => '/var/lib/elasticsearch/data',
-            :config  => { 'path.data' => '/var/lib/elasticsearch/otherdata' }
+            :datadir => '/var/lib/elasticsearch-legacy/data',
+            :config  => { 'path.data' => '/var/lib/elasticsearch-legacy/otherdata' }
           } end
 
-          include_examples 'data directories', ['elasticsearch/data']
-          it { should_not contain_file('/var/lib/elasticsearch/otherdata').with(:ensure => 'directory') }
+          include_examples 'data directories', ['elasticsearch-legacy/data']
+          it { should_not contain_file('/var/lib/elasticsearch-legacy/otherdata').with(:ensure => 'directory') }
         end
 
         context 'conflicting setting path => data' do
           let(:params) do {
-            :datadir => '/var/lib/elasticsearch/data',
+            :datadir => '/var/lib/elasticsearch-legacy/data',
             :config  => {
-              'path' => { 'data' => '/var/lib/elasticsearch/otherdata' }
+              'path' => { 'data' => '/var/lib/elasticsearch-legacy/otherdata' }
             }
           } end
 
-          include_examples 'data directories', ['elasticsearch/data']
-          it { should_not contain_file('/var/lib/elasticsearch/otherdata').with(:ensure => 'directory') }
+          include_examples 'data directories', ['elasticsearch-legacy/data']
+          it { should_not contain_file('/var/lib/elasticsearch-legacy/otherdata').with(:ensure => 'directory') }
         end
 
         context 'with other path options defined' do
           let(:params) do {
-            :datadir => '/var/lib/elasticsearch/data',
-            :config  => { 'path' => { 'home' => '/var/lib/elasticsearch' } }
+            :datadir => '/var/lib/elasticsearch-legacy/data',
+            :config  => { 'path' => { 'home' => '/var/lib/elasticsearch-legacy' } }
           } end
 
-          include_examples 'data directories', ['elasticsearch/data']
+          include_examples 'data directories', ['elasticsearch-legacy/data']
         end
       end
 
       context 'logs directory' do
         context 'default' do
-          it { should contain_file('/var/log/elasticsearch/es-instance')
+          it { should contain_file('/var/log/elasticsearch-legacy/es-instance')
             .with(:ensure => 'directory') }
-          it { should contain_file('/var/log/elasticsearch')
+          it { should contain_file('/var/log/elasticsearch-legacy')
             .with(:ensure => 'directory') }
         end
 
         context 'single from main config ' do
           let(:pre_condition) { <<-EOS
-            class { "elasticsearch":
-              logdir => "/var/log/elasticsearch-logs"
+            class { "elasticsearch-legacy":
+              logdir => "/var/log/elasticsearch-legacy-logs"
             }
           EOS
           }
 
-          it { should contain_file('/var/log/elasticsearch-logs')
+          it { should contain_file('/var/log/elasticsearch-legacy-logs')
             .with(:ensure => 'directory') }
-          it { should contain_file('/var/log/elasticsearch-logs/es-instance')
+          it { should contain_file('/var/log/elasticsearch-legacy-logs/es-instance')
             .with(:ensure => 'directory') }
         end
 
         context 'single from instance config' do
           let(:params) do {
-            :logdir => '/var/log/elasticsearch/logs-a'
+            :logdir => '/var/log/elasticsearch-legacy/logs-a'
           } end
 
-          it { should contain_file('/var/log/elasticsearch/logs-a').with(:ensure => 'directory') }
+          it { should contain_file('/var/log/elasticsearch-legacy/logs-a').with(:ensure => 'directory') }
         end
 
         context 'Conflicting setting path.logs' do
           let(:params) do {
-            :logdir => '/var/log/elasticsearch/logs-a',
-            :config => { 'path.logs' => '/var/log/elasticsearch/otherlogs' }
+            :logdir => '/var/log/elasticsearch-legacy/logs-a',
+            :config => { 'path.logs' => '/var/log/elasticsearch-legacy/otherlogs' }
           } end
 
-          it { should contain_file('/var/log/elasticsearch/logs-a')
+          it { should contain_file('/var/log/elasticsearch-legacy/logs-a')
             .with(:ensure => 'directory') }
-          it { should_not contain_file('/var/log/elasticsearch/otherlogs')
+          it { should_not contain_file('/var/log/elasticsearch-legacy/otherlogs')
             .with(:ensure => 'directory') }
         end
 
         context 'Conflicting setting path => logs' do
           let(:params) do {
-            :logdir => '/var/log/elasticsearch/logs-a',
-            :config => { 'path' => { 'logs' => '/var/log/elasticsearch/otherlogs' } }
+            :logdir => '/var/log/elasticsearch-legacy/logs-a',
+            :config => { 'path' => { 'logs' => '/var/log/elasticsearch-legacy/otherlogs' } }
           } end
 
-          it { should contain_file('/var/log/elasticsearch/logs-a')
+          it { should contain_file('/var/log/elasticsearch-legacy/logs-a')
             .with(:ensure => 'directory') }
-          it { should_not contain_file('/var/log/elasticsearch/otherlogs')
+          it { should_not contain_file('/var/log/elasticsearch-legacy/otherlogs')
             .with(:ensure => 'directory') }
         end
 
         context 'With other path options defined' do
           let(:params) do {
-            :logdir => '/var/log/elasticsearch/logs-a',
-            :config => { 'path' => { 'home' => '/var/log/elasticsearch' } }
+            :logdir => '/var/log/elasticsearch-legacy/logs-a',
+            :config => { 'path' => { 'home' => '/var/log/elasticsearch-legacy' } }
           } end
 
-          it { should contain_file('/var/log/elasticsearch/logs-a').with(:ensure => 'directory') }
+          it { should contain_file('/var/log/elasticsearch-legacy/logs-a').with(:ensure => 'directory') }
         end
       end
 
       context 'logging' do
         context 'default' do
-          it { should contain_file('/etc/elasticsearch/es-instance/logging.yml')
+          it { should contain_file('/etc/elasticsearch-legacy/es-instance/logging.yml')
             .with_content(
               /^logger.index.search.slowlog: TRACE, index_search_slow_log_file$/,
               /type: dailyRollingFile/,
@@ -432,7 +432,7 @@ describe 'elasticsearch::instance', :type => 'define' do
         context 'from main class' do
           context 'config' do
             let(:pre_condition) { <<-EOS
-              class { "elasticsearch":
+              class { "elasticsearch-legacy":
                 logging_config => {
                   "index.search.slowlog" => "DEBUG, index_search_slow_log_file"
                 }
@@ -441,7 +441,7 @@ describe 'elasticsearch::instance', :type => 'define' do
             }
 
             it 'writes correct yaml' do
-              should contain_file('/etc/elasticsearch/es-instance/logging.yml')
+              should contain_file('/etc/elasticsearch-legacy/es-instance/logging.yml')
                 .with_content(
                   /^logger.index.search.slowlog: DEBUG, index_search_slow_log_file$/
                 ).with(:source => nil)
@@ -450,14 +450,14 @@ describe 'elasticsearch::instance', :type => 'define' do
 
           context 'logging file ' do
             let(:pre_condition) { <<-EOS
-              class { "elasticsearch":
+              class { "elasticsearch-legacy":
                 logging_file => "puppet:///path/to/logging.yml"
               }
             EOS
             }
 
             it 'sets the right source' do
-              should contain_file('/etc/elasticsearch/es-instance/logging.yml')
+              should contain_file('/etc/elasticsearch-legacy/es-instance/logging.yml')
                 .with(
                   :source => 'puppet:///path/to/logging.yml',
                   :content => nil
@@ -475,7 +475,7 @@ describe 'elasticsearch::instance', :type => 'define' do
             } end
 
             it 'writes correct yaml' do
-              should contain_file('/etc/elasticsearch/es-instance/logging.yml')
+              should contain_file('/etc/elasticsearch-legacy/es-instance/logging.yml')
                 .with_content(/^logger.index.search.slowlog: INFO, index_search_slow_log_file$/)
                 .with(:source => nil)
             end
@@ -487,7 +487,7 @@ describe 'elasticsearch::instance', :type => 'define' do
             } end
 
             it 'sets the right source' do
-              should contain_file('/etc/elasticsearch/es-instance/logging.yml')
+              should contain_file('/etc/elasticsearch-legacy/es-instance/logging.yml')
                 .with(
                   :source => 'puppet:///path/to/logging.yml',
                   :content => nil
@@ -501,12 +501,12 @@ describe 'elasticsearch::instance', :type => 'define' do
             } end
 
             it 'writes correct yaml' do
-              should contain_file('/etc/elasticsearch/es-instance/logging.yml')
+              should contain_file('/etc/elasticsearch-legacy/es-instance/logging.yml')
                 .with_content(/^logger.deprecation: DEBUG, deprecation_log_file$/)
                 .with(:source => nil)
             end
             it 'configures the deprecation log' do
-              should contain_file('/etc/elasticsearch/es-instance/logging.yml')
+              should contain_file('/etc/elasticsearch-legacy/es-instance/logging.yml')
                 .with_content(
                   /deprecation_log_file:$/,
                   /type: dailyRollingFile$/,
@@ -526,7 +526,7 @@ describe 'elasticsearch::instance', :type => 'define' do
             } end
 
             it 'writes correct yaml' do
-              should contain_file('/etc/elasticsearch/es-instance/logging.yml')
+              should contain_file('/etc/elasticsearch-legacy/es-instance/logging.yml')
                 .with_content(/^logger.deprecation: INFO, deprecation_log_file$/)
                 .with(:source => nil)
             end
@@ -536,7 +536,7 @@ describe 'elasticsearch::instance', :type => 'define' do
         describe 'rollingFile apender' do
           let(:pre_condition) do
             %(
-              class { 'elasticsearch':
+              class { 'elasticsearch-legacy':
                 file_rolling_type             => 'rollingFile',
                 rolling_file_max_backup_index => 10,
                 rolling_file_max_file_size    => '100MB',
@@ -544,7 +544,7 @@ describe 'elasticsearch::instance', :type => 'define' do
             )
           end
 
-          it { should contain_file('/etc/elasticsearch/es-instance/logging.yml')
+          it { should contain_file('/etc/elasticsearch-legacy/es-instance/logging.yml')
             .with_content(
               /type: rollingFile/,
               /maxBackupIndex: 10/,
@@ -556,46 +556,46 @@ describe 'elasticsearch::instance', :type => 'define' do
       end
 
       shared_examples 'file permissions' do |owner, group|
-        it { should contain_file('/var/lib/elasticsearch/es-instance')
+        it { should contain_file('/var/lib/elasticsearch-legacy/es-instance')
           .with(:owner => owner) }
-        it { should contain_file('/etc/elasticsearch/es-instance')
+        it { should contain_file('/etc/elasticsearch-legacy/es-instance')
           .with(
             :owner => owner,
             :group => group,
             :mode  => '0755'
           ) }
-        it { should contain_datacat('/etc/elasticsearch/es-instance/elasticsearch.yml')
+        it { should contain_datacat('/etc/elasticsearch-legacy/es-instance/elasticsearch-legacy.yml')
           .with(
             :owner => owner,
             :group => group,
             :mode  => '0440'
           ) }
-        it { should contain_file('/etc/elasticsearch/es-instance/elasticsearch.yml')
+        it { should contain_file('/etc/elasticsearch-legacy/es-instance/elasticsearch-legacy.yml')
           .with(
             :owner => owner,
             :group => group,
             :mode  => '0440'
           ) }
-        it { should contain_file('/etc/elasticsearch/es-instance/logging.yml')
+        it { should contain_file('/etc/elasticsearch-legacy/es-instance/logging.yml')
           .with(
             :owner => owner,
             :group => group,
             :mode  => '0644'
           ) }
-        it { should contain_file('/etc/elasticsearch/es-instance/log4j2.properties')
+        it { should contain_file('/etc/elasticsearch-legacy/es-instance/log4j2.properties')
           .with(
             :owner => owner,
             :group => group,
             :mode  => '0644'
           ) }
 
-        it { should contain_file('/var/lib/elasticsearch/es-instance')
+        it { should contain_file('/var/lib/elasticsearch-legacy/es-instance')
           .with(
             :owner => owner,
             :group => nil,
             :mode  => '0755'
           ) }
-        it { should contain_file('/var/log/elasticsearch/es-instance')
+        it { should contain_file('/var/log/elasticsearch-legacy/es-instance')
           .with(
             :owner => owner,
             :group => nil,
@@ -604,16 +604,16 @@ describe 'elasticsearch::instance', :type => 'define' do
       end
 
       describe 'default file permissions' do
-        let(:pre_condition) { ' class { "elasticsearch":} ' }
+        let(:pre_condition) { ' class { "elasticsearch-legacy":} ' }
 
-        include_examples 'file permissions', 'elasticsearch', 'elasticsearch'
+        include_examples 'file permissions', 'elasticsearch-legacy', 'elasticsearch-legacy'
       end
 
       context 'running as an other user' do
         let(:pre_condition) { <<-EOS
-          class { "elasticsearch":
-            elasticsearch_user  => "myesuser",
-            elasticsearch_group => "myesgroup"
+          class { "elasticsearch-legacy":
+            elasticsearch-legacy_user  => "myesuser",
+            elasticsearch-legacy_group => "myesgroup"
           }
         EOS
         }
@@ -622,33 +622,33 @@ describe 'elasticsearch::instance', :type => 'define' do
       end
 
       context 'setting different service status then main class' do
-        let(:pre_condition) { 'class {"elasticsearch": status => "enabled" }' }
+        let(:pre_condition) { 'class {"elasticsearch-legacy": status => "enabled" }' }
 
         context 'status option' do
           let(:params) do {
             :status => 'running'
           } end
 
-          it { should contain_service('elasticsearch-instance-es-instance').with(:ensure => 'running', :enable => false) }
+          it { should contain_service('elasticsearch-legacy-instance-es-instance').with(:ensure => 'running', :enable => false) }
         end
       end
 
       context 'init_template' do
         context 'default' do
-          it { should contain_elasticsearch__service('es-instance')
-            .with(:init_template => 'elasticsearch/etc/init.d/elasticsearch.RedHat.erb') }
+          it { should contain_elasticsearch-legacy__service('es-instance')
+            .with(:init_template => 'elasticsearch-legacy/etc/init.d/elasticsearch-legacy.RedHat.erb') }
         end
 
         context 'override in main class' do
           let(:pre_condition) { <<-EOS
-            class { "elasticsearch":
-              init_template => "elasticsearch/etc/init.d/elasticsearch.systemd.erb"
+            class { "elasticsearch-legacy":
+              init_template => "elasticsearch-legacy/etc/init.d/elasticsearch-legacy.systemd.erb"
             }
           EOS
           }
 
-          it { should contain_elasticsearch__service('es-instance')
-            .with(:init_template => 'elasticsearch/etc/init.d/elasticsearch.systemd.erb') }
+          it { should contain_elasticsearch-legacy__service('es-instance')
+            .with(:init_template => 'elasticsearch-legacy/etc/init.d/elasticsearch-legacy.systemd.erb') }
         end
       end
 
@@ -657,37 +657,37 @@ describe 'elasticsearch::instance', :type => 'define' do
           context 'inherited' do
             let(:pre_condition) do
               %(
-                class { 'elasticsearch':
+                class { 'elasticsearch-legacy':
                   security_plugin => 'shield',
                   system_key => '/tmp/key'
                 }
               )
             end
 
-            it { should contain_file('/etc/elasticsearch/es-instance/shield') }
+            it { should contain_file('/etc/elasticsearch-legacy/es-instance/shield') }
             it { should contain_file(
-              '/etc/elasticsearch/es-instance/shield/system_key'
+              '/etc/elasticsearch-legacy/es-instance/shield/system_key'
             ).with(
               :source => '/tmp/key',
               :mode => '0400',
-              :owner => 'elasticsearch'
+              :owner => 'elasticsearch-legacy'
             ) }
           end
 
           context 'from instance' do
-            let(:pre_condition) { "class { 'elasticsearch': security_plugin => 'x-pack' }" }
+            let(:pre_condition) { "class { 'elasticsearch-legacy': security_plugin => 'x-pack' }" }
 
             let(:params) do {
               :system_key => 'puppet:///test/key'
             } end
 
-            it { should contain_file('/etc/elasticsearch/es-instance/x-pack') }
+            it { should contain_file('/etc/elasticsearch-legacy/es-instance/x-pack') }
             it { should contain_file(
-              '/etc/elasticsearch/es-instance/x-pack/system_key'
+              '/etc/elasticsearch-legacy/es-instance/x-pack/system_key'
             ).with(
               :source => 'puppet:///test/key',
               :mode => '0400',
-              :owner => 'elasticsearch'
+              :owner => 'elasticsearch-legacy'
             ) }
           end
         end
@@ -699,7 +699,7 @@ describe 'elasticsearch::instance', :type => 'define' do
             context 'without resource notifications' do
               let(:pre_condition) do
                 %(
-                class { 'elasticsearch':
+                class { 'elasticsearch-legacy':
                   security_plugin => '#{plugin}',
                 }
               )
@@ -708,15 +708,15 @@ describe 'elasticsearch::instance', :type => 'define' do
               it "copies the #{plugin} directory from the source" do
                 should(
                   contain_file(
-                    "/etc/elasticsearch/es-instance/#{plugin}"
+                    "/etc/elasticsearch-legacy/es-instance/#{plugin}"
                   ).with(
                     :ensure  => 'directory',
                     :mode    => '0755',
-                    :source  => "/etc/elasticsearch/#{plugin}",
+                    :source  => "/etc/elasticsearch-legacy/#{plugin}",
                     :recurse => 'remote',
                     :owner   => 'root',
                     :group   => '0',
-                    :before  => 'Elasticsearch::Service[es-instance]'
+                    :before  => 'elasticsearch-legacy::Service[es-instance]'
                   )
                 )
               end
@@ -725,7 +725,7 @@ describe 'elasticsearch::instance', :type => 'define' do
             context 'with resource notifications' do
               let(:pre_condition) do
                 %(
-                class { 'elasticsearch':
+                class { 'elasticsearch-legacy':
                   security_plugin => '#{plugin}',
                   restart_on_change => true,
                 }
@@ -735,16 +735,16 @@ describe 'elasticsearch::instance', :type => 'define' do
               it "copies the #{plugin} directory from the source" do
                 should(
                   contain_file(
-                    "/etc/elasticsearch/es-instance/#{plugin}"
+                    "/etc/elasticsearch-legacy/es-instance/#{plugin}"
                   ).with(
                     :ensure  => 'directory',
                     :mode    => '0755',
-                    :source  => "/etc/elasticsearch/#{plugin}",
+                    :source  => "/etc/elasticsearch-legacy/#{plugin}",
                     :recurse => 'remote',
                     :owner   => 'root',
                     :group   => '0',
-                    :before  => 'Elasticsearch::Service[es-instance]',
-                    :notify  => 'Elasticsearch::Service[es-instance]'
+                    :before  => 'elasticsearch-legacy::Service[es-instance]',
+                    :notify  => 'elasticsearch-legacy::Service[es-instance]'
                   )
                 )
               end
@@ -756,7 +756,7 @@ describe 'elasticsearch::instance', :type => 'define' do
       describe 'jvm.options' do
         let(:pre_condition) do
           %(
-              class { 'elasticsearch':
+              class { 'elasticsearch-legacy':
                 jvm_options => [
                   '-Xms4g',
                   '-Xmx4g'
@@ -767,7 +767,7 @@ describe 'elasticsearch::instance', :type => 'define' do
 
         context 'from parent class' do
           it do
-            should contain_file('/etc/elasticsearch/es-instance/jvm.options')
+            should contain_file('/etc/elasticsearch-legacy/es-instance/jvm.options')
               .with_content(/
                 -Dfile.encoding=UTF-8.
                 -Dio.netty.noKeySetOptimization=true.
@@ -790,7 +790,7 @@ describe 'elasticsearch::instance', :type => 'define' do
                 -XX:CMSInitiatingOccupancyFraction=75.
                 -XX:GCLogFileSize=64m.
                 -XX:NumberOfGCLogFiles=32.
-                -Xloggc:\/var\/log\/elasticsearch\/es-instance\/gc.log.
+                -Xloggc:\/var\/log\/elasticsearch-legacy\/es-instance\/gc.log.
                 -Xms4g.
                 -Xmx4g.
                 -Xss1m.
@@ -810,7 +810,7 @@ describe 'elasticsearch::instance', :type => 'define' do
           end
 
           it do
-            should contain_file('/etc/elasticsearch/es-instance/jvm.options')
+            should contain_file('/etc/elasticsearch-legacy/es-instance/jvm.options')
               .with_content(/
                 -Dfile.encoding=UTF-8.
                 -Dio.netty.noKeySetOptimization=true.
@@ -833,7 +833,7 @@ describe 'elasticsearch::instance', :type => 'define' do
                 -XX:CMSInitiatingOccupancyFraction=75.
                 -XX:GCLogFileSize=64m.
                 -XX:NumberOfGCLogFiles=32.
-                -Xloggc:\/var\/log\/elasticsearch\/es-instance\/gc.log.
+                -Xloggc:\/var\/log\/elasticsearch-legacy\/es-instance\/gc.log.
                 -Xms8g.
                 -Xmx8g.
                 -Xss1m.
@@ -853,13 +853,13 @@ describe 'elasticsearch::instance', :type => 'define' do
           context 'inherited' do
             let(:pre_condition) do
               <<-EOS
-                class { 'elasticsearch':
+                class { 'elasticsearch-legacy':
                   secrets => #{settings}
                 }
               EOS
             end
 
-            it { should contain_elasticsearch_keystore('es-instance').with_settings(settings) }
+            it { should contain_elasticsearch-legacy_keystore('es-instance').with_settings(settings) }
           end
 
           context 'from instance' do
@@ -867,13 +867,13 @@ describe 'elasticsearch::instance', :type => 'define' do
               :secrets => settings
             } end
 
-            it { should contain_elasticsearch_keystore('es-instance').with_settings(settings) }
+            it { should contain_elasticsearch-legacy_keystore('es-instance').with_settings(settings) }
           end
 
           context 'notify events' do
             let(:pre_condition) do
               <<-EOS
-                class { 'elasticsearch':
+                class { 'elasticsearch-legacy':
                   restart_on_change => true
                 }
               EOS
@@ -883,7 +883,7 @@ describe 'elasticsearch::instance', :type => 'define' do
               :secrets => {}
             } end
 
-            it { should contain_elasticsearch_keystore('es-instance').that_notifies('Elasticsearch::Service[es-instance]') }
+            it { should contain_elasticsearch-legacy_keystore('es-instance').that_notifies('elasticsearch-legacy::Service[es-instance]') }
           end
         end
 
@@ -893,20 +893,20 @@ describe 'elasticsearch::instance', :type => 'define' do
               :secrets => settings
             } end
 
-            it { should contain_elasticsearch_keystore('es-instance').with_purge(false) }
+            it { should contain_elasticsearch-legacy_keystore('es-instance').with_purge(false) }
           end
 
           context 'inherited' do
             let(:pre_condition) do
               <<-EOS
-                class { 'elasticsearch':
+                class { 'elasticsearch-legacy':
                   purge_secrets => true,
                   secrets => #{settings}
                 }
               EOS
             end
 
-            it { should contain_elasticsearch_keystore('es-instance').with_purge(true) }
+            it { should contain_elasticsearch-legacy_keystore('es-instance').with_purge(true) }
           end
 
           context 'from instance' do
@@ -915,7 +915,7 @@ describe 'elasticsearch::instance', :type => 'define' do
               :secrets       => settings
             } end
 
-            it { should contain_elasticsearch_keystore('es-instance').with_purge(true) }
+            it { should contain_elasticsearch-legacy_keystore('es-instance').with_purge(true) }
           end
         end
       end

@@ -4,8 +4,8 @@ require 'puppet/util/checksums'
 
 require 'puppet_x/elastic/es_versioning'
 
-Puppet::Type.newtype(:elasticsearch_service_file) do
-  @doc = 'Manages elasticsearch service files.'
+Puppet::Type.newtype(:elasticsearch-legacy_service_file) do
+  @doc = 'Manages elasticsearch-legacy service files.'
 
   ensurable
 
@@ -54,11 +54,11 @@ Puppet::Type.newtype(:elasticsearch_service_file) do
   end
 
   newparam(:homedir) do
-    desc 'Elasticsearch home directory.'
+    desc 'elasticsearch-legacy home directory.'
   end
 
   newparam(:instance) do
-    desc 'Elasticsearch instance name.'
+    desc 'elasticsearch-legacy instance name.'
   end
 
   newparam(:memlock) do
@@ -74,7 +74,7 @@ Puppet::Type.newtype(:elasticsearch_service_file) do
   end
 
   newparam(:package_name) do
-    desc 'Name of the system Elasticsearch package.'
+    desc 'Name of the system elasticsearch-legacy package.'
   end
 
   newparam(:pid_dir) do

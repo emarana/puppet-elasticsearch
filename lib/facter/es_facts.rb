@@ -39,7 +39,7 @@ module EsFacts
 
   # Entrypoint for custom fact populator
   def self.run
-    dir_prefix = '/etc/elasticsearch'
+    dir_prefix = '/etc/elasticsearch-legacy'
     # Ports is a hash of port_number => ssl?
     ports = {}
 
@@ -49,8 +49,8 @@ module EsFacts
     Dir.foreach(dir_prefix) do |dir|
       next if dir == '.'
 
-      if File.readable?("#{dir_prefix}/#{dir}/elasticsearch.yml")
-        config_data = YAML.load_file("#{dir_prefix}/#{dir}/elasticsearch.yml")
+      if File.readable?("#{dir_prefix}/#{dir}/elasticsearch-legacy.yml")
+        config_data = YAML.load_file("#{dir_prefix}/#{dir}/elasticsearch-legacy.yml")
         port = get_port(config_data)
         next unless port
         ports.merge! port
@@ -60,11 +60,11 @@ module EsFacts
     begin
       if ports.keys.count > 0
 
-        add_fact('elasticsearch', 'ports', ports.keys.join(','))
+        add_fact('elasticsearch-legacy', 'ports', ports.keys.join(','))
         ports.each_pair do |port, ssl|
           next if ssl
 
-          key_prefix = "elasticsearch_#{port}"
+          key_prefix = "elasticsearch-legacy_#{port}"
 
           uri = URI("http://localhost:#{port}")
           http = Net::HTTP.new(uri.host, uri.port)

@@ -11,11 +11,11 @@ class String
   end
 end
 
-describe 'elasticsearch.yml.erb' do
+describe 'elasticsearch-legacy.yml.erb' do
 
   let :harness do
     TemplateHarness.new(
-      'templates/etc/elasticsearch/elasticsearch.yml.erb'
+      'templates/etc/elasticsearch-legacy/elasticsearch-legacy.yml.erb'
     )
   end
 

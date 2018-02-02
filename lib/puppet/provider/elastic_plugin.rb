@@ -4,19 +4,19 @@ require 'uri'
 require 'puppet_x/elastic/es_versioning'
 require 'puppet_x/elastic/plugin_parsing'
 
-# Generalized parent class for providers that behave like Elasticsearch's plugin
+# Generalized parent class for providers that behave like elasticsearch-legacy's plugin
 # command line tool.
 class Puppet::Provider::ElasticPlugin < Puppet::Provider
 
-  # Elasticsearch's home directory.
+  # elasticsearch-legacy's home directory.
   #
   # @return String
   def homedir
     case Facter.value('osfamily')
     when 'OpenBSD'
-      '/usr/local/elasticsearch'
+      '/usr/local/elasticsearch-legacy'
     else
-      '/usr/share/elasticsearch'
+      '/usr/share/elasticsearch-legacy'
     end
   end
 
@@ -84,7 +84,7 @@ class Puppet::Provider::ElasticPlugin < Puppet::Provider
   end
 
   # Intelligently returns the correct installation arguments for version 1
-  # version of Elasticsearch.
+  # version of elasticsearch-legacy.
   #
   # @return [Array<String>]
   #   arguments to pass to the plugin installation utility
@@ -109,7 +109,7 @@ class Puppet::Provider::ElasticPlugin < Puppet::Provider
   end
 
   # Intelligently returns the correct installation arguments for version 2
-  # version of Elasticsearch.
+  # version of elasticsearch-legacy.
   #
   # @return [Array<String>]
   #   arguments to pass to the plugin installation utility
@@ -129,7 +129,7 @@ class Puppet::Provider::ElasticPlugin < Puppet::Provider
     end
   end
 
-  # Format proxy arguments for consumption by the elasticsearch plugin
+  # Format proxy arguments for consumption by the elasticsearch-legacy plugin
   # management tool (i.e., Java properties).
   #
   # @return Array
@@ -179,10 +179,10 @@ class Puppet::Provider::ElasticPlugin < Puppet::Provider
     end
   end
 
-  # Determine the installed version of Elasticsearch on this host.
+  # Determine the installed version of elasticsearch-legacy on this host.
   def es_version
     Puppet_X::Elastic::EsVersioning.version(
-      resource[:elasticsearch_package_name], resource.catalog
+      resource[:elasticsearch-legacy_package_name], resource.catalog
     )
   end
 

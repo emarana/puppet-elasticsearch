@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe 'elasticsearch::index', :type => 'define' do
+describe 'elasticsearch-legacy::index', :type => 'define' do
   let(:title) { 'test-index' }
   let(:pre_condition) do
-    'class { "elasticsearch" : }'
+    'class { "elasticsearch-legacy" : }'
   end
 
   on_supported_os(
@@ -49,7 +49,7 @@ describe 'elasticsearch::index', :type => 'define' do
         end
         let(:pre_condition) do
           <<-EOS
-            class { 'elasticsearch' :
+            class { 'elasticsearch-legacy' :
               api_protocol => 'https',
               api_host => '127.0.0.1',
               api_port => 9201,
@@ -64,11 +64,11 @@ describe 'elasticsearch::index', :type => 'define' do
         end
 
         it do
-          should contain_elasticsearch__index(title)
+          should contain_elasticsearch-legacy__index(title)
           should contain_es_instance_conn_validator(
             "#{title}-index-conn-validator"
-          ).that_comes_before("elasticsearch_index[#{title}]")
-          should contain_elasticsearch_index(title).with(
+          ).that_comes_before("elasticsearch-legacy_index[#{title}]")
+          should contain_elasticsearch-legacy_index(title).with(
             :ensure => 'present',
             :settings => {},
             :protocol => 'https',
@@ -92,7 +92,7 @@ describe 'elasticsearch::index', :type => 'define' do
         end
 
         it 'removes indices' do
-          should contain_elasticsearch_index(title).with(:ensure => 'absent')
+          should contain_elasticsearch-legacy_index(title).with(:ensure => 'absent')
         end
       end
     end

@@ -1,19 +1,19 @@
 #!/bin/sh
 #
-# elasticsearch <%= @resource[:instance] %> <summary>
+# elasticsearch-legacy <%= @resource[:instance] %> <summary>
 #
 # chkconfig:   2345 80 20
-# description: Starts and stops a single elasticsearch instance on this system
+# description: Starts and stops a single elasticsearch-legacy instance on this system
 #
 
 ### BEGIN INIT INFO
-# Provides: Elasticsearch-<%= @resource[:instance] %>
+# Provides: elasticsearch-legacy-<%= @resource[:instance] %>
 # Required-Start: $network $named
 # Required-Stop: $network $named
 # Default-Start: 2 3 4 5
 # Default-Stop: 0 1 6
-# Short-Description: This service manages the elasticsearch daemon
-# Description: Elasticsearch is a very scalable, schema-free and high-performance search solution supporting multi-tenancy and near realtime search.
+# Short-Description: This service manages the elasticsearch-legacy daemon
+# Description: elasticsearch-legacy is a very scalable, schema-free and high-performance search solution supporting multi-tenancy and near realtime search.
 ### END INIT INFO
 
 #
@@ -31,9 +31,9 @@ if [ -f /etc/rc.d/init.d/functions ]; then
     . /etc/rc.d/init.d/functions
 fi
 
-EXE="/usr/share/elasticsearch/bin/elasticsearch"
-prog="elasticsearch-<%= @resource[:instance] %>"
-pidfile=/var/run/elasticsearch/${prog}.pid
+EXE="/usr/share/elasticsearch-legacy/bin/elasticsearch-legacy"
+prog="elasticsearch-legacy-<%= @resource[:instance] %>"
+pidfile=/var/run/elasticsearch-legacy/${prog}.pid
 
 export JAVA_HOME=/usr/java/latest
 JAVAPROG=${JAVA_HOME}/bin/java
@@ -120,7 +120,7 @@ reload() {
 
 status() {
     # run checks to determine if the service is running or use generic status
-    echo "Checking processes for elasticsearch"
+    echo "Checking processes for elasticsearch-legacy"
     checkproc -p $pidfile $JAVAPROG
     rc_status -v
 }

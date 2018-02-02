@@ -5,7 +5,7 @@ require 'puppet/provider/elastic_parsedfile'
 require 'puppet/util/package'
 require 'puppet_x/elastic/hash'
 
-# Provider for yaml-based Elasticsearch configuration files.
+# Provider for yaml-based elasticsearch-legacy configuration files.
 class Puppet::Provider::ElasticYaml < Puppet::Provider::ElasticParsedFile
   class << self
     attr_accessor :metadata

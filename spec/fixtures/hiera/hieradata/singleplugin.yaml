@@ -1,11 +1,11 @@
 ---
-elasticsearch::instances:
+elasticsearch-legacy::instances:
   es-hiera-single:
     config:
       node.name: 'es-01'
       network.host: '0.0.0.0'
-elasticsearch::plugins:
-  'mobz/elasticsearch-head':
+elasticsearch-legacy::plugins:
+  'mobz/elasticsearch-legacy-head':
     ensure: 'present'
     module_dir: 'head'
     instances:

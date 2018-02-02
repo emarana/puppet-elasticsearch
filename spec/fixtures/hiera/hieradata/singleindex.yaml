@@ -1,5 +1,5 @@
 ---
-elasticsearch::indices:
+elasticsearch-legacy::indices:
   baz:
     ensure: 'present'
     settings:

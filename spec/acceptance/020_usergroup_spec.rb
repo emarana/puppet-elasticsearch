@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'elasticsearch::elasticsearch_user', :then_purge do
+describe 'elasticsearch-legacy::elasticsearch-legacy_user', :then_purge do
   describe 'changing service user', :with_cleanup do
     describe 'manifest' do
       pp = <<-EOS
@@ -11,19 +11,19 @@ describe 'elasticsearch::elasticsearch_user', :then_purge do
         group { 'esuser': ensure => 'present' }
         group { 'esgroup': ensure => 'present' }
 
-        class { 'elasticsearch':
+        class { 'elasticsearch-legacy':
           config => {
             'cluster.name' => '#{test_settings['cluster_name']}',
             'network.host' => '0.0.0.0',
           },
           repo_version => '#{test_settings['repo_version']}',
-          elasticsearch_user => 'esuser',
-          elasticsearch_group => 'esgroup'
+          elasticsearch-legacy_user => 'esuser',
+          elasticsearch-legacy_group => 'esgroup'
         }
 
-        elasticsearch::instance { 'es-01':
+        elasticsearch-legacy::instance { 'es-01':
           config => {
-            'node.name' => 'elasticsearch001',
+            'node.name' => 'elasticsearch-legacy001',
             'http.port' => '#{test_settings['port_a']}'
           }
         }
@@ -42,23 +42,23 @@ describe 'elasticsearch::elasticsearch_user', :then_purge do
       it { should be_running }
     end
 
-    describe file('/etc/elasticsearch/es-01/elasticsearch.yml') do
+    describe file('/etc/elasticsearch-legacy/es-01/elasticsearch-legacy.yml') do
       it { should be_file }
       it { should be_owned_by 'esuser' }
-      it { should contain 'name: elasticsearch001' }
+      it { should contain 'name: elasticsearch-legacy001' }
     end
 
-    describe file('/usr/share/elasticsearch') do
+    describe file('/usr/share/elasticsearch-legacy') do
       it { should be_directory }
       it { should be_owned_by 'esuser' }
     end
 
-    describe file('/var/log/elasticsearch') do
+    describe file('/var/log/elasticsearch-legacy') do
       it { should be_directory }
       it { should be_owned_by 'esuser' }
     end
 
-    describe file('/etc/elasticsearch') do
+    describe file('/etc/elasticsearch-legacy') do
       it { should be_directory }
       it { should be_owned_by 'esuser' }
     end

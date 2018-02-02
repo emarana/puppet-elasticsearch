@@ -10,7 +10,7 @@ module Puppet_X
       %w[/ :].each do |delimiter|
         parts = original_string.split(delimiter)
         # If the string successfully split, assume we found the right format
-        return parts[position].gsub(/(elasticsearch-|es-)/, '') unless parts[position].nil?
+        return parts[position].gsub(/(elasticsearch-legacy-|es-)/, '') unless parts[position].nil?
       end
 
       # Fallback to the originally passed plugin name

@@ -1,6 +1,6 @@
-require_relative '../../helpers/unit/type/elasticsearch_rest_shared_examples'
+require_relative '../../helpers/unit/type/elasticsearch-legacy_rest_shared_examples'
 
-describe Puppet::Type.type(:elasticsearch_template) do
+describe Puppet::Type.type(:elasticsearch-legacy_template) do
   let(:resource_name) { 'test_template' }
 
   include_examples 'REST API types', 'template', :content

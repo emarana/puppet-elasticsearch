@@ -1,7 +1,7 @@
 require 'spec_helper_rspec'
 
 shared_examples 'plugin provider' do |version|
-  describe "elasticsearch #{version}" do
+  describe "elasticsearch-legacy #{version}" do
     before(:each) do
       allow(File).to receive(:open)
       allow(provider).to receive(:es_version).and_return version
@@ -115,10 +115,10 @@ shared_examples 'plugin provider' do |version|
 
       describe 'configdir' do
         it 'sets the ES_PATH_CONF env var' do
-          resource[:configdir] = '/etc/elasticsearch'
+          resource[:configdir] = '/etc/elasticsearch-legacy'
           expect(provider.with_environment do
             ENV['ES_PATH_CONF']
-          end).to eq('/etc/elasticsearch')
+          end).to eq('/etc/elasticsearch-legacy')
         end
       end
     end # of setup

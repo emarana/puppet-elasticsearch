@@ -1,19 +1,19 @@
-# Top-level Elasticsearch class which may manage installation of the
-# Elasticsearch package, package repository, and other
+# Top-level elasticsearch-legacy class which may manage installation of the
+# elasticsearch-legacy package, package repository, and other
 # global options and parameters.
 #
-# @summary Manages the installation of Elasticsearch and related options.
+# @summary Manages the installation of elasticsearch-legacy and related options.
 #
-# @example install Elasticsearch
-#   class { 'elasticsearch': }
+# @example install elasticsearch-legacy
+#   class { 'elasticsearch-legacy': }
 #
 # @example removal and decommissioning
-#   class { 'elasticsearch':
+#   class { 'elasticsearch-legacy':
 #     ensure => 'absent',
 #   }
 #
 # @example install everything but disable service(s) afterwards
-#   class { 'elasticsearch':
+#   class { 'elasticsearch-legacy':
 #     status => 'disabled',
 #   }
 #
@@ -34,23 +34,23 @@
 #
 # @param api_ca_file
 #   Path to a CA file which will be used to validate server certs when
-#   communicating with the Elasticsearch API over HTTPS.
+#   communicating with the elasticsearch-legacy API over HTTPS.
 #
 # @param api_ca_path
 #   Path to a directory with CA files which will be used to validate server
-#   certs when communicating with the Elasticsearch API over HTTPS.
+#   certs when communicating with the elasticsearch-legacy API over HTTPS.
 #
 # @param api_host
-#   Default host to use when accessing Elasticsearch APIs.
+#   Default host to use when accessing elasticsearch-legacy APIs.
 #
 # @param api_port
-#   Default port to use when accessing Elasticsearch APIs.
+#   Default port to use when accessing elasticsearch-legacy APIs.
 #
 # @param api_protocol
-#   Default protocol to use when accessing Elasticsearch APIs.
+#   Default protocol to use when accessing elasticsearch-legacy APIs.
 #
 # @param api_timeout
-#   Default timeout (in seconds) to use when accessing Elasticsearch APIs.
+#   Default timeout (in seconds) to use when accessing elasticsearch-legacy APIs.
 #
 # @param autoupgrade
 #   If set to `true`, any managed package will be upgraded on each Puppet run
@@ -59,24 +59,24 @@
 #   {package, "upgradeable"}[http://j.mp/xbxmNP] in the Puppet documentation).
 #
 # @param config
-#   Elasticsearch configuration hash.
+#   elasticsearch-legacy configuration hash.
 #
 # @param configdir
-#   Directory containing the elasticsearch configuration.
-#   Use this setting if your packages deviate from the norm (`/etc/elasticsearch`)
+#   Directory containing the elasticsearch-legacy configuration.
+#   Use this setting if your packages deviate from the norm (`/etc/elasticsearch-legacy`)
 #
 # @param daily_rolling_date_pattern
 #   File pattern for the file appender log when file_rolling_type is 'dailyRollingFile'.
 #
 # @param datadir
-#   Allows you to set the data directory of Elasticsearch.
+#   Allows you to set the data directory of elasticsearch-legacy.
 #
 # @param datadir_instance_directories
 #   Control whether individual directories for instances will be created within
 #   each instance's data directory.
 #
 # @param default_logging_level
-#   Default logging level for Elasticsearch.
+#   Default logging level for elasticsearch-legacy.
 #
 # @param defaults_location
 #   Absolute path to directory containing init defaults file.
@@ -84,12 +84,12 @@
 # @param download_tool
 #   Command-line invocation with which to retrieve an optional package_url.
 #
-# @param elasticsearch_group
-#   The group Elasticsearch should run as. This also sets file group
+# @param elasticsearch-legacy_group
+#   The group elasticsearch-legacy should run as. This also sets file group
 #   permissions.
 #
-# @param elasticsearch_user
-#   The user Elasticsearch should run as. This also sets file ownership.
+# @param elasticsearch-legacy_user
+#   The user elasticsearch-legacy should run as. This also sets file ownership.
 #
 # @param file_rolling_type
 #   Configuration for the file appender rotation. It can be 'dailyRollingFile',
@@ -97,7 +97,7 @@
 #   or third don't rotate automatically.
 #
 # @param homedir
-#   Directory where the elasticsearch installation's files are kept (plugins, etc.)
+#   Directory where the elasticsearch-legacy installation's files are kept (plugins, etc.)
 #
 # @param indices
 #   Define indices via a hash. This is mainly used with Hiera's auto binding.
@@ -118,7 +118,7 @@
 #   Array of options to set in jvm_options.
 #
 # @param logdir
-#   Directory that will be used for Elasticsearch logging.
+#   Directory that will be used for elasticsearch-legacy logging.
 #
 # @param logging_config
 #   Representation of information to be included in the logging.yml file.
@@ -129,7 +129,7 @@
 #
 # @param logging_template
 #   Use a custom logging template - just supply the relative path, i.e.
-#   `$module/elasticsearch/logging.yml.erb`
+#   `$module/elasticsearch-legacy/logging.yml.erb`
 #
 # @param manage_repo
 #   Enable repo management by enabling official Elastic repositories.
@@ -153,14 +153,14 @@
 #   `puppet://` resource or `file:/` for local packages
 #
 # @param pid_dir
-#   Directory where the elasticsearch process should write out its PID.
+#   Directory where the elasticsearch-legacy process should write out its PID.
 #
 # @param pipelines
 #   Define pipelines via a hash. This is mainly used with Hiera's auto binding.
 #
 # @param plugindir
-#   Directory containing elasticsearch plugins.
-#   Use this setting if your packages deviate from the norm (/usr/share/elasticsearch/plugins)
+#   Directory containing elasticsearch-legacy plugins.
+#   Use this setting if your packages deviate from the norm (/usr/share/elasticsearch-legacy/plugins)
 #
 # @param plugins
 #   Define plugins via a hash. This is mainly used with Hiera's auto binding.
@@ -209,7 +209,7 @@
 # @param restart_on_change
 #   Determines if the application should be automatically restarted
 #   whenever the configuration, package, or plugins change. Enabling this
-#   setting will cause Elasticsearch to restart whenever there is cause to
+#   setting will cause elasticsearch-legacy to restart whenever there is cause to
 #   re-read configuration files, load new plugins, or start the service using an
 #   updated/changed executable. This may be undesireable in highly available
 #   environments. If all other restart_* parameters are left unset, the value of
@@ -217,7 +217,7 @@
 #
 # @param restart_config_change
 #   Determines if the application should be automatically restarted
-#   whenever the configuration changes. This includes the Elasticsearch
+#   whenever the configuration changes. This includes the elasticsearch-legacy
 #   configuration file, any service files, and defaults files.
 #   Disabling automatic restarts on config changes may be desired in an
 #   environment where you need to ensure restarts occur in a controlled/rolling
@@ -225,7 +225,7 @@
 #
 # @param restart_package_change
 #   Determines if the application should be automatically restarted
-#   whenever the package (or package version) for Elasticsearch changes.
+#   whenever the package (or package version) for elasticsearch-legacy changes.
 #   Disabling automatic restarts on package changes may be desired in an
 #   environment where you need to ensure restarts occur in a controlled/rolling
 #   manner rather than during a Puppet run.
@@ -251,7 +251,7 @@
 #
 # @param secrets
 #   Optional default configuration hash of key/value pairs to store in the
-#   Elasticsearch keystore file. If unset, the keystore is left unmanaged.
+#   elasticsearch-legacy keystore file. If unset, the keystore is left unmanaged.
 #
 # @param security_logging_content
 #   File content for shield/x-pack logging configuration file (will be placed
@@ -266,7 +266,7 @@
 #   certificates.
 #
 # @param service_provider
-#   The service resource type provider to use when managing elasticsearch instances.
+#   The service resource type provider to use when managing elasticsearch-legacy instances.
 #
 # @param status
 #   To define the status of the service. If set to `enabled`, the service will
@@ -298,10 +298,10 @@
 # @param version
 #   To set the specific version you want to install.
 #
-# @author Richard Pijnenburg <richard.pijnenburg@elasticsearch.com>
+# @author Richard Pijnenburg <richard.pijnenburg@elasticsearch-legacy.com>
 # @author Tyler Langlois <tyler.langlois@elastic.co>
 #
-class elasticsearch (
+class elasticsearch-legacy (
   Enum['absent', 'present']                       $ensure,
   Optional[String]                                $api_basic_auth_password,
   Optional[String]                                $api_basic_auth_username,
@@ -315,13 +315,13 @@ class elasticsearch (
   Hash                                            $config,
   Stdlib::Absolutepath                            $configdir,
   String                                          $daily_rolling_date_pattern,
-  Elasticsearch::Multipath                        $datadir,
+  elasticsearch-legacy::Multipath                        $datadir,
   Boolean                                         $datadir_instance_directories,
   String                                          $default_logging_level,
   Optional[Stdlib::Absolutepath]                  $defaults_location,
   Optional[String]                                $download_tool,
-  String                                          $elasticsearch_group,
-  String                                          $elasticsearch_user,
+  String                                          $elasticsearch-legacy_group,
+  String                                          $elasticsearch-legacy_user,
   Enum['dailyRollingFile', 'rollingFile', 'file'] $file_rolling_type,
   Stdlib::Absolutepath                            $homedir,
   Hash                                            $indices,
@@ -365,7 +365,7 @@ class elasticsearch (
   Optional[String]                                $security_logging_source,
   Optional[Enum['shield', 'x-pack']]              $security_plugin,
   Enum['init', 'openbsd', 'openrc', 'systemd']    $service_provider,
-  Elasticsearch::Status                           $status,
+  elasticsearch-legacy::Status                           $status,
   Optional[String]                                $system_key,
   Stdlib::Absolutepath                            $systemd_service_path,
   Hash                                            $templates,
@@ -401,32 +401,32 @@ class elasticsearch (
   # This value serves as an unchanging default for platforms as a default for
   # init scripts to fallback on.
   $_datadir_default = $facts['kernel'] ? {
-    'Linux'   => '/var/lib/elasticsearch',
-    'OpenBSD' => '/var/elasticsearch/data',
+    'Linux'   => '/var/lib/elasticsearch-legacy',
+    'OpenBSD' => '/var/elasticsearch-legacy/data',
     default   => undef,
   }
 
   #### Manage actions
 
-  contain elasticsearch::package
-  contain elasticsearch::config
+  contain elasticsearch-legacy::package
+  contain elasticsearch-legacy::config
 
-  create_resources('elasticsearch::index', $::elasticsearch::indices)
-  create_resources('elasticsearch::instance', $::elasticsearch::instances)
-  create_resources('elasticsearch::pipeline', $::elasticsearch::pipelines)
-  create_resources('elasticsearch::plugin', $::elasticsearch::plugins)
-  create_resources('elasticsearch::role', $::elasticsearch::roles)
-  create_resources('elasticsearch::script', $::elasticsearch::scripts)
-  create_resources('elasticsearch::template', $::elasticsearch::templates)
-  create_resources('elasticsearch::user', $::elasticsearch::users)
+  create_resources('elasticsearch-legacy::index', $::elasticsearch-legacy::indices)
+  create_resources('elasticsearch-legacy::instance', $::elasticsearch-legacy::instances)
+  create_resources('elasticsearch-legacy::pipeline', $::elasticsearch-legacy::pipelines)
+  create_resources('elasticsearch-legacy::plugin', $::elasticsearch-legacy::plugins)
+  create_resources('elasticsearch-legacy::role', $::elasticsearch-legacy::roles)
+  create_resources('elasticsearch-legacy::script', $::elasticsearch-legacy::scripts)
+  create_resources('elasticsearch-legacy::template', $::elasticsearch-legacy::templates)
+  create_resources('elasticsearch-legacy::user', $::elasticsearch-legacy::users)
 
   if ($manage_repo == true) {
     if ($repo_stage == false) {
       # Use normal relationship ordering
-      contain elasticsearch::repo
+      contain elasticsearch-legacy::repo
 
-      Class['elasticsearch::repo']
-      -> Class['elasticsearch::package']
+      Class['elasticsearch-legacy::repo']
+      -> Class['elasticsearch-legacy::package']
 
     } else {
       # Use staging for ordering
@@ -434,7 +434,7 @@ class elasticsearch (
         stage { $repo_stage:  before => Stage['main'] }
       }
 
-      class { 'elasticsearch::repo':
+      class { 'elasticsearch-legacy::repo':
         stage => $repo_stage,
       }
     }
@@ -449,109 +449,109 @@ class elasticsearch (
   #
   # forgive me for what you're about to see
 
-  if defined(Class['java']) { Class['java'] -> Class['elasticsearch::config'] }
+  if defined(Class['java']) { Class['java'] -> Class['elasticsearch-legacy::config'] }
 
   if $ensure == 'present' {
 
     # Installation and configuration
-    Class['elasticsearch::package']
-    -> Class['elasticsearch::config']
+    Class['elasticsearch-legacy::package']
+    -> Class['elasticsearch-legacy::config']
 
     # Top-level ordering bindings for resources.
-    Class['elasticsearch::config']
-    -> Elasticsearch::Plugin <| ensure == 'present' or ensure == 'installed' |>
-    Elasticsearch::Plugin <| ensure == 'absent' |>
-    -> Class['elasticsearch::config']
-    Class['elasticsearch::config']
-    -> Elasticsearch::Instance <| |>
-    Class['elasticsearch::config']
-    -> Elasticsearch::User <| |>
-    Class['elasticsearch::config']
-    -> Elasticsearch::Role <| |>
-    Class['elasticsearch::config']
-    -> Elasticsearch::Template <| |>
-    Class['elasticsearch::config']
-    -> Elasticsearch::Pipeline <| |>
-    Class['elasticsearch::config']
-    -> Elasticsearch::Index <| |>
+    Class['elasticsearch-legacy::config']
+    -> elasticsearch-legacy::Plugin <| ensure == 'present' or ensure == 'installed' |>
+    elasticsearch-legacy::Plugin <| ensure == 'absent' |>
+    -> Class['elasticsearch-legacy::config']
+    Class['elasticsearch-legacy::config']
+    -> elasticsearch-legacy::Instance <| |>
+    Class['elasticsearch-legacy::config']
+    -> elasticsearch-legacy::User <| |>
+    Class['elasticsearch-legacy::config']
+    -> elasticsearch-legacy::Role <| |>
+    Class['elasticsearch-legacy::config']
+    -> elasticsearch-legacy::Template <| |>
+    Class['elasticsearch-legacy::config']
+    -> elasticsearch-legacy::Pipeline <| |>
+    Class['elasticsearch-legacy::config']
+    -> elasticsearch-legacy::Index <| |>
 
   } else {
 
     # Absent; remove configuration before the package.
-    Class['elasticsearch::config']
-    -> Class['elasticsearch::package']
+    Class['elasticsearch-legacy::config']
+    -> Class['elasticsearch-legacy::package']
 
     # Top-level ordering bindings for resources.
-    Elasticsearch::Plugin <| |>
-    -> Class['elasticsearch::config']
-    Elasticsearch::Instance <| |>
-    -> Class['elasticsearch::config']
-    Elasticsearch::User <| |>
-    -> Class['elasticsearch::config']
-    Elasticsearch::Role <| |>
-    -> Class['elasticsearch::config']
-    Elasticsearch::Template <| |>
-    -> Class['elasticsearch::config']
-    Elasticsearch::Pipeline <| |>
-    -> Class['elasticsearch::config']
-    Elasticsearch::Index <| |>
-    -> Class['elasticsearch::config']
+    elasticsearch-legacy::Plugin <| |>
+    -> Class['elasticsearch-legacy::config']
+    elasticsearch-legacy::Instance <| |>
+    -> Class['elasticsearch-legacy::config']
+    elasticsearch-legacy::User <| |>
+    -> Class['elasticsearch-legacy::config']
+    elasticsearch-legacy::Role <| |>
+    -> Class['elasticsearch-legacy::config']
+    elasticsearch-legacy::Template <| |>
+    -> Class['elasticsearch-legacy::config']
+    elasticsearch-legacy::Pipeline <| |>
+    -> Class['elasticsearch-legacy::config']
+    elasticsearch-legacy::Index <| |>
+    -> Class['elasticsearch-legacy::config']
 
   }
 
   # Install plugins before managing instances or users/roles
-  Elasticsearch::Plugin <| ensure == 'present' or ensure == 'installed' |>
-  -> Elasticsearch::Instance <| |>
-  Elasticsearch::Plugin <| ensure == 'present' or ensure == 'installed' |>
-  -> Elasticsearch::User <| |>
-  Elasticsearch::Plugin <| ensure == 'present' or ensure == 'installed' |>
-  -> Elasticsearch::Role <| |>
+  elasticsearch-legacy::Plugin <| ensure == 'present' or ensure == 'installed' |>
+  -> elasticsearch-legacy::Instance <| |>
+  elasticsearch-legacy::Plugin <| ensure == 'present' or ensure == 'installed' |>
+  -> elasticsearch-legacy::User <| |>
+  elasticsearch-legacy::Plugin <| ensure == 'present' or ensure == 'installed' |>
+  -> elasticsearch-legacy::Role <| |>
 
   # Remove plugins after managing users/roles
-  Elasticsearch::User <| |>
-  -> Elasticsearch::Plugin <| ensure == 'absent' |>
-  Elasticsearch::Role <| |>
-  -> Elasticsearch::Plugin <| ensure == 'absent' |>
+  elasticsearch-legacy::User <| |>
+  -> elasticsearch-legacy::Plugin <| ensure == 'absent' |>
+  elasticsearch-legacy::Role <| |>
+  -> elasticsearch-legacy::Plugin <| ensure == 'absent' |>
 
   # Ensure roles are defined before managing users that reference roles
-  Elasticsearch::Role <| |>
-  -> Elasticsearch::User <| ensure == 'present' |>
+  elasticsearch-legacy::Role <| |>
+  -> elasticsearch-legacy::User <| ensure == 'present' |>
   # Ensure users are removed before referenced roles are managed
-  Elasticsearch::User <| ensure == 'absent' |>
-  -> Elasticsearch::Role <| |>
+  elasticsearch-legacy::User <| ensure == 'absent' |>
+  -> elasticsearch-legacy::Role <| |>
 
   # Ensure users and roles are managed before calling out to REST resources
-  Elasticsearch::Role <| |>
-  -> Elasticsearch::Template <| |>
-  Elasticsearch::User <| |>
-  -> Elasticsearch::Template <| |>
-  Elasticsearch::Role <| |>
-  -> Elasticsearch::Pipeline <| |>
-  Elasticsearch::User <| |>
-  -> Elasticsearch::Pipeline <| |>
-  Elasticsearch::Role <| |>
-  -> Elasticsearch::Index <| |>
-  Elasticsearch::User <| |>
-  -> Elasticsearch::Index <| |>
+  elasticsearch-legacy::Role <| |>
+  -> elasticsearch-legacy::Template <| |>
+  elasticsearch-legacy::User <| |>
+  -> elasticsearch-legacy::Template <| |>
+  elasticsearch-legacy::Role <| |>
+  -> elasticsearch-legacy::Pipeline <| |>
+  elasticsearch-legacy::User <| |>
+  -> elasticsearch-legacy::Pipeline <| |>
+  elasticsearch-legacy::Role <| |>
+  -> elasticsearch-legacy::Index <| |>
+  elasticsearch-legacy::User <| |>
+  -> elasticsearch-legacy::Index <| |>
 
   # Manage users/roles before instances (req'd to keep dir in sync)
-  Elasticsearch::Role <| |>
-  -> Elasticsearch::Instance <| |>
-  Elasticsearch::User <| |>
-  -> Elasticsearch::Instance <| |>
+  elasticsearch-legacy::Role <| |>
+  -> elasticsearch-legacy::Instance <| |>
+  elasticsearch-legacy::User <| |>
+  -> elasticsearch-legacy::Instance <| |>
 
   # Ensure instances are started before managing REST resources
-  Elasticsearch::Instance <| ensure == 'present' |>
-  -> Elasticsearch::Template <| |>
-  Elasticsearch::Instance <| ensure == 'present' |>
-  -> Elasticsearch::Pipeline <| |>
-  Elasticsearch::Instance <| ensure == 'present' |>
-  -> Elasticsearch::Index <| |>
+  elasticsearch-legacy::Instance <| ensure == 'present' |>
+  -> elasticsearch-legacy::Template <| |>
+  elasticsearch-legacy::Instance <| ensure == 'present' |>
+  -> elasticsearch-legacy::Pipeline <| |>
+  elasticsearch-legacy::Instance <| ensure == 'present' |>
+  -> elasticsearch-legacy::Index <| |>
   # Ensure instances are stopped after managing REST resources
-  Elasticsearch::Template <| |>
-  -> Elasticsearch::Instance <| ensure == 'absent' |>
-  Elasticsearch::Pipeline <| |>
-  -> Elasticsearch::Instance <| ensure == 'absent' |>
-  Elasticsearch::Index <| |>
-  -> Elasticsearch::Instance <| ensure == 'absent' |>
+  elasticsearch-legacy::Template <| |>
+  -> elasticsearch-legacy::Instance <| ensure == 'absent' |>
+  elasticsearch-legacy::Pipeline <| |>
+  -> elasticsearch-legacy::Instance <| ensure == 'absent' |>
+  elasticsearch-legacy::Index <| |>
+  -> elasticsearch-legacy::Instance <| ensure == 'absent' |>
 }

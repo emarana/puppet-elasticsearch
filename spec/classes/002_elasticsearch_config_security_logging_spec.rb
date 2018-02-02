@@ -19,18 +19,18 @@ shared_examples 'security plugin logging' do |plugin, logfile, tests|
           }
         end
 
-        it { should contain_file("/etc/elasticsearch/#{plugin}")
+        it { should contain_file("/etc/elasticsearch-legacy/#{plugin}")
           .with_ensure('directory')}
 
         case param_type
         when 'source'
           it 'sets the source for the file resource' do
-            should contain_file("/etc/elasticsearch/#{plugin}/#{logfile}")
+            should contain_file("/etc/elasticsearch-legacy/#{plugin}/#{logfile}")
               .with_source(params[:value])
           end
         when 'content'
           it 'sets logging file yaml content' do
-            should contain_file("/etc/elasticsearch/#{plugin}/#{logfile}")
+            should contain_file("/etc/elasticsearch-legacy/#{plugin}/#{logfile}")
               .with_content(params[:value])
           end
         end
@@ -39,7 +39,7 @@ shared_examples 'security plugin logging' do |plugin, logfile, tests|
   end
 end
 
-describe 'elasticsearch', :type => 'class' do
+describe 'elasticsearch-legacy', :type => 'class' do
   on_supported_os(
     :hardwaremodels => ['x86_64'],
     :supported_os => [

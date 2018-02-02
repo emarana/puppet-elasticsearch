@@ -5,9 +5,9 @@ require 'puppet/util/filetype'
 
 require 'puppet_x/elastic/es_versioning'
 
-Puppet::Type.type(:elasticsearch_service_file).provide(:ruby) do
+Puppet::Type.type(:elasticsearch-legacy_service_file).provide(:ruby) do
   desc <<-ENDHEREDOC
-    Provides management of elasticsearch service files.
+    Provides management of elasticsearch-legacy service files.
   ENDHEREDOC
 
   mk_resource_methods
@@ -19,11 +19,11 @@ Puppet::Type.type(:elasticsearch_service_file).provide(:ruby) do
 
   def self.services
     [
-      '/usr/lib/systemd/system/elasticsearch-',
-      '/lib/systemd/system/elasticsearch-',
-      '/etc/init.d/elasticsearch.',
-      '/etc/init.d/elasticsearch-',
-      '/etc/rc.d/elasticsearch_'
+      '/usr/lib/systemd/system/elasticsearch-legacy-',
+      '/lib/systemd/system/elasticsearch-legacy-',
+      '/etc/init.d/elasticsearch-legacy.',
+      '/etc/init.d/elasticsearch-legacy-',
+      '/etc/rc.d/elasticsearch-legacy_'
     ].map do |path|
       Pathname.glob(path + '*').map do |service|
         {

@@ -4,7 +4,7 @@
     "successful" : 1,
     "failed" : 0
   },
-  "cluster_name" : "elasticsearch",
+  "cluster_name" : "elasticsearch-legacy",
   "nodes" : {
     "9lRSXfREQnqIgBWP0FBi0Q" : {
       "name" : "v5",
@@ -24,7 +24,7 @@
           "type" : "node"
         },
         "cluster" : {
-          "name" : "elasticsearch"
+          "name" : "elasticsearch-legacy"
         },
         "http" : {
           "type" : {
@@ -36,8 +36,8 @@
           "name" : "v5"
         },
         "path" : {
-          "logs" : "/Users/tylerjl/Work/elasticsearch-5.5.0/logs",
-          "home" : "/Users/tylerjl/Work/elasticsearch-5.5.0"
+          "logs" : "/Users/tylerjl/Work/elasticsearch-legacy-5.5.0/logs",
+          "home" : "/Users/tylerjl/Work/elasticsearch-legacy-5.5.0"
         },
         "transport" : {
           "type" : {
@@ -104,7 +104,7 @@
           "-Dlog4j2.disable.jmx=true",
           "-Dlog4j.skipJansi=true",
           "-XX:+HeapDumpOnOutOfMemoryError",
-          "-Des.path.home=/Users/tylerjl/Work/elasticsearch-5.5.0"
+          "-Des.path.home=/Users/tylerjl/Work/elasticsearch-legacy-5.5.0"
         ]
       },
       "thread_pool" : {
@@ -225,77 +225,77 @@
           "name" : "aggs-matrix-stats",
           "version" : "5.5.0",
           "description" : "Adds aggregations whose input are a list of numeric fields and output includes a matrix.",
-          "classname" : "org.elasticsearch.search.aggregations.matrix.MatrixAggregationPlugin",
+          "classname" : "org.elasticsearch-legacy.search.aggregations.matrix.MatrixAggregationPlugin",
           "has_native_controller" : false
         },
         {
           "name" : "ingest-common",
           "version" : "5.5.0",
           "description" : "Module for ingest processors that do not require additional security permissions or have large dependencies and resources",
-          "classname" : "org.elasticsearch.ingest.common.IngestCommonPlugin",
+          "classname" : "org.elasticsearch-legacy.ingest.common.IngestCommonPlugin",
           "has_native_controller" : false
         },
         {
           "name" : "lang-expression",
           "version" : "5.5.0",
-          "description" : "Lucene expressions integration for Elasticsearch",
-          "classname" : "org.elasticsearch.script.expression.ExpressionPlugin",
+          "description" : "Lucene expressions integration for elasticsearch-legacy",
+          "classname" : "org.elasticsearch-legacy.script.expression.ExpressionPlugin",
           "has_native_controller" : false
         },
         {
           "name" : "lang-groovy",
           "version" : "5.5.0",
-          "description" : "Groovy scripting integration for Elasticsearch",
-          "classname" : "org.elasticsearch.script.groovy.GroovyPlugin",
+          "description" : "Groovy scripting integration for elasticsearch-legacy",
+          "classname" : "org.elasticsearch-legacy.script.groovy.GroovyPlugin",
           "has_native_controller" : false
         },
         {
           "name" : "lang-mustache",
           "version" : "5.5.0",
-          "description" : "Mustache scripting integration for Elasticsearch",
-          "classname" : "org.elasticsearch.script.mustache.MustachePlugin",
+          "description" : "Mustache scripting integration for elasticsearch-legacy",
+          "classname" : "org.elasticsearch-legacy.script.mustache.MustachePlugin",
           "has_native_controller" : false
         },
         {
           "name" : "lang-painless",
           "version" : "5.5.0",
-          "description" : "An easy, safe and fast scripting language for Elasticsearch",
-          "classname" : "org.elasticsearch.painless.PainlessPlugin",
+          "description" : "An easy, safe and fast scripting language for elasticsearch-legacy",
+          "classname" : "org.elasticsearch-legacy.painless.PainlessPlugin",
           "has_native_controller" : false
         },
         {
           "name" : "parent-join",
           "version" : "5.5.0",
           "description" : "This module adds the support parent-child queries and aggregations",
-          "classname" : "org.elasticsearch.join.ParentJoinPlugin",
+          "classname" : "org.elasticsearch-legacy.join.ParentJoinPlugin",
           "has_native_controller" : false
         },
         {
           "name" : "percolator",
           "version" : "5.5.0",
           "description" : "Percolator module adds capability to index queries and query these queries by specifying documents",
-          "classname" : "org.elasticsearch.percolator.PercolatorPlugin",
+          "classname" : "org.elasticsearch-legacy.percolator.PercolatorPlugin",
           "has_native_controller" : false
         },
         {
           "name" : "reindex",
           "version" : "5.5.0",
           "description" : "The Reindex module adds APIs to reindex from one index to another or update documents in place.",
-          "classname" : "org.elasticsearch.index.reindex.ReindexPlugin",
+          "classname" : "org.elasticsearch-legacy.index.reindex.ReindexPlugin",
           "has_native_controller" : false
         },
         {
           "name" : "transport-netty3",
           "version" : "5.5.0",
           "description" : "Netty 3 based transport implementation",
-          "classname" : "org.elasticsearch.transport.Netty3Plugin",
+          "classname" : "org.elasticsearch-legacy.transport.Netty3Plugin",
           "has_native_controller" : false
         },
         {
           "name" : "transport-netty4",
           "version" : "5.5.0",
           "description" : "Netty 4 based transport implementation",
-          "classname" : "org.elasticsearch.transport.Netty4Plugin",
+          "classname" : "org.elasticsearch-legacy.transport.Netty4Plugin",
           "has_native_controller" : false
         }
       ],

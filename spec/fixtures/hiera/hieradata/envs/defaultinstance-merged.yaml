@@ -1,9 +1,9 @@
 ---
 lookup_options:
-  elasticsearch::instances:
+  elasticsearch-legacy::instances:
     merge: deep
 
-elasticsearch::instances:
+elasticsearch-legacy::instances:
   default:
     config:
       node.name: 'default'

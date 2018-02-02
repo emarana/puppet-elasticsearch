@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'webmock/rspec'
 
-describe 'elasticsearch facts' do
+describe 'elasticsearch-legacy facts' do
   before(:each) do
     Dir[File.join(RSpec.configuration.fixture_path, 'facts', '*.json')].map do |json|
       File.basename(json).split('.').first.split('-').first
@@ -42,28 +42,28 @@ describe 'elasticsearch facts' do
     %w[es01 es02 es03 es-ssl].each do |instance|
       allow(File)
         .to receive(:readable?)
-        .with("/etc/elasticsearch/#{instance}/elasticsearch.yml")
+        .with("/etc/elasticsearch-legacy/#{instance}/elasticsearch-legacy.yml")
         .and_return(true)
     end
 
     allow(YAML)
       .to receive(:load_file)
-      .with('/etc/elasticsearch/es01/elasticsearch.yml', any_args)
+      .with('/etc/elasticsearch-legacy/es01/elasticsearch-legacy.yml', any_args)
       .and_return({})
 
     allow(YAML)
       .to receive(:load_file)
-      .with('/etc/elasticsearch/es02/elasticsearch.yml', any_args)
+      .with('/etc/elasticsearch-legacy/es02/elasticsearch-legacy.yml', any_args)
       .and_return('http.port' => '9201')
 
     allow(YAML)
       .to receive(:load_file)
-      .with('/etc/elasticsearch/es03/elasticsearch.yml', any_args)
+      .with('/etc/elasticsearch-legacy/es03/elasticsearch-legacy.yml', any_args)
       .and_return('http.port' => '9202')
 
     allow(YAML)
       .to receive(:load_file)
-      .with('/etc/elasticsearch/es-ssl/elasticsearch.yml', any_args)
+      .with('/etc/elasticsearch-legacy/es-ssl/elasticsearch-legacy.yml', any_args)
       .and_return(
         'xpack.security.http.ssl.enabled' => true,
         'shield.http.ssl'                 => true,
@@ -73,65 +73,65 @@ describe 'elasticsearch facts' do
     require 'lib/facter/es_facts'
   end
 
-  describe 'elasticsearch_ports' do
+  describe 'elasticsearch-legacy_ports' do
     it 'finds listening ports' do
-      expect(Facter.fact(:elasticsearch_ports).value.split(','))
+      expect(Facter.fact(:elasticsearch-legacy_ports).value.split(','))
         .to contain_exactly('9200', '9201', '9202', '9443')
     end
   end
 
   describe 'instance' do
     it 'returns the node name' do
-      expect(Facter.fact(:elasticsearch_9200_name).value).to eq('Warlock')
+      expect(Facter.fact(:elasticsearch-legacy_9200_name).value).to eq('Warlock')
     end
 
     it 'returns the node version' do
-      expect(Facter.fact(:elasticsearch_9200_version).value).to eq('1.4.2')
+      expect(Facter.fact(:elasticsearch-legacy_9200_version).value).to eq('1.4.2')
     end
 
     it 'returns the cluster name' do
-      expect(Facter.fact(:elasticsearch_9200_cluster_name).value)
-        .to eq('elasticsearch')
+      expect(Facter.fact(:elasticsearch-legacy_9200_cluster_name).value)
+        .to eq('elasticsearch-legacy')
     end
 
     it 'returns the node ID' do
-      expect(Facter.fact(:elasticsearch_9200_node_id).value)
+      expect(Facter.fact(:elasticsearch-legacy_9200_node_id).value)
         .to eq('yQAWBO3FS8CupZnSvAVziQ')
     end
 
     it 'returns the mlockall boolean' do
-      expect(Facter.fact(:elasticsearch_9200_mlockall).value).to be_falsy
+      expect(Facter.fact(:elasticsearch-legacy_9200_mlockall).value).to be_falsy
     end
 
     it 'returns installed plugins' do
-      expect(Facter.fact(:elasticsearch_9200_plugins).value).to eq('kopf')
+      expect(Facter.fact(:elasticsearch-legacy_9200_plugins).value).to eq('kopf')
     end
 
     describe 'kopf plugin' do
       it 'returns the correct version' do
-        expect(Facter.fact(:elasticsearch_9200_plugin_kopf_version).value)
+        expect(Facter.fact(:elasticsearch-legacy_9200_plugin_kopf_version).value)
           .to eq('1.4.3')
       end
 
       it 'returns the correct description' do
-        expect(Facter.fact(:elasticsearch_9200_plugin_kopf_description).value)
-          .to eq('kopf - simple web administration tool for ElasticSearch')
+        expect(Facter.fact(:elasticsearch-legacy_9200_plugin_kopf_description).value)
+          .to eq('kopf - simple web administration tool for elasticsearch-legacy')
       end
 
       it 'returns the plugin URL' do
-        expect(Facter.fact(:elasticsearch_9200_plugin_kopf_url).value)
+        expect(Facter.fact(:elasticsearch-legacy_9200_plugin_kopf_url).value)
           .to eq('/_plugin/kopf/')
       end
 
       it 'returns the plugin JVM boolean' do
-        expect(Facter.fact(:elasticsearch_9200_plugin_kopf_jvm).value)
+        expect(Facter.fact(:elasticsearch-legacy_9200_plugin_kopf_jvm).value)
           .to be_falsy
       end
 
       it 'returns the plugin _site boolean' do
-        expect(Facter.fact(:elasticsearch_9200_plugin_kopf_site).value)
+        expect(Facter.fact(:elasticsearch-legacy_9200_plugin_kopf_site).value)
           .to be_truthy
       end
     end # of describe plugin
   end # of describe instance
-end # of describe elasticsearch facts
+end # of describe elasticsearch-legacy facts

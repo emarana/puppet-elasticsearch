@@ -1,7 +1,7 @@
 require 'spec_helper_rspec'
 
-describe Puppet::Type.type(:elasticsearch_plugin) do
-  let(:resource_name) { 'lmenezes/elasticsearch-kopf' }
+describe Puppet::Type.type(:elasticsearch-legacy_plugin) do
+  let(:resource_name) { 'lmenezes/elasticsearch-legacy-kopf' }
 
   describe 'input validation' do
     describe 'when validating attributes' do
@@ -18,10 +18,10 @@ describe Puppet::Type.type(:elasticsearch_plugin) do
   end
 end
 
-describe Puppet::Type.type(:elasticsearch_plugin).provider(:plugin) do
+describe Puppet::Type.type(:elasticsearch-legacy_plugin).provider(:plugin) do
   it 'should install a plugin' do
-    resource = Puppet::Type.type(:elasticsearch_plugin).new(
-      :name => 'lmenezes/elasticsearch-kopf',
+    resource = Puppet::Type.type(:elasticsearch-legacy_plugin).new(
+      :name => 'lmenezes/elasticsearch-legacy-kopf',
       :ensure => :present
     )
     allow(File).to receive(:open)
@@ -29,7 +29,7 @@ describe Puppet::Type.type(:elasticsearch_plugin).provider(:plugin) do
     allow(provider).to receive(:es_version).and_return '1.7.3'
     expect(provider).to receive(:plugin).with([
       'install',
-      'lmenezes/elasticsearch-kopf'
+      'lmenezes/elasticsearch-legacy-kopf'
     ])
     provider.create
   end

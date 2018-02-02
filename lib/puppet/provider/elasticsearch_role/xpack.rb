@@ -1,6 +1,6 @@
 require 'puppet/provider/elastic_yaml'
 
-Puppet::Type.type(:elasticsearch_role).provide(
+Puppet::Type.type(:elasticsearch-legacy_role).provide(
   :xpack,
   :parent => Puppet::Provider::ElasticYaml,
   :metadata => :privileges

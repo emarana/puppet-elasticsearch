@@ -1,6 +1,6 @@
 require 'spec_helper_rspec'
 
-describe Puppet::Type.type(:elasticsearch_role_mapping) do
+describe Puppet::Type.type(:elasticsearch-legacy_role_mapping) do
 
   let(:resource_name) { 'elastic_role' }
 

@@ -1,6 +1,6 @@
-require_relative '../../../helpers/unit/provider/elasticsearch_rest_shared_examples'
+require_relative '../../../helpers/unit/provider/elasticsearch-legacy_rest_shared_examples'
 
-describe Puppet::Type.type(:elasticsearch_template).provider(:ruby) do
+describe Puppet::Type.type(:elasticsearch-legacy_template).provider(:ruby) do
   let(:example_1) do
     {
       :name => 'foobar1',
@@ -64,7 +64,7 @@ describe Puppet::Type.type(:elasticsearch_template).provider(:ruby) do
     )
   end
 
-  let(:resource) { Puppet::Type::Elasticsearch_template.new props }
+  let(:resource) { Puppet::Type::elasticsearch-legacy_template.new props }
   let(:provider) { described_class.new resource }
   let(:props) do
     {

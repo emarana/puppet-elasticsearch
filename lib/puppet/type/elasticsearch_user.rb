@@ -1,5 +1,5 @@
-Puppet::Type.newtype(:elasticsearch_user) do
-  desc 'Type to model Elasticsearch users.'
+Puppet::Type.newtype(:elasticsearch-legacy_user) do
+  desc 'Type to model elasticsearch-legacy users.'
 
   feature :manages_encrypted_passwords,
     'The provider can control the password hash without a need
@@ -15,7 +15,7 @@ Puppet::Type.newtype(:elasticsearch_user) do
   end
 
   newparam(:configdir) do
-    desc 'Path to the elasticsearch configuration directory (ES_PATH_CONF).'
+    desc 'Path to the elasticsearch-legacy configuration directory (ES_PATH_CONF).'
 
     validate do |value|
       raise Puppet::Error, 'path expected' if value.nil?

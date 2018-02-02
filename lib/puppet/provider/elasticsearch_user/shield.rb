@@ -1,6 +1,6 @@
 require 'puppet/provider/elastic_parsedfile'
 
-Puppet::Type.type(:elasticsearch_user).provide(
+Puppet::Type.type(:elasticsearch-legacy_user).provide(
   :shield,
   :parent => Puppet::Provider::ElasticParsedFile
 ) do

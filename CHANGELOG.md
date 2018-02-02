@@ -4,14 +4,14 @@
 * Add support for Amazon Linux 2
 
 #### Fixes
-* Fixed an issue when setting `file_rolling_type => file` in Elasticsearch 6.
+* Fixed an issue when setting `file_rolling_type => file` in elasticsearch-legacy 6.
 
 ## 6.1.0 (December 18, 2017)
 
 #### Features
 * Removed `tea` module dependency for pre-existing types in `stdlib` module.
 * Support `file` as a `file_rolling_type`.
-* Added `java_opts` parameter to `elasticsearch::plugin` resource.
+* Added `java_opts` parameter to `elasticsearch-legacy::plugin` resource.
 * Brought some options in `jvm.options` up-to-date with upstream.
 * Plugins can now have their `JAVA_HOME` set through the `java_home` parameter.
 
@@ -31,7 +31,7 @@ Major version upgrade with several important deprecations:
 
 Minor:
 
-* elasticsearch::plugin only accepts `present` or `absent`
+* elasticsearch-legacy::plugin only accepts `present` or `absent`
 * Some REST-resource based providers (such as templates and pipelines) now validate parameters (such as numeric port numbers) more rigorously.
 
 The following migration guide is intended to help aid in upgrading this module.
@@ -58,8 +58,8 @@ If you still wish to configure Java alongside this module, consider using the [p
 class { "java" : distribution => "jre" }
 ```
 
-This will install a version of Java suitable for Elasticsearch in most situations.
-Note that in some older distributions, you may need to take extra steps to install a more recent version of Java that supports Elasticsearch.
+This will install a version of Java suitable for elasticsearch-legacy in most situations.
+Note that in some older distributions, you may need to take extra steps to install a more recent version of Java that supports elasticsearch-legacy.
 
 #### Removal of Python and Ruby Resources
 
@@ -67,7 +67,7 @@ These resource types were simple wrappers around `package` resources with their 
 Simply defining your own resources similarly to:
 
 ```puppet
-package { 'elasticsearch' : provider => 'pip' }
+package { 'elasticsearch-legacy' : provider => 'pip' }
 ```
 
 Is sufficient.
@@ -78,7 +78,7 @@ This parameter is now set to `true` by default to automatically manage the Elast
 If you do not wish to configure the repository to automatically retrieve package updates, set this parameter to `false`:
 
 ```puppet
-class { 'elasticsearch': manage_repo => false }
+class { 'elasticsearch-legacy': manage_repo => false }
 ```
 
 #### Removal of `hiera_merge` Parameters
@@ -102,7 +102,7 @@ Read [the upstream Hiera documentation regarding `lookup_options`](https://puppe
 * Bumped puppet/java dependency to < 3.0.0
 
 #### Fixes
-* Append `--quiet` flag to >= 5.x versions of Elasticsearch systemd service units
+* Append `--quiet` flag to >= 5.x versions of elasticsearch-legacy systemd service units
 * Disable es_facts collection on SearchGuard nodes with TLS enabled
 
 ## 5.4.2 (August 18, 2017)
@@ -115,14 +115,14 @@ Read [the upstream Hiera documentation regarding `lookup_options`](https://puppe
 
 ## 5.4.1 (August 7, 2017)
 
-Fixed an issue where `logging_yml_ensure` and `log4j2_ensure` would not propagate to `elasticsearch::instance` resources.
+Fixed an issue where `logging_yml_ensure` and `log4j2_ensure` would not propagate to `elasticsearch-legacy::instance` resources.
 
 ## 5.4.0 (August 3, 2017)
 
 #### Features
 * The `api_timeout` parameter is now passed to the `es_instance_conn_validator` resource for index, pipeline, and template defined types.
 * Updated puppetlabs/apt dependency to < 5.0.0.
-* Both the `logging.yml` and `log4j2.properties` files can be selectively enabled/disabled with the `logging_yml_ensure` and `log4j2_ensure` parameters on the `elasticsearch` class and `elasticsearch::instance` defined type.
+* Both the `logging.yml` and `log4j2.properties` files can be selectively enabled/disabled with the `logging_yml_ensure` and `log4j2_ensure` parameters on the `elasticsearch-legacy` class and `elasticsearch-legacy::instance` defined type.
 * `jvm_options` are now controllable on a per-instance basis.
 
 #### Fixes
@@ -133,24 +133,24 @@ Fixed an issue where `logging_yml_ensure` and `log4j2_ensure` would not propagat
 ## 5.3.1 (June 14, 2017)
 
 ### Summary
-Minor release to fix bugs related to the `elasticsearch_keystore` type and generated docs.
+Minor release to fix bugs related to the `elasticsearch-legacy_keystore` type and generated docs.
 
 #### Features
 * Moved documentation to Yard for doc auto-generation for all classes/types/etc.
 
 #### Fixes
-* Fixed dependency order bug with the `elasticsearch_keystore` type and augeas defaults resource.
+* Fixed dependency order bug with the `elasticsearch-legacy_keystore` type and augeas defaults resource.
 
 ## 5.3.0 (June 5, 2017)
 
 ### Summary
-Minor bugfix release with added support for managing Elasticsearch keystores, custom repository URLs, and more.
+Minor bugfix release with added support for managing elasticsearch-legacy keystores, custom repository URLs, and more.
 
 #### Features
 * Failures are no longer raised when no instances are defined for a plugin and service restarts are not requested.
 * The `datadir` for instances can now be shared among multiple instances by using the `datadir_instance_directories` parameter.
 * `repo_baseurl` is now exposed as a top-level parameter for users who wish to control custom repositories.
-* `elasticsearch-keystore` values can now be managed via native Puppet resources.
+* `elasticsearch-legacy-keystore` values can now be managed via native Puppet resources.
 
 #### Fixes
 * log4j template now properly respects deprecation logging settings.
@@ -162,12 +162,12 @@ Release supporting several new features and bugfixes for 5.4.0 users and users w
 
 #### Features
 * Support for Shield/X-Pack logging configuration file added.
-* The `elasticsearch::script` type now supports recursively managing directories of scripts.
-* All module defined types can now be managed as top-level hash parameters to the `elasticsearch` class (primarily for hiera and PE)
+* The `elasticsearch-legacy::script` type now supports recursively managing directories of scripts.
+* All module defined types can now be managed as top-level hash parameters to the `elasticsearch-legacy` class (primarily for hiera and PE)
 
 #### Fixes
 * Fixed a bug that prevented plugins from being updated properly.
-* Fixed deprecated `default.path` options introduced in Elasticsearch 5.4.0.
+* Fixed deprecated `default.path` options introduced in elasticsearch-legacy 5.4.0.
 
 ## 5.1.1 (April 13, 2017)
 
@@ -178,9 +178,9 @@ Release supporting several new features and bugfixes for 5.4.0 users and users w
     config file.
 
 #### Fixes
-This is a hotfix release to support users affected by [an upstream Elasticsearch issue](https://github.com/elastic/elasticsearch/issues/6887).
-See the [associated issue](https://github.com/elastic/puppet-elasticsearch/issues/802#issuecomment-293295930) for details regarding the workaround.
-The change implemented in this release is to place the `elasticsearch::instance` `config` parameter at the highest precedence when merging the final config yaml which permits users manually override `path.data` values.
+This is a hotfix release to support users affected by [an upstream elasticsearch-legacy issue](https://github.com/elastic/elasticsearch-legacy/issues/6887).
+See the [associated issue](https://github.com/elastic/puppet-elasticsearch-legacy/issues/802#issuecomment-293295930) for details regarding the workaround.
+The change implemented in this release is to place the `elasticsearch-legacy::instance` `config` parameter at the highest precedence when merging the final config yaml which permits users manually override `path.data` values.
 
 ## 5.1.0 (February 28, 2017)
 
@@ -193,13 +193,13 @@ Minor bugfixes.
 * Index settings support.
 
 #### Fixes
-* Custom facts no longer fail when trying to read unreadable elasticsearch config files.
+* Custom facts no longer fail when trying to read unreadable elasticsearch-legacy config files.
 * `Accept` and `Content-Type` headers properly set for providers (to support ES 6.x)
 
 ## 5.0.0 (February 9, 2017)
 
-Going forward, This module will follow Elasticsearch's upstream major version to indicate compatability.
-That is, version 5.x of this module supports version 5 of Elasticsearch, and version 6.x of this module will be released once Elasticsearch 6 support is added.
+Going forward, This module will follow elasticsearch-legacy's upstream major version to indicate compatability.
+That is, version 5.x of this module supports version 5 of elasticsearch-legacy, and version 6.x of this module will be released once elasticsearch-legacy 6 support is added.
 
 ### Summary
 Note that this is a **major version release**!
@@ -207,30 +207,30 @@ Please read the release notes carefully before upgrading to avoid downtime/unexp
 Remember to restart any puppetmaster servers to clear provider caches and pull in updated code.
 
 ### Backwards-Incompatible Changes
-* The `elasticsearch::shield::user` and `elasticsearch::shield::role` resources have been renamed to `elasticsearch::user` and `elasticsearch::role` since the resource now handles both Shield and X-Pack.
-* Both Shield and X-Pack configuration files are kept in `/etc/elasticsearch/shield` and `/etc/elasticsearch/x-pack`, respectively. If you previously managed Shield resources with version 0.x of this module, you may need to migrate files from `/usr/share/elasticsearch/shield`.
-* The default data directory has been changed to `/var/lib/elasticsearch`. If you used the previous default (the Elasticsearch home directory, `/usr/share/elasticsearch/data`), you may need to migrate your data.
-* The first changes that may be Elasticsearch 1.x-incompatible have been introduced (see the [elasticsearch support lifecycle](https://www.elastic.co/support/eol)). This only impacts version 1.x running on systemd-based distributions.
+* The `elasticsearch-legacy::shield::user` and `elasticsearch-legacy::shield::role` resources have been renamed to `elasticsearch-legacy::user` and `elasticsearch-legacy::role` since the resource now handles both Shield and X-Pack.
+* Both Shield and X-Pack configuration files are kept in `/etc/elasticsearch-legacy/shield` and `/etc/elasticsearch-legacy/x-pack`, respectively. If you previously managed Shield resources with version 0.x of this module, you may need to migrate files from `/usr/share/elasticsearch-legacy/shield`.
+* The default data directory has been changed to `/var/lib/elasticsearch-legacy`. If you used the previous default (the elasticsearch-legacy home directory, `/usr/share/elasticsearch-legacy/data`), you may need to migrate your data.
+* The first changes that may be elasticsearch-legacy 1.x-incompatible have been introduced (see the [elasticsearch-legacy support lifecycle](https://www.elastic.co/support/eol)). This only impacts version 1.x running on systemd-based distributions.
 * sysctl management has been removed (and the module removed as a dependency for this module), and puppet/yum is used in lieu of ceritsc/yum.
 
 #### Features
 * Support management of the global jvm.options configuration file.
 * X-Pack support added.
-* Restricted permissions to the elasticsearch.yml file.
+* Restricted permissions to the elasticsearch-legacy.yml file.
 * Deprecation log configuration support added.
 * Synced systemd service file with upstream.
 
 #### Bugfixes
 * Fixed case in which index template could prepend an additional 'index.' to index settings.
 * Fixed a case in which dependency cycles could arise when pinning packages on CentOS.
-* No longer recursively change the Elasticsearch home directory's lib/ to the elasticsearch user.
+* No longer recursively change the elasticsearch-legacy home directory's lib/ to the elasticsearch-legacy user.
 * Unused defaults values now purged from instance init defaults files.
 
 #### Changes
 * Changed default data directory to /var/lib
 * sysctl settings are no longer managed by the thias/sysctl module.
-* Calls to `elasticsearch -version` in elasticsearch::plugin code replaced with native Puppet code to resolve Elasticsearch package version. Should improve resiliency when managing plugins.
-* Shield and X-Pack configuration files are stored in /etc/elasticsearch instead of /usr/share/elasticsearch.
+* Calls to `elasticsearch-legacy -version` in elasticsearch-legacy::plugin code replaced with native Puppet code to resolve elasticsearch-legacy package version. Should improve resiliency when managing plugins.
+* Shield and X-Pack configuration files are stored in /etc/elasticsearch-legacy instead of /usr/share/elasticsearch-legacy.
 * Removed deprecated ceritsc/yum module in favor of puppet/yum.
 
 #### Testing changes
@@ -238,13 +238,13 @@ Remember to restart any puppetmaster servers to clear provider caches and pull i
 ## 0.15.1 (December 1, 2016)
 
 ### Summary
-Primarily a bugfix release for Elasticsearch 5.x support-related issues.
+Primarily a bugfix release for elasticsearch-legacy 5.x support-related issues.
 Note updated minimum required puppet versions as well.
 
 #### Features
 
 #### Bugfixes
-* Removed ES_HEAP_SIZE check in init scripts for Elasticsearch 5.x
+* Removed ES_HEAP_SIZE check in init scripts for elasticsearch-legacy 5.x
 * Changed sysctl value to a string to avoid type errors for some versions
 * Fixed a $LOAD_PATH error that appeared in some cases for puppet_x/elastic/es_versioning
 
@@ -257,11 +257,11 @@ Note updated minimum required puppet versions as well.
 
 ### Summary
 * Support for Ubuntu Xenial (16.04) formally declared.
-* Initial support for running Elasticsearch 5.x series.
+* Initial support for running elasticsearch-legacy 5.x series.
 
 #### Features
 * Support management of 5.x-style Elastic yum/apt package repositories.
-* Support service scripts for 5.x series of Elasticsearch
+* Support service scripts for 5.x series of elasticsearch-legacy
 
 #### Bugfixes
 * Update the apt::source call to not cause deprecation warnings
@@ -282,17 +282,17 @@ This release also adds the ability to define logging rolling file settings and a
 * Added 'file_rolling_type' parameter to allow selecting file logging rotation type between "dailyRollingFile" or "rollingFile". Also added 'daily_rolling_date_pattern', 'rolling_file_max_backup_index' and 'rolling_file_max_file_size' for file rolling customization.
 
 #### Bugfixes
-* Permissions on the Elasticsearch plugin directory have been fixed to permit world read rights.
+* Permissions on the elasticsearch-legacy plugin directory have been fixed to permit world read rights.
 * The service systemd unit now `Wants=` a network target to fix bootup parallelization problems.
-* Recursively create the logdir for elasticsearch when creating multiple instances
+* Recursively create the logdir for elasticsearch-legacy when creating multiple instances
 * Files and directories with root ownership now specify UID/GID 0 instead to improve compatability with *BSDs.
-* Elasticsearch Debian init file changed to avoid throwing errors when DATA_DIR, WORK_DIR and/or LOG_DIR were an empty variable.
-* Fixed a broken File dependency when a plugin was set to absent and ::elasticsearch set to present.
-* Fixed issue when using the `proxy` parameter on plugins in Elasticsearch 2.x.
+* elasticsearch-legacy Debian init file changed to avoid throwing errors when DATA_DIR, WORK_DIR and/or LOG_DIR were an empty variable.
+* Fixed a broken File dependency when a plugin was set to absent and ::elasticsearch-legacy set to present.
+* Fixed issue when using the `proxy` parameter on plugins in elasticsearch-legacy 2.x.
 
 #### Changes
 * The `api_ca_file` and `api_ca_path` parameters have been added to support custom CA bundles for API access.
-* Numerics in elasticsearch.yml will always be properly unquoted.
+* Numerics in elasticsearch-legacy.yml will always be properly unquoted.
 * puppetlabs/java is now listed as a dependency in metadata.json to avoid unexpected installation problems.
 
 #### Testing changes
@@ -300,18 +300,18 @@ This release also adds the ability to define logging rolling file settings and a
 ## 0.13.2 (August 29, 2016)
 
 ### Summary
-Primarily a bugfix release to resolve HTTPS use in elasticsearch::template resources, 5.x plugin operations, and plugin file permission enforcement.
+Primarily a bugfix release to resolve HTTPS use in elasticsearch-legacy::template resources, 5.x plugin operations, and plugin file permission enforcement.
 
 #### Features
-* Plugin installation for the 5.x series of Elasticsearch is now properly supported.
+* Plugin installation for the 5.x series of elasticsearch-legacy is now properly supported.
 
 #### Bugfixes
-* Recursively enforce correct plugin directory mode to avoid Elasticsearch startup permissions errors.
+* Recursively enforce correct plugin directory mode to avoid elasticsearch-legacy startup permissions errors.
 * Fixed an edge case where dependency cycles could arise when managing absent resources.
-* Elasticsearch templates now properly use HTTPS when instructed to do so.
+* elasticsearch-legacy templates now properly use HTTPS when instructed to do so.
 
 #### Changes
-* Updated the elasticsearch_template type to return more helpful error output.
+* Updated the elasticsearch-legacy_template type to return more helpful error output.
 * Updated the es_instance_conn_validator type to silence deprecation warnings in Puppet >= 4.
 
 #### Testing changes
@@ -319,17 +319,17 @@ Primarily a bugfix release to resolve HTTPS use in elasticsearch::template resou
 ## 0.13.1 (August 8, 2016)
 
 ### Summary
-Lingering bugfixes from elasticsearch::template changes.
+Lingering bugfixes from elasticsearch-legacy::template changes.
 More robust systemd mask handling.
 Updated some upstream module parameters for deprecation warnings.
 Support for the Shield `system_key` file.
 
 #### Features
-* Added `system_key` parameter to the `elasticsearch` class and `elasticsearch::instance` type for placing Shield system keys.
+* Added `system_key` parameter to the `elasticsearch-legacy` class and `elasticsearch-legacy::instance` type for placing Shield system keys.
 
 #### Bugfixes
-* Fixed systemd elasticsearch.service unit masking to use systemctl rather than raw symlinking to avoid puppet file backup errors.
-* Fixed a couple of cases that broke compatability with older versions of puppet (elasticsearch_template types on puppet versions prior to 3.6 and yumrepo parameters on puppet versions prior to 3.5.1)
+* Fixed systemd elasticsearch-legacy.service unit masking to use systemctl rather than raw symlinking to avoid puppet file backup errors.
+* Fixed a couple of cases that broke compatability with older versions of puppet (elasticsearch-legacy_template types on puppet versions prior to 3.6 and yumrepo parameters on puppet versions prior to 3.5.1)
 * Fixed issues that caused templates to be incorrectly detected as out-of-sync and thus always changed on each puppet run.
 * Resources are now explicitly ordered to ensure behavior such as plugins being installed before instance start, users managed before templates changed, etc.
 
@@ -341,29 +341,29 @@ Support for the Shield `system_key` file.
 ## 0.13.0 (August 1, 2016)
 
 ### Summary
-Rewritten elasticsearch::template using native type and provider.
-Fixed and added additional proxy parameters to elasticsearch::plugin instances.
+Rewritten elasticsearch-legacy::template using native type and provider.
+Fixed and added additional proxy parameters to elasticsearch-legacy::plugin instances.
 Exposed repo priority parameters for apt and yum repos.
 
 #### Features
-* In addition to better consistency, the `elasticsearch::template` type now also accepts various `api_*` parameters to control how access to the Elasticsearch API is configured (there are top-level parameters that are inherited and can be overwritten in `elasticsearch::api_*`).
-* The `elasticsearch::config` parameter now supports deep hiera merging.
-* Added the `elasticsearch::repo_priority` parameter to support apt and yum repository priority configuration.
-* Added `proxy_username` and `proxy_password` parameters to `elasticsearch::plugin`.
+* In addition to better consistency, the `elasticsearch-legacy::template` type now also accepts various `api_*` parameters to control how access to the elasticsearch-legacy API is configured (there are top-level parameters that are inherited and can be overwritten in `elasticsearch-legacy::api_*`).
+* The `elasticsearch-legacy::config` parameter now supports deep hiera merging.
+* Added the `elasticsearch-legacy::repo_priority` parameter to support apt and yum repository priority configuration.
+* Added `proxy_username` and `proxy_password` parameters to `elasticsearch-legacy::plugin`.
 
 #### Bugfixes
-* Content of templates should now properly trigger new API PUT requests when the index template stored in Elasticsearch differs from the template defined in puppet.
+* Content of templates should now properly trigger new API PUT requests when the index template stored in elasticsearch-legacy differs from the template defined in puppet.
 * Installing plugins with proxy parameters now works correctly due to changed Java property flags.
-* The `elasticsearch::plugin::module_dir` parameter has been re-implemented to aid in working around plugins with non-standard plugin directories.
+* The `elasticsearch-legacy::plugin::module_dir` parameter has been re-implemented to aid in working around plugins with non-standard plugin directories.
 
 #### Changes
-* The `file` parameter on the `elasticsearch::template` defined type has been deprecated to be consistent with usage of the `source` parameter for other types.
+* The `file` parameter on the `elasticsearch-legacy::template` defined type has been deprecated to be consistent with usage of the `source` parameter for other types.
 
 #### Testing changes
 
 ## 0.12.0 (July 20, 2016)
 
-IMPORTANT! A bug was fixed that mistakenly added /var/lib to the list of DATA_DIR paths on Debian-based systems.  This release removes that environment variable, which could potentially change path.data directories for instances of Elasticsearch.  Take proper precautions when upgrading to avoid unexpected downtime or data loss (test module upgrades, et cetera).
+IMPORTANT! A bug was fixed that mistakenly added /var/lib to the list of DATA_DIR paths on Debian-based systems.  This release removes that environment variable, which could potentially change path.data directories for instances of elasticsearch-legacy.  Take proper precautions when upgrading to avoid unexpected downtime or data loss (test module upgrades, et cetera).
 
 ### Summary
 Rewritten yaml generator, code cleanup, and various bugfixes. Configuration file yaml no longer nested. Service no longer restarts by default, and exposes more granular restart options.
@@ -374,14 +374,14 @@ Rewritten yaml generator, code cleanup, and various bugfixes. Configuration file
 #### Bugfixes
 * Special yaml cases such as arrays of hashes and strings like "::" are properly supported.
 * Previous Debian SysV init scripts mistakenly set the `DATA_DIR` environment variable to a non-default value.
-* Some plugins failed installation due to capitalization munging, the elasticsearch_plugin provider no longer forces downcasing.
+* Some plugins failed installation due to capitalization munging, the elasticsearch-legacy_plugin provider no longer forces downcasing.
 
 #### Changes
-* The `install_options` parameter on the `elasticsearch::plugin` type has been removed. This was an undocumented parameter that often caused problems for users.
-* The `elasticsearch.service` systemd unit is no longer removed but masked by default, effectively hiding it from systemd but retaining the upstream vendor unit on disk for package management consistency.
+* The `install_options` parameter on the `elasticsearch-legacy::plugin` type has been removed. This was an undocumented parameter that often caused problems for users.
+* The `elasticsearch-legacy.service` systemd unit is no longer removed but masked by default, effectively hiding it from systemd but retaining the upstream vendor unit on disk for package management consistency.
 * `restart_on_change` now defaults to false to reduce unexpected cluster downtime (can be set to true if desired).
 * Package pinning is now contained within a separate class, so users can opt to manage package repositories manually and still use this module's pinning feature.
-* All configuration hashes are now flattened into dot-notated yaml in the elasticsearch configuration file. This should be fairly transparent in terms of behavior, though the config file formatting will change.
+* All configuration hashes are now flattened into dot-notated yaml in the elasticsearch-legacy configuration file. This should be fairly transparent in terms of behavior, though the config file formatting will change.
 
 #### Testing changes
 * The acceptance test suite has been dramatically slimmed to cut down on testing time and reduce false positives.
@@ -396,11 +396,11 @@ Shield support, SLES support, and overhauled testing setup.
   * TLS Certificate management
   * Users (role and password management for file-based realms)
   * Roles (file-based with mapping support)
-* Support (repository proxies)[https://github.com/elastic/puppet-elasticsearch/pull/615]
-* Support for (SSL auth on API calls)[https://github.com/elastic/puppet-elasticsearch/pull/577]
+* Support (repository proxies)[https://github.com/elastic/puppet-elasticsearch-legacy/pull/615]
+* Support for (SSL auth on API calls)[https://github.com/elastic/puppet-elasticsearch-legacy/pull/577]
 
 #### Bugfixes
-* (Fix Facter calls)[https://github.com/elastic/puppet-elasticsearch/pull/590] in custom providers
+* (Fix Facter calls)[https://github.com/elastic/puppet-elasticsearch-legacy/pull/590] in custom providers
 
 #### Changes
 
@@ -428,7 +428,7 @@ Adding support for OpenBSD and minor fixes
 * Notify service when upgrading the package
 
 ####Changes
-* Remove plugin dir when upgrading Elasticsearch
+* Remove plugin dir when upgrading elasticsearch-legacy
 
 ####Testing changes
 
@@ -577,7 +577,7 @@ This releases adds several important features and fixes an important plugin inst
 
 ####Testing changes
 * Added unit testing for package pinning feature
-* Added integration testing with Elasticsearch to find issues earlier
+* Added integration testing with elasticsearch-legacy to find issues earlier
 * Fix OpenSuse 13 testing
 
 ####Known bugs
@@ -637,7 +637,7 @@ Bugfix release 0.9.4
 * Add the ability to create and populate scripts
 
 ####Bugfixes
-* add support for init_defaults_file to elasticsearch::instance
+* add support for init_defaults_file to elasticsearch-legacy::instance
 * Update apt key to full 40characters
 
 ####Changes
@@ -664,7 +664,7 @@ Bugfix release 0.9.3
 * Systemd file did not contain User/Group values
 
 ####Changes
-* Brand rename from Elasticsearch to Elastic
+* Brand rename from elasticsearch-legacy to Elastic
 
 ####Testing changes
 * Moved from multiple Gemfiles to single Gemfile
@@ -723,7 +723,7 @@ Our planning is to provide LTS releases with the puppet module
 ####Features
 * Support for using hiera to define instances and plugins.
 * Support for OpenSuSE 13.x
-* Custom facts about the installed Elasticsearch instance(s)
+* Custom facts about the installed elasticsearch-legacy instance(s)
 * Proxy host/port support for the plugin installation
 * Ability to supply a custom logging.yml template
 

@@ -33,15 +33,15 @@
 #   be useful if a cluster management software is used to decide when to start
 #   the service plus assuring it is running on the desired node.
 #
-# @author Richard Pijnenburg <richard.pijnenburg@elasticsearch.com>
+# @author Richard Pijnenburg <richard.pijnenburg@elasticsearch-legacy.com>
 # @author Tyler Langlois <tyler.langlois@elastic.co>
 #
-define elasticsearch::service::openbsd (
-  Enum['absent', 'present'] $ensure        = $elasticsearch::ensure,
-  Optional[String]          $init_template = $elasticsearch::init_template,
-  Optional[String]          $pid_dir       = $elasticsearch::pid_dir,
+define elasticsearch-legacy::service::openbsd (
+  Enum['absent', 'present'] $ensure        = $elasticsearch-legacy::ensure,
+  Optional[String]          $init_template = $elasticsearch-legacy::init_template,
+  Optional[String]          $pid_dir       = $elasticsearch-legacy::pid_dir,
   Optional[String]          $service_flags = undef,
-  Elasticsearch::Status     $status        = $elasticsearch::status,
+  elasticsearch-legacy::Status     $status        = $elasticsearch-legacy::status,
 ) {
 
   #### Service management
@@ -81,8 +81,8 @@ define elasticsearch::service::openbsd (
 
   }
 
-  $notify_service = $elasticsearch::restart_config_change ? {
-    true  => Service["elasticsearch-instance-${name}"],
+  $notify_service = $elasticsearch-legacy::restart_config_change ? {
+    true  => Service["elasticsearch-legacy-instance-${name}"],
     false => undef,
   }
 
@@ -91,20 +91,20 @@ define elasticsearch::service::openbsd (
     # init file from template
     if ($init_template != undef) {
 
-      elasticsearch_service_file { "/etc/rc.d/elasticsearch_${name}":
+      elasticsearch-legacy_service_file { "/etc/rc.d/elasticsearch-legacy_${name}":
         ensure       => $ensure,
         content      => file($init_template),
         instance     => $name,
         pid_dir      => $pid_dir,
         notify       => $notify_service,
-        package_name => $elasticsearch::package_name,
+        package_name => $elasticsearch-legacy::package_name,
       }
-      -> file { "/etc/rc.d/elasticsearch_${name}":
+      -> file { "/etc/rc.d/elasticsearch-legacy_${name}":
         ensure => $ensure,
         owner  => 'root',
         group  => '0',
         mode   => '0555',
-        before => Service["elasticsearch-instance-${name}"],
+        before => Service["elasticsearch-legacy-instance-${name}"],
         notify => $notify_service,
       }
 
@@ -112,9 +112,9 @@ define elasticsearch::service::openbsd (
 
   } elsif ($status != 'unmanaged') {
 
-    file { "/etc/rc.d/elasticsearch_${name}":
+    file { "/etc/rc.d/elasticsearch-legacy_${name}":
       ensure    => 'absent',
-      subscribe => Service["elasticsearch-instance-${name}"],
+      subscribe => Service["elasticsearch-legacy-instance-${name}"],
     }
 
   }
@@ -122,10 +122,10 @@ define elasticsearch::service::openbsd (
   if ( $status != 'unmanaged') {
 
     # action
-    service { "elasticsearch-instance-${name}":
+    service { "elasticsearch-legacy-instance-${name}":
       ensure => $service_ensure,
       enable => $service_enable,
-      name   => "elasticsearch_${name}",
+      name   => "elasticsearch-legacy_${name}",
       flags  => $service_flags,
     }
   }

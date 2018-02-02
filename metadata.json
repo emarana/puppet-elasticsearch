@@ -1,13 +1,13 @@
 {
-  "name": "elastic-elasticsearch",
+  "name": "elastic-elasticsearch-legacy",
   "version": "6.1.0",
-  "source": "https://github.com/elastic/puppet-elasticsearch",
+  "source": "https://github.com/elastic/puppet-elasticsearch-legacy",
   "author": "elastic",
   "license": "Apache-2.0",
-  "summary": "Module for managing and configuring Elasticsearch nodes",
-  "description": "Module for managing and configuring Elasticsearch nodes",
-  "project_page": "https://github.com/elastic/puppet-elasticsearch",
-  "issues_url": "https://github.com/elastic/puppet-elasticsearch/issues",
+  "summary": "Module for managing and configuring elasticsearch-legacy nodes",
+  "description": "Module for managing and configuring elasticsearch-legacy nodes",
+  "project_page": "https://github.com/elastic/puppet-elasticsearch-legacy",
+  "issues_url": "https://github.com/elastic/puppet-elasticsearch-legacy/issues",
   "data_provider": "hiera",
   "dependencies": [
     {

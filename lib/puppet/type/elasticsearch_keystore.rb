@@ -1,17 +1,17 @@
 require 'puppet/parameter/boolean'
 
-Puppet::Type.newtype(:elasticsearch_keystore) do
-  desc 'Manages an Elasticsearch keystore settings file.'
+Puppet::Type.newtype(:elasticsearch-legacy_keystore) do
+  desc 'Manages an elasticsearch-legacy keystore settings file.'
 
   ensurable
 
   newparam(:instance, :namevar => true) do
-    desc 'Elasticsearch instance this keystore belongs to.'
+    desc 'elasticsearch-legacy instance this keystore belongs to.'
   end
 
   newparam(:configdir) do
-    desc 'Path to the elasticsearch configuration directory (ES_PATH_CONF).'
-    defaultto '/etc/elasticsearch'
+    desc 'Path to the elasticsearch-legacy configuration directory (ES_PATH_CONF).'
+    defaultto '/etc/elasticsearch-legacy'
   end
 
   newparam(:purge, :boolean => true, :parent => Puppet::Parameter::Boolean) do

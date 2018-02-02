@@ -4,7 +4,7 @@ require 'yaml'
 describe 'jvm.options.erb' do
   let :harness do
     TemplateHarness.new(
-      'templates/etc/elasticsearch/jvm.options.erb'
+      'templates/etc/elasticsearch-legacy/jvm.options.erb'
     )
   end
 

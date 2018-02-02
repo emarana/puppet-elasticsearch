@@ -1,10 +1,10 @@
 module Puppet_X
   module Elastic
-    # Assists with discerning the locally installed version of Elasticsearch.
+    # Assists with discerning the locally installed version of elasticsearch-legacy.
     # Implemented in a way to be called from native types and providers in order
     # to lazily fetch the package version from various arcane Puppet mechanisms.
     class EsVersioning
-      # All of the default options we'll set for Elasticsearch's command
+      # All of the default options we'll set for elasticsearch-legacy's command
       # invocation.
       DEFAULT_OPTS = {
         'home' => 'ES_HOME',
@@ -14,7 +14,7 @@ module Puppet_X
         'conf' => 'CONF_DIR'
       }
 
-      # Create an array of command-line flags to append to an `elasticsearch`
+      # Create an array of command-line flags to append to an `elasticsearch-legacy`
       # startup command.
       def self.opt_flags(package_name, catalog, opts = DEFAULT_OPTS)
         opt_flag = opt_flag(min_version('5.0.0', package_name, catalog))
@@ -35,7 +35,7 @@ module Puppet_X
         [opt_flag, opt_args]
       end
 
-      # Get the correct option flag depending on whether Elasticsearch is post
+      # Get the correct option flag depending on whether elasticsearch-legacy is post
       # version 5.
       def self.opt_flag(v5_or_later)
         v5_or_later ? 'E' : 'Des.'

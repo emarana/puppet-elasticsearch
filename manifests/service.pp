@@ -37,22 +37,22 @@
 #   be useful if a cluster management software is used to decide when to start
 #   the service plus assuring it is running on the desired node.
 #
-# @author Richard Pijnenburg <richard.pijnenburg@elasticsearch.com>
+# @author Richard Pijnenburg <richard.pijnenburg@elasticsearch-legacy.com>
 # @author Tyler Langlois <tyler.langlois@elastic.co>
 #
-define elasticsearch::service (
-  Enum['absent', 'present'] $ensure             = $elasticsearch::ensure,
+define elasticsearch-legacy::service (
+  Enum['absent', 'present'] $ensure             = $elasticsearch-legacy::ensure,
   Hash                      $init_defaults      = {},
   Optional[String]          $init_defaults_file = undef,
   Optional[String]          $init_template      = undef,
   Optional[String]          $service_flags      = undef,
-  Elasticsearch::Status     $status             = $elasticsearch::status,
+  elasticsearch-legacy::Status     $status             = $elasticsearch-legacy::status,
 ) {
 
-  case $elasticsearch::service_provider {
+  case $elasticsearch-legacy::service_provider {
 
     'init': {
-      elasticsearch::service::init { $name:
+      elasticsearch-legacy::service::init { $name:
         ensure             => $ensure,
         status             => $status,
         init_defaults_file => $init_defaults_file,
@@ -61,7 +61,7 @@ define elasticsearch::service (
       }
     }
     'openbsd': {
-      elasticsearch::service::openbsd { $name:
+      elasticsearch-legacy::service::openbsd { $name:
         ensure        => $ensure,
         status        => $status,
         init_template => $init_template,
@@ -69,7 +69,7 @@ define elasticsearch::service (
       }
     }
     'systemd': {
-      elasticsearch::service::systemd { $name:
+      elasticsearch-legacy::service::systemd { $name:
         ensure             => $ensure,
         status             => $status,
         init_defaults_file => $init_defaults_file,
@@ -78,7 +78,7 @@ define elasticsearch::service (
       }
     }
     'openrc': {
-      elasticsearch::service::openrc { $name:
+      elasticsearch-legacy::service::openrc { $name:
         ensure             => $ensure,
         status             => $status,
         init_defaults_file => $init_defaults_file,
@@ -87,7 +87,7 @@ define elasticsearch::service (
       }
     }
     default: {
-      fail("Unknown service provider ${elasticsearch::service_provider}")
+      fail("Unknown service provider ${elasticsearch-legacy::service_provider}")
     }
   }
 }

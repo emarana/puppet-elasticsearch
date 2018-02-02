@@ -1,22 +1,22 @@
 require 'spec_helper_acceptance'
 require 'json'
 
-describe 'elasticsearch::datadir' do
+describe 'elasticsearch-legacy::datadir' do
   describe 'single data dir from class', :with_cleanup do
     describe 'manifest' do
       pp = <<-EOS
-        class { 'elasticsearch':
+        class { 'elasticsearch-legacy':
           config => {
             'cluster.name' => '#{test_settings['cluster_name']}',
             'network.host' => '0.0.0.0',
           },
           repo_version => '#{test_settings['repo_version']}',
-          datadir => '/var/lib/elasticsearch-data'
+          datadir => '/var/lib/elasticsearch-legacy-data'
         }
 
-        elasticsearch::instance { 'es-01':
+        elasticsearch-legacy::instance { 'es-01':
           config => {
-            'node.name' => 'elasticsearch001',
+            'node.name' => 'elasticsearch-legacy001',
             'http.port' => '#{test_settings['port_a']}'
           }
         }
@@ -30,12 +30,12 @@ describe 'elasticsearch::datadir' do
       end
     end
 
-    describe file('/etc/elasticsearch/es-01/elasticsearch.yml') do
+    describe file('/etc/elasticsearch-legacy/es-01/elasticsearch-legacy.yml') do
       it { should be_file }
-      it { should contain '/var/lib/elasticsearch-data/es-01' }
+      it { should contain '/var/lib/elasticsearch-legacy-data/es-01' }
     end
 
-    describe file('/var/lib/elasticsearch-data/es-01') do
+    describe file('/var/lib/elasticsearch-legacy-data/es-01') do
       it { should be_directory }
     end
 
@@ -53,7 +53,7 @@ describe 'elasticsearch::datadir' do
           json = JSON.parse(response.body)['nodes'].values.first
           expect(
             json['settings']['path']['data']
-          ).to eq('/var/lib/elasticsearch-data/es-01')
+          ).to eq('/var/lib/elasticsearch-legacy-data/es-01')
         end
       end
     end
@@ -62,7 +62,7 @@ describe 'elasticsearch::datadir' do
   describe 'single data dir from instance', :with_cleanup do
     describe 'manifest' do
       pp = <<-EOS
-        class { 'elasticsearch':
+        class { 'elasticsearch-legacy':
           config => {
             'cluster.name' => '#{test_settings['cluster_name']}',
             'network.host' => '0.0.0.0',
@@ -70,9 +70,9 @@ describe 'elasticsearch::datadir' do
           repo_version => '#{test_settings['repo_version']}',
         }
 
-        elasticsearch::instance { 'es-01':
+        elasticsearch-legacy::instance { 'es-01':
           config => {
-            'node.name' => 'elasticsearch001',
+            'node.name' => 'elasticsearch-legacy001',
             'http.port' => '#{test_settings['port_a']}'
           },
           datadir => '#{test_settings['datadir_1']}'
@@ -87,7 +87,7 @@ describe 'elasticsearch::datadir' do
       end
     end
 
-    describe file('/etc/elasticsearch/es-01/elasticsearch.yml') do
+    describe file('/etc/elasticsearch-legacy/es-01/elasticsearch-legacy.yml') do
       it { should be_file }
       it { should contain(test_settings['datadir_1']) }
     end
@@ -119,21 +119,21 @@ describe 'elasticsearch::datadir' do
   describe 'multiple data dirs from class', :with_cleanup do
     describe 'manifest' do
       pp = <<-EOS
-        class { 'elasticsearch':
+        class { 'elasticsearch-legacy':
           config => {
             'cluster.name' => '#{test_settings['cluster_name']}',
             'network.host' => '0.0.0.0',
           },
           repo_version => '#{test_settings['repo_version']}',
           datadir => [
-            '/var/lib/elasticsearch-01',
-            '/var/lib/elasticsearch-02'
+            '/var/lib/elasticsearch-legacy-01',
+            '/var/lib/elasticsearch-legacy-02'
           ]
         }
 
-        elasticsearch::instance { 'es-01':
+        elasticsearch-legacy::instance { 'es-01':
           config => {
-            'node.name' => 'elasticsearch001',
+            'node.name' => 'elasticsearch-legacy001',
             'http.port' => '#{test_settings['port_a']}'
           }
         }
@@ -147,16 +147,16 @@ describe 'elasticsearch::datadir' do
       end
     end
 
-    describe file('/etc/elasticsearch/es-01/elasticsearch.yml') do
+    describe file('/etc/elasticsearch-legacy/es-01/elasticsearch-legacy.yml') do
       it { should be_file }
-      it { should contain '/var/lib/elasticsearch-01/es-01' }
-      it { should contain '/var/lib/elasticsearch-02/es-01' }
+      it { should contain '/var/lib/elasticsearch-legacy-01/es-01' }
+      it { should contain '/var/lib/elasticsearch-legacy-02/es-01' }
     end
 
-    describe file '/var/lib/elasticsearch-01/es-01' do
+    describe file '/var/lib/elasticsearch-legacy-01/es-01' do
       it { should be_directory }
     end
-    describe file '/var/lib/elasticsearch-02/es-01' do
+    describe file '/var/lib/elasticsearch-legacy-02/es-01' do
       it { should be_directory }
     end
 
@@ -175,8 +175,8 @@ describe 'elasticsearch::datadir' do
           expect(
             json['settings']['path']['data']
           ).to contain_exactly(
-            '/var/lib/elasticsearch-01/es-01',
-            '/var/lib/elasticsearch-02/es-01'
+            '/var/lib/elasticsearch-legacy-01/es-01',
+            '/var/lib/elasticsearch-legacy-02/es-01'
           )
         end
       end
@@ -186,7 +186,7 @@ describe 'elasticsearch::datadir' do
   describe 'multiple data dirs from instance', :with_cleanup do
     describe 'manifest' do
       pp = <<-EOS
-        class { 'elasticsearch':
+        class { 'elasticsearch-legacy':
           config => {
             'cluster.name' => '#{test_settings['cluster_name']}',
             'network.host' => '0.0.0.0',
@@ -194,9 +194,9 @@ describe 'elasticsearch::datadir' do
           repo_version => '#{test_settings['repo_version']}',
         }
 
-        elasticsearch::instance { 'es-01':
+        elasticsearch-legacy::instance { 'es-01':
           config => {
-            'node.name' => 'elasticsearch001',
+            'node.name' => 'elasticsearch-legacy001',
             'http.port' => '#{test_settings['port_a']}'
           },
           datadir => [
@@ -214,7 +214,7 @@ describe 'elasticsearch::datadir' do
       end
     end
 
-    describe file('/etc/elasticsearch/es-01/elasticsearch.yml') do
+    describe file('/etc/elasticsearch-legacy/es-01/elasticsearch-legacy.yml') do
       it { should be_file }
       it { should contain test_settings['datadir_1'] }
       it { should contain test_settings['datadir_2'] }

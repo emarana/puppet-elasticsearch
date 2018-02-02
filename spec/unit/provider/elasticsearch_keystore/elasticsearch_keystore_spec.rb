@@ -11,8 +11,8 @@ shared_examples 'keystore instance' do |instance|
   end
 end
 
-describe Puppet::Type.type(:elasticsearch_keystore).provider(:elasticsearch_keystore) do
-  let(:executable) { '/usr/share/elasticsearch/bin/elasticsearch-keystore' }
+describe Puppet::Type.type(:elasticsearch-legacy_keystore).provider(:elasticsearch-legacy_keystore) do
+  let(:executable) { '/usr/share/elasticsearch-legacy/bin/elasticsearch-legacy-keystore' }
   let(:instances) { [] }
 
   before do
@@ -25,24 +25,24 @@ describe Puppet::Type.type(:elasticsearch_keystore).provider(:elasticsearch_keys
       .and_return(executable)
 
     allow(File).to receive(:exist?)
-      .with('/etc/elasticsearch/scripts/elasticsearch.keystore')
+      .with('/etc/elasticsearch-legacy/scripts/elasticsearch-legacy.keystore')
       .and_return(false)
   end
 
   describe 'instances' do
     before do
       allow(Dir).to receive(:[])
-        .with('/etc/elasticsearch/*')
+        .with('/etc/elasticsearch-legacy/*')
         .and_return((['scripts'] + instances).map do |directory|
-          "/etc/elasticsearch/#{directory}"
+          "/etc/elasticsearch-legacy/#{directory}"
         end)
 
       instances.each do |instance|
-        instance_dir = "/etc/elasticsearch/#{instance}"
-        defaults_file = "/etc/default/elasticsearch-#{instance}"
+        instance_dir = "/etc/elasticsearch-legacy/#{instance}"
+        defaults_file = "/etc/default/elasticsearch-legacy-#{instance}"
 
         allow(File).to receive(:exist?)
-          .with("#{instance_dir}/elasticsearch.keystore")
+          .with("#{instance_dir}/elasticsearch-legacy.keystore")
           .and_return(true)
 
         expect(described_class)
@@ -51,9 +51,9 @@ describe Puppet::Type.type(:elasticsearch_keystore).provider(:elasticsearch_keys
             [executable, 'list'],
             :custom_environment => {
               'ES_INCLUDE' => defaults_file,
-              'ES_PATH_CONF' => "/etc/elasticsearch/#{instance}"
+              'ES_PATH_CONF' => "/etc/elasticsearch-legacy/#{instance}"
             },
-            :uid => 'elasticsearch', :gid => 'elasticsearch'
+            :uid => 'elasticsearch-legacy', :gid => 'elasticsearch-legacy'
           )
           .and_return(
             Puppet::Util::Execution::ProcessOutput.new(
@@ -98,7 +98,7 @@ describe Puppet::Type.type(:elasticsearch_keystore).provider(:elasticsearch_keys
   describe 'flush' do
     let(:provider) { described_class.new(:name => 'es-03') }
     let(:resource) do
-      Puppet::Type.type(:elasticsearch_keystore).new(
+      Puppet::Type.type(:elasticsearch-legacy_keystore).new(
         :name     => 'es-03',
         :provider => provider
       )
@@ -110,10 +110,10 @@ describe Puppet::Type.type(:elasticsearch_keystore).provider(:elasticsearch_keys
           .with(
             [executable, 'create'],
             :custom_environment => {
-              'ES_INCLUDE' => '/etc/default/elasticsearch-es-03',
-              'ES_PATH_CONF' => "/etc/elasticsearch/es-03"
+              'ES_INCLUDE' => '/etc/default/elasticsearch-legacy-es-03',
+              'ES_PATH_CONF' => "/etc/elasticsearch-legacy/es-03"
             },
-            :uid => 'elasticsearch', :gid => 'elasticsearch'
+            :uid => 'elasticsearch-legacy', :gid => 'elasticsearch-legacy'
           )
           .and_return(Puppet::Util::Execution::ProcessOutput.new('', 0))
       )
@@ -125,7 +125,7 @@ describe Puppet::Type.type(:elasticsearch_keystore).provider(:elasticsearch_keys
     it 'deletes the keystore' do
       expect(File).to(
         receive(:delete)
-          .with(File.join(%w[/ etc elasticsearch es-03 elasticsearch.keystore]))
+          .with(File.join(%w[/ etc elasticsearch-legacy es-03 elasticsearch-legacy.keystore]))
       )
       resource[:ensure] = :absent
       provider.destroy
@@ -141,7 +141,7 @@ describe Puppet::Type.type(:elasticsearch_keystore).provider(:elasticsearch_keys
       settings.each do |setting, value|
         expect(provider.class).to(
           receive(:run_keystore)
-            .with(['add', '--force', '--stdin', setting], 'es-03', '/etc/elasticsearch', value)
+            .with(['add', '--force', '--stdin', setting], 'es-03', '/etc/elasticsearch-legacy', value)
             .and_return(Puppet::Util::Execution::ProcessOutput.new('', 0))
         )
       end
@@ -154,4 +154,4 @@ describe Puppet::Type.type(:elasticsearch_keystore).provider(:elasticsearch_keys
       provider.flush
     end
   end # of describe flush
-end # of describe Puppet::Type elasticsearch_keystore
+end # of describe Puppet::Type elasticsearch-legacy_keystore

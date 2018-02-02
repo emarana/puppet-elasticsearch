@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'elasticsearch', :type => 'class' do
+describe 'elasticsearch-legacy', :type => 'class' do
   default_params = {
     :config => { 'node.name' => 'foo' }
   }
@@ -24,7 +24,7 @@ describe 'elasticsearch', :type => 'class' do
           context 'single indices' do
             let(:facts) { facts.merge(:scenario => 'singleindex') }
 
-            it { should contain_elasticsearch__index('baz')
+            it { should contain_elasticsearch-legacy__index('baz')
               .with(
                 :ensure => 'present',
                 :settings => {
@@ -33,7 +33,7 @@ describe 'elasticsearch', :type => 'class' do
                   }
                 }
               ) }
-            it { should contain_elasticsearch_index('baz') }
+            it { should contain_elasticsearch-legacy_index('baz') }
             it { should contain_es_instance_conn_validator(
               'baz-index-conn-validator'
             ) }
@@ -42,7 +42,7 @@ describe 'elasticsearch', :type => 'class' do
           context 'no indices' do
             let(:facts) { facts.merge(:scenario => '') }
 
-            it { should_not contain_elasticsearch__index('baz') }
+            it { should_not contain_elasticsearch-legacy__index('baz') }
           end
         end
 
@@ -63,8 +63,8 @@ describe 'elasticsearch', :type => 'class' do
           context 'no instances' do
             let(:facts) { facts.merge(:scenario => '') }
 
-            it { should_not contain_elasticsearch__instance('es-hiera-multiple-1') }
-            it { should_not contain_elasticsearch__instance('es-hiera-multiple-2') }
+            it { should_not contain_elasticsearch-legacy__instance('es-hiera-multiple-1') }
+            it { should_not contain_elasticsearch-legacy__instance('es-hiera-multiple-2') }
           end
 
           context 'multiple instances using lookup_options' do
@@ -84,7 +84,7 @@ describe 'elasticsearch', :type => 'class' do
           context 'single pipeline' do
             let(:facts) { facts.merge(:scenario => 'singlepipeline') }
 
-            it { should contain_elasticsearch__pipeline('testpipeline')
+            it { should contain_elasticsearch-legacy__pipeline('testpipeline')
               .with(
                 :ensure => 'present',
                 :content => {
@@ -99,13 +99,13 @@ describe 'elasticsearch', :type => 'class' do
                   ]
                 }
               ) }
-            it { should contain_elasticsearch_pipeline('testpipeline') }
+            it { should contain_elasticsearch-legacy_pipeline('testpipeline') }
           end
 
           context 'no pipelines' do
             let(:facts) { facts.merge(:scenario => '') }
 
-            it { should_not contain_elasticsearch__pipeline('testpipeline') }
+            it { should_not contain_elasticsearch-legacy__pipeline('testpipeline') }
           end
         end
 
@@ -113,20 +113,20 @@ describe 'elasticsearch', :type => 'class' do
           context 'single plugin' do
             let(:facts) { facts.merge(:scenario => 'singleplugin') }
 
-            it { should contain_elasticsearch__plugin('mobz/elasticsearch-head')
+            it { should contain_elasticsearch-legacy__plugin('mobz/elasticsearch-legacy-head')
               .with(
                 :ensure => 'present',
                 :module_dir => 'head',
                 :instances => ['es-hiera-single']
               ) }
-            it { should contain_elasticsearch_plugin('mobz/elasticsearch-head') }
+            it { should contain_elasticsearch-legacy_plugin('mobz/elasticsearch-legacy-head') }
           end
 
           context 'no plugins' do
             let(:facts) { facts.merge(:scenario => '') }
 
-            it { should_not contain_elasticsearch__plugin(
-              'mobz/elasticsearch-head/1.0.0'
+            it { should_not contain_elasticsearch-legacy__plugin(
+              'mobz/elasticsearch-legacy-head/1.0.0'
             ) }
           end
         end
@@ -138,7 +138,7 @@ describe 'elasticsearch', :type => 'class' do
               default_params.merge(:security_plugin => 'x-pack')
             end
 
-            it { should contain_elasticsearch__role('admin')
+            it { should contain_elasticsearch-legacy__role('admin')
               .with(
                 :ensure => 'present',
                 :privileges => {
@@ -151,14 +151,14 @@ describe 'elasticsearch', :type => 'class' do
                   'cn=users,dc=example,dc=com'
                 ]
               ) }
-            it { should contain_elasticsearch_role('admin') }
-            it { should contain_elasticsearch_role_mapping('admin') }
+            it { should contain_elasticsearch-legacy_role('admin') }
+            it { should contain_elasticsearch-legacy_role_mapping('admin') }
           end
 
           context 'no roles' do
             let(:facts) { facts.merge(:scenario => '') }
 
-            it { should_not contain_elasticsearch__role('admin') }
+            it { should_not contain_elasticsearch-legacy__role('admin') }
           end
         end
 
@@ -166,18 +166,18 @@ describe 'elasticsearch', :type => 'class' do
           context 'single scripts' do
             let(:facts) { facts.merge(:scenario => 'singlescript') }
 
-            it { should contain_elasticsearch__script('myscript')
+            it { should contain_elasticsearch-legacy__script('myscript')
               .with(
                 :ensure => 'present',
                 :source => 'puppet:///file/here'
               ) }
-            it { should contain_file('/usr/share/elasticsearch/scripts/here') }
+            it { should contain_file('/usr/share/elasticsearch-legacy/scripts/here') }
           end
 
           context 'no roles' do
             let(:facts) { facts.merge(:scenario => '') }
 
-            it { should_not contain_elasticsearch__script('myscript') }
+            it { should_not contain_elasticsearch-legacy__script('myscript') }
           end
         end
 
@@ -185,7 +185,7 @@ describe 'elasticsearch', :type => 'class' do
           context 'single template' do
             let(:facts) { facts.merge(:scenario => 'singletemplate') }
 
-            it { should contain_elasticsearch__template('foo')
+            it { should contain_elasticsearch-legacy__template('foo')
               .with(
                 :ensure => 'present',
                 :content => {
@@ -197,13 +197,13 @@ describe 'elasticsearch', :type => 'class' do
                   }
                 }
               ) }
-            it { should contain_elasticsearch_template('foo') }
+            it { should contain_elasticsearch-legacy_template('foo') }
           end
 
           context 'no templates' do
             let(:facts) { facts.merge(:scenario => '') }
 
-            it { should_not contain_elasticsearch__template('foo') }
+            it { should_not contain_elasticsearch-legacy__template('foo') }
           end
         end
 
@@ -214,19 +214,19 @@ describe 'elasticsearch', :type => 'class' do
               default_params.merge(:security_plugin => 'x-pack')
             end
 
-            it { should contain_elasticsearch__user('elastic')
+            it { should contain_elasticsearch-legacy__user('elastic')
               .with(
                 :ensure => 'present',
                 :roles => ['admin'],
                 :password => 'password'
               ) }
-            it { should contain_elasticsearch_user('elastic') }
+            it { should contain_elasticsearch-legacy_user('elastic') }
           end
 
           context 'no users' do
             let(:facts) { facts.merge(:scenario => '') }
 
-            it { should_not contain_elasticsearch__user('elastic') }
+            it { should_not contain_elasticsearch-legacy__user('elastic') }
           end
         end
       end

@@ -1,7 +1,7 @@
 status = <%= @logging_level.downcase %>
 
 # log action execution errors for easier debugging
-logger.action.name = org.elasticsearch.action
+logger.action.name = org.elasticsearch-legacy.action
 logger.action.level = debug
 
 appender.console.type = Console
@@ -57,7 +57,7 @@ appender.deprecation_rolling.policies.size.size = 1GB
 appender.deprecation_rolling.strategy.type = DefaultRolloverStrategy
 appender.deprecation_rolling.strategy.max = 4
 
-logger.deprecation.name = org.elasticsearch.deprecation
+logger.deprecation.name = org.elasticsearch-legacy.deprecation
 <%- if @deprecation_logging -%>
 logger.deprecation.level = <%= @deprecation_logging_level.downcase %>
 <%- else -%>

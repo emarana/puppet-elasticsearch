@@ -143,12 +143,12 @@ task 'beaker:noop' => [:spec_prep]
 namespace :artifact do
   desc 'Fetch artifacts for tests'
   task :prep do
-    dl_base = 'https://download.elastic.co/elasticsearch/elasticsearch'
+    dl_base = 'https://download.elastic.co/elasticsearch-legacy/elasticsearch-legacy'
     fetch_archives(
-      'https://github.com/lmenezes/elasticsearch-kopf/archive/v2.1.1.zip' => \
-      'elasticsearch-kopf.zip',
-      "#{dl_base}/elasticsearch-2.3.5.deb" => 'elasticsearch-2.3.5.deb',
-      "#{dl_base}/elasticsearch-2.3.5.rpm" => 'elasticsearch-2.3.5.rpm'
+      'https://github.com/lmenezes/elasticsearch-legacy-kopf/archive/v2.1.1.zip' => \
+      'elasticsearch-legacy-kopf.zip',
+      "#{dl_base}/elasticsearch-legacy-2.3.5.deb" => 'elasticsearch-legacy-2.3.5.deb',
+      "#{dl_base}/elasticsearch-legacy-2.3.5.rpm" => 'elasticsearch-legacy-2.3.5.rpm'
     )
   end
 
@@ -158,7 +158,7 @@ namespace :artifact do
     )['latest']
     ENV['snapshot_version'] = catalog['version']
 
-    downloads = catalog['projects']['elasticsearch']['packages'].select do |pkg, _|
+    downloads = catalog['projects']['elasticsearch-legacy']['packages'].select do |pkg, _|
       pkg =~ /(?:deb|rpm)/
     end.map do |package, urls|
       [ package.split('.').last, urls ]
@@ -181,7 +181,7 @@ namespace :artifact do
       downloads.each_pair do |extension, urls|
         filename = artifact urls['url']
         checksum = artifact urls['sha_url']
-        link = artifact "elasticsearch-snapshot.#{extension}"
+        link = artifact "elasticsearch-legacy-snapshot.#{extension}"
 
         task extension => link
         file link => filename do

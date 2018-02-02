@@ -1,1 +1,1 @@
-type Elasticsearch::Status = Enum['enabled', 'disabled', 'running', 'unmanaged']
+type elasticsearch-legacy::Status = Enum['enabled', 'disabled', 'running', 'unmanaged']

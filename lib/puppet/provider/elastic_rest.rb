@@ -52,12 +52,12 @@ class Puppet::Provider::ElasticREST < Puppet::Provider
       # only fail when HTTP operations fail for mutating methods.
       unless %w(GET OPTIONS HEAD).include? req.method
         raise Puppet::Error,
-          "Received '#{e}' from the Elasticsearch API. Are your API settings correct?"
+          "Received '#{e}' from the elasticsearch-legacy API. Are your API settings correct?"
       end
     end
   end
 
-  # Helper to format a remote URL request for Elasticsearch which takes into
+  # Helper to format a remote URL request for elasticsearch-legacy which takes into
   # account path ordering, et cetera.
   def self.format_uri(resource_path, property_flush = {})
     return api_uri if resource_path.nil?
@@ -73,8 +73,8 @@ class Puppet::Provider::ElasticREST < Puppet::Provider
     end
   end
 
-  # Fetch Elasticsearch API objects. Accepts a variety of argument functions
-  # dictating how to connect to the Elasticsearch API.
+  # Fetch elasticsearch-legacy API objects. Accepts a variety of argument functions
+  # dictating how to connect to the elasticsearch-legacy API.
   #
   # @return Array
   #   an array of Hashes representing the found API objects, whether they be
@@ -126,14 +126,14 @@ class Puppet::Provider::ElasticREST < Puppet::Provider
     end
   end
 
-  # Fetch an array of provider objects from the Elasticsearch API.
+  # Fetch an array of provider objects from the elasticsearch-legacy API.
   def self.instances
     api_objects.map { |resource| new resource }
   end
 
   # Unlike a typical #prefetch, which just ties discovered #instances to the
   # correct resources, we need to quantify all the ways the resources in the
-  # catalog know about Elasticsearch API access and use those settings to
+  # catalog know about elasticsearch-legacy API access and use those settings to
   # fetch any templates we can before associating resources and providers.
   def self.prefetch(resources)
     # Get all relevant API access methods from the resources we know about
@@ -167,7 +167,7 @@ class Puppet::Provider::ElasticREST < Puppet::Provider
     @property_flush = {}
   end
 
-  # Call Elasticsearch's REST API to appropriately PUT/DELETE/or otherwise
+  # Call elasticsearch-legacy's REST API to appropriately PUT/DELETE/or otherwise
   # update any managed API objects.
   def flush
     uri = URI(
@@ -192,7 +192,7 @@ class Puppet::Provider::ElasticREST < Puppet::Provider
           resource[metadata]
         end
       )
-      # As of Elasticsearch 6.x, required when requesting with a payload (so we
+      # As of elasticsearch-legacy 6.x, required when requesting with a payload (so we
       # set it always to be safe)
       req['Content-Type'] = 'application/json' if req['Content-Type'].nil?
     end
@@ -232,7 +232,7 @@ class Puppet::Provider::ElasticREST < Puppet::Provider
                   "HTTP #{response.code}"
                 end
 
-      raise Puppet::Error, "Elasticsearch API responded with: #{err_msg}"
+      raise Puppet::Error, "elasticsearch-legacy API responded with: #{err_msg}"
     end
 
     @property_hash = self.class.api_objects(

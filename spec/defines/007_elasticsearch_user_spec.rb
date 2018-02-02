@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe 'elasticsearch::user' do
+describe 'elasticsearch-legacy::user' do
   let(:title) { 'elastic' }
 
   let(:pre_condition) do
     <<-EOS
-      class { 'elasticsearch':
+      class { 'elasticsearch-legacy':
         security_plugin => 'shield',
       }
     EOS
@@ -34,10 +34,10 @@ describe 'elasticsearch::user' do
           }
         end
 
-        it { should contain_elasticsearch__user('elastic') }
-        it { should contain_elasticsearch_user('elastic') }
+        it { should contain_elasticsearch-legacy__user('elastic') }
+        it { should contain_elasticsearch-legacy_user('elastic') }
         it do
-          should contain_elasticsearch_user_roles('elastic').with(
+          should contain_elasticsearch-legacy_user_roles('elastic').with(
             'ensure' => 'present',
             'roles'  => %w[monitor user]
           )
@@ -48,13 +48,13 @@ describe 'elasticsearch::user' do
         describe 'when present' do
           let(:pre_condition) do
             <<~EOS
-              class { 'elasticsearch':
+              class { 'elasticsearch-legacy':
                 security_plugin => 'shield',
               }
-              elasticsearch::instance { 'es-security-user': }
-              elasticsearch::plugin { 'shield': instances => 'es-security-user' }
-              elasticsearch::template { 'foo': content => {"foo" => "bar"} }
-              elasticsearch::role { 'test_role':
+              elasticsearch-legacy::instance { 'es-security-user': }
+              elasticsearch-legacy::plugin { 'shield': instances => 'es-security-user' }
+              elasticsearch-legacy::template { 'foo': content => {"foo" => "bar"} }
+              elasticsearch-legacy::role { 'test_role':
                 privileges => {
                   'cluster' => 'monitor',
                   'indices' => {
@@ -72,41 +72,41 @@ describe 'elasticsearch::user' do
             }
           end
 
-          it { should contain_elasticsearch__role('test_role') }
-          it { should contain_elasticsearch_role('test_role') }
-          it { should contain_elasticsearch_role_mapping('test_role') }
-          it { should contain_elasticsearch__plugin('shield') }
-          it { should contain_elasticsearch_plugin('shield') }
+          it { should contain_elasticsearch-legacy__role('test_role') }
+          it { should contain_elasticsearch-legacy_role('test_role') }
+          it { should contain_elasticsearch-legacy_role_mapping('test_role') }
+          it { should contain_elasticsearch-legacy__plugin('shield') }
+          it { should contain_elasticsearch-legacy_plugin('shield') }
           it { should contain_file(
-            '/usr/share/elasticsearch/plugins/shield'
+            '/usr/share/elasticsearch-legacy/plugins/shield'
           ) }
-          it { should contain_elasticsearch__user('elastic')
+          it { should contain_elasticsearch-legacy__user('elastic')
             .that_comes_before([
-            'Elasticsearch::Template[foo]'
+            'elasticsearch-legacy::Template[foo]'
           ]).that_requires([
-            'Elasticsearch::Plugin[shield]',
-            'Elasticsearch::Role[test_role]'
+            'elasticsearch-legacy::Plugin[shield]',
+            'elasticsearch-legacy::Role[test_role]'
           ])}
 
           include_examples 'instance', 'es-security-user', :systemd
           it { should contain_file(
-            '/etc/elasticsearch/es-security-user/shield'
+            '/etc/elasticsearch-legacy/es-security-user/shield'
           ) }
         end
 
         describe 'when absent' do
           let(:pre_condition) do
             <<~EOS
-              class { 'elasticsearch':
+              class { 'elasticsearch-legacy':
                 security_plugin => 'shield',
               }
-              elasticsearch::instance { 'es-security-user': }
-              elasticsearch::plugin { 'shield':
+              elasticsearch-legacy::instance { 'es-security-user': }
+              elasticsearch-legacy::plugin { 'shield':
                 ensure => 'absent',
                 instances => 'es-security-user',
               }
-              elasticsearch::template { 'foo': content => {"foo" => "bar"} }
-              elasticsearch::role { 'test_role':
+              elasticsearch-legacy::template { 'foo': content => {"foo" => "bar"} }
+              elasticsearch-legacy::role { 'test_role':
                 privileges => {
                   'cluster' => 'monitor',
                   'indices' => {
@@ -124,20 +124,20 @@ describe 'elasticsearch::user' do
             }
           end
 
-          it { should contain_elasticsearch__role('test_role') }
-          it { should contain_elasticsearch_role('test_role') }
-          it { should contain_elasticsearch_role_mapping('test_role') }
-          it { should contain_elasticsearch__plugin('shield') }
-          it { should contain_elasticsearch_plugin('shield') }
+          it { should contain_elasticsearch-legacy__role('test_role') }
+          it { should contain_elasticsearch-legacy_role('test_role') }
+          it { should contain_elasticsearch-legacy_role_mapping('test_role') }
+          it { should contain_elasticsearch-legacy__plugin('shield') }
+          it { should contain_elasticsearch-legacy_plugin('shield') }
           it { should contain_file(
-            '/usr/share/elasticsearch/plugins/shield'
+            '/usr/share/elasticsearch-legacy/plugins/shield'
           ) }
-          it { should contain_elasticsearch__user('elastic')
+          it { should contain_elasticsearch-legacy__user('elastic')
             .that_comes_before([
-              'Elasticsearch::Template[foo]',
-              'Elasticsearch::Plugin[shield]'
+              'elasticsearch-legacy::Template[foo]',
+              'elasticsearch-legacy::Plugin[shield]'
           ]).that_requires([
-            'Elasticsearch::Role[test_role]'
+            'elasticsearch-legacy::Role[test_role]'
           ])}
 
           include_examples 'instance', 'es-security-user', :systemd

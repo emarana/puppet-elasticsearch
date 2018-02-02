@@ -1,27 +1,27 @@
 [Unit]
-Description=Elasticsearch instance <%= @resource[:instance] %>
+Description=elasticsearch-legacy instance <%= @resource[:instance] %>
 Documentation=http://www.elastic.co
 Wants=network-online.target
 After=network-online.target
 
 [Service]
-EnvironmentFile=<%= @resource[:defaults_location] %>/elasticsearch-<%= @resource[:instance] %>
+EnvironmentFile=<%= @resource[:defaults_location] %>/elasticsearch-legacy-<%= @resource[:instance] %>
 
 WorkingDirectory=<%= @resource[:homedir] %>
 
 User=<%= @resource[:user] %>
 Group=<%= @resource[:group] %>
 
-ExecStartPre=-/usr/share/elasticsearch/bin/elasticsearch-systemd-pre-exec
+ExecStartPre=-/usr/share/elasticsearch-legacy/bin/elasticsearch-legacy-systemd-pre-exec
 
-ExecStart=/usr/share/elasticsearch/bin/elasticsearch \
-                                                -p <%= @resource[:pid_dir] %>/elasticsearch-<%= @resource[:instance] %>.pid \
+ExecStart=/usr/share/elasticsearch-legacy/bin/elasticsearch-legacy \
+                                                -p <%= @resource[:pid_dir] %>/elasticsearch-legacy-<%= @resource[:instance] %>.pid \
                                                 <%= opt_flags.join(' ') %>
 
 # StandardOutput is configured to redirect to journalctl since
 # some error messages may be logged in standard output before
-# elasticsearch logging system is initialized. Elasticsearch
-# stores its logs in /var/log/elasticsearch and does not use
+# elasticsearch-legacy logging system is initialized. elasticsearch-legacy
+# stores its logs in /var/log/elasticsearch-legacy and does not use
 # journalctl by default. If you also want to enable journalctl
 # logging, you can simply remove the "quiet" option from ExecStart.
 StandardOutput=journal
@@ -35,7 +35,7 @@ LimitNPROC=<%= @resource[:nproc] %>
 
 # Specifies the maximum number of bytes of memory that may be locked into RAM
 # Set to "infinity" if you use the 'bootstrap.memory_lock: true' option
-# in elasticsearch.yml and 'MAX_LOCKED_MEMORY=unlimited' in ${path.env}
+# in elasticsearch-legacy.yml and 'MAX_LOCKED_MEMORY=unlimited' in ${path.env}
 #LimitMEMLOCK=infinity
 <% if @resource[:memlock] == 'unlimited' %>
 LimitMEMLOCK=infinity

@@ -1,5 +1,5 @@
 ---
-elasticsearch::users:
+elasticsearch-legacy::users:
   elastic:
     ensure: present
     password: password

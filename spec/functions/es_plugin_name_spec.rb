@@ -25,7 +25,7 @@ describe 'es_plugin_name' do
       .and_return('foo') }
 
     it { is_expected.to run
-      .with_params('vendor/elasticsearch-foo/1.0.0')
+      .with_params('vendor/elasticsearch-legacy-foo/1.0.0')
       .and_return('foo') }
 
     it { is_expected.to run

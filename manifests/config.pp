@@ -5,12 +5,12 @@
 # definitions or other modules.
 #
 # @example importing this class into other classes to use its functionality:
-#   class { 'elasticsearch::config': }
+#   class { 'elasticsearch-legacy::config': }
 #
-# @author Richard Pijnenburg <richard.pijnenburg@elasticsearch.com>
+# @author Richard Pijnenburg <richard.pijnenburg@elasticsearch-legacy.com>
 # @author Tyler Langlois <tyler.langlois@elastic.co>
 #
-class elasticsearch::config {
+class elasticsearch-legacy::config {
 
   #### Configuration
 
@@ -19,92 +19,92 @@ class elasticsearch::config {
     cwd  => '/',
   }
 
-  if ( $elasticsearch::ensure == 'present' ) {
+  if ( $elasticsearch-legacy::ensure == 'present' ) {
 
     file {
-      $elasticsearch::configdir:
+      $elasticsearch-legacy::configdir:
         ensure => 'directory',
-        group  => $elasticsearch::elasticsearch_group,
-        owner  => $elasticsearch::elasticsearch_user,
+        group  => $elasticsearch-legacy::elasticsearch-legacy_group,
+        owner  => $elasticsearch-legacy::elasticsearch-legacy_user,
         mode   => '0755';
-      $elasticsearch::datadir:
+      $elasticsearch-legacy::datadir:
         ensure => 'directory',
-        group  => $elasticsearch::elasticsearch_group,
-        owner  => $elasticsearch::elasticsearch_user;
-      $elasticsearch::logdir:
+        group  => $elasticsearch-legacy::elasticsearch-legacy_group,
+        owner  => $elasticsearch-legacy::elasticsearch-legacy_user;
+      $elasticsearch-legacy::logdir:
         ensure  => 'directory',
         group   => undef,
-        owner   => $elasticsearch::elasticsearch_user,
+        owner   => $elasticsearch-legacy::elasticsearch-legacy_user,
         mode    => '0755',
         recurse => true;
-      $elasticsearch::plugindir:
+      $elasticsearch-legacy::plugindir:
         ensure => 'directory',
-        group  => $elasticsearch::elasticsearch_group,
-        owner  => $elasticsearch::elasticsearch_user,
+        group  => $elasticsearch-legacy::elasticsearch-legacy_group,
+        owner  => $elasticsearch-legacy::elasticsearch-legacy_user,
         mode   => 'o+Xr';
-      "${elasticsearch::homedir}/lib":
+      "${elasticsearch-legacy::homedir}/lib":
         ensure  => 'directory',
         group   => '0',
         owner   => 'root',
         recurse => true;
-      $elasticsearch::homedir:
+      $elasticsearch-legacy::homedir:
         ensure => 'directory',
-        group  => $elasticsearch::elasticsearch_group,
-        owner  => $elasticsearch::elasticsearch_user;
-      "${elasticsearch::homedir}/templates_import":
+        group  => $elasticsearch-legacy::elasticsearch-legacy_group,
+        owner  => $elasticsearch-legacy::elasticsearch-legacy_user;
+      "${elasticsearch-legacy::homedir}/templates_import":
         ensure => 'directory',
-        group  => $elasticsearch::elasticsearch_group,
-        owner  => $elasticsearch::elasticsearch_user,
+        group  => $elasticsearch-legacy::elasticsearch-legacy_group,
+        owner  => $elasticsearch-legacy::elasticsearch-legacy_user,
         mode   => '0755';
-      "${elasticsearch::homedir}/scripts":
+      "${elasticsearch-legacy::homedir}/scripts":
         ensure => 'directory',
-        group  => $elasticsearch::elasticsearch_group,
-        owner  => $elasticsearch::elasticsearch_user,
+        group  => $elasticsearch-legacy::elasticsearch-legacy_group,
+        owner  => $elasticsearch-legacy::elasticsearch-legacy_user,
         mode   => '0755';
-      '/etc/elasticsearch/elasticsearch.yml':
+      '/etc/elasticsearch-legacy/elasticsearch-legacy.yml':
         ensure => 'absent';
-      '/etc/elasticsearch/jvm.options':
+      '/etc/elasticsearch-legacy/jvm.options':
         ensure => 'absent';
-      '/etc/elasticsearch/logging.yml':
+      '/etc/elasticsearch-legacy/logging.yml':
         ensure => 'absent';
-      '/etc/elasticsearch/log4j2.properties':
+      '/etc/elasticsearch-legacy/log4j2.properties':
         ensure => 'absent';
-      '/etc/init.d/elasticsearch':
+      '/etc/init.d/elasticsearch-legacy':
         ensure => 'absent';
     }
 
-    if $elasticsearch::pid_dir {
-      file { $elasticsearch::pid_dir:
+    if $elasticsearch-legacy::pid_dir {
+      file { $elasticsearch-legacy::pid_dir:
         ensure  => 'directory',
         group   => undef,
-        owner   => $elasticsearch::elasticsearch_user,
+        owner   => $elasticsearch-legacy::elasticsearch-legacy_user,
         recurse => true,
       }
 
-      if ($elasticsearch::service_provider == 'systemd') {
-        $group = $elasticsearch::elasticsearch_group
-        $user = $elasticsearch::elasticsearch_user
-        $pid_dir = $elasticsearch::pid_dir
+      if ($elasticsearch-legacy::service_provider == 'systemd') {
+        $group = $elasticsearch-legacy::elasticsearch-legacy_group
+        $user = $elasticsearch-legacy::elasticsearch-legacy_user
+        $pid_dir = $elasticsearch-legacy::pid_dir
 
-        file { '/usr/lib/tmpfiles.d/elasticsearch.conf':
+        file { '/usr/lib/tmpfiles.d/elasticsearch-legacy.conf':
           ensure  => 'file',
-          content => template("${module_name}/usr/lib/tmpfiles.d/elasticsearch.conf.erb"),
+          content => template("${module_name}/usr/lib/tmpfiles.d/elasticsearch-legacy.conf.erb"),
           group   => '0',
           owner   => 'root',
         }
       }
     }
 
-    if ($elasticsearch::service_provider == 'systemd') {
+    if ($elasticsearch-legacy::service_provider == 'systemd') {
       # Mask default unit (from package)
-      service { 'elasticsearch' :
+      service { 'elasticsearch-legacy' :
         enable => 'mask',
       }
     }
 
-    if $elasticsearch::defaults_location {
-      augeas { "${elasticsearch::defaults_location}/elasticsearch":
-        incl    => "${elasticsearch::defaults_location}/elasticsearch",
+    if $elasticsearch-legacy::defaults_location {
+      augeas { "${elasticsearch-legacy::defaults_location}/elasticsearch-legacy":
+        incl    => "${elasticsearch-legacy::defaults_location}/elasticsearch-legacy",
         lens    => 'Shellvars.lns',
         changes => [
           'rm CONF_FILE',
@@ -114,38 +114,38 @@ class elasticsearch::config {
       }
     }
 
-    if $::elasticsearch::security_plugin != undef and ($::elasticsearch::security_plugin in ['shield', 'x-pack']) {
-      file { "/etc/elasticsearch/${::elasticsearch::security_plugin}" :
+    if $::elasticsearch-legacy::security_plugin != undef and ($::elasticsearch-legacy::security_plugin in ['shield', 'x-pack']) {
+      file { "/etc/elasticsearch-legacy/${::elasticsearch-legacy::security_plugin}" :
         ensure => 'directory',
       }
     }
 
     # Define logging config file for the in-use security plugin
-    if $::elasticsearch::security_logging_content != undef or $::elasticsearch::security_logging_source != undef {
-      if $::elasticsearch::security_plugin == undef or ! ($::elasticsearch::security_plugin in ['shield', 'x-pack']) {
-        fail("\"${::elasticsearch::security_plugin}\" is not a valid security_plugin parameter value")
+    if $::elasticsearch-legacy::security_logging_content != undef or $::elasticsearch-legacy::security_logging_source != undef {
+      if $::elasticsearch-legacy::security_plugin == undef or ! ($::elasticsearch-legacy::security_plugin in ['shield', 'x-pack']) {
+        fail("\"${::elasticsearch-legacy::security_plugin}\" is not a valid security_plugin parameter value")
       }
 
-      $_security_logging_file = $::elasticsearch::security_plugin ? {
+      $_security_logging_file = $::elasticsearch-legacy::security_plugin ? {
         'shield' => 'logging.yml',
         default => 'log4j2.properties'
       }
 
-      file { "/etc/elasticsearch/${::elasticsearch::security_plugin}/${_security_logging_file}" :
-        content => $::elasticsearch::security_logging_content,
-        source  => $::elasticsearch::security_logging_source,
+      file { "/etc/elasticsearch-legacy/${::elasticsearch-legacy::security_plugin}/${_security_logging_file}" :
+        content => $::elasticsearch-legacy::security_logging_content,
+        source  => $::elasticsearch-legacy::security_logging_source,
       }
     }
 
-  } elsif ( $elasticsearch::ensure == 'absent' ) {
+  } elsif ( $elasticsearch-legacy::ensure == 'absent' ) {
 
-    file { $elasticsearch::plugindir:
+    file { $elasticsearch-legacy::plugindir:
       ensure => 'absent',
       force  => true,
       backup => false,
     }
 
-    file { "${elasticsearch::configdir}/jvm.options":
+    file { "${elasticsearch-legacy::configdir}/jvm.options":
       ensure => 'absent',
     }
 

@@ -6,9 +6,9 @@ shared_examples 'plugin behavior' do |version, user, plugin, offline, config|
     context 'official repo', :with_cleanup do
       describe 'manifest' do
         pp = <<-EOS
-          class { 'elasticsearch':
+          class { 'elasticsearch-legacy':
             config => {
-              'node.name' => 'elasticsearch001',
+              'node.name' => 'elasticsearch-legacy001',
               'cluster.name' => '#{test_settings['cluster_name']}',
               'network.host' => '0.0.0.0',
             },
@@ -16,14 +16,14 @@ shared_examples 'plugin behavior' do |version, user, plugin, offline, config|
             restart_on_change => true,
           }
 
-          elasticsearch::instance { 'es-01':
+          elasticsearch-legacy::instance { 'es-01':
             config => {
-              'node.name' => 'elasticsearch001',
+              'node.name' => 'elasticsearch-legacy001',
               'http.port' => '#{test_settings['port_a']}'
             }
           }
 
-          elasticsearch::plugin { 'mobz/elasticsearch-head':
+          elasticsearch-legacy::plugin { 'mobz/elasticsearch-legacy-head':
              instances => 'es-01'
           }
         EOS
@@ -36,7 +36,7 @@ shared_examples 'plugin behavior' do |version, user, plugin, offline, config|
         end
       end
 
-      describe file('/usr/share/elasticsearch/plugins/head/') do
+      describe file('/usr/share/elasticsearch-legacy/plugins/head/') do
         it { should be_directory }
       end
 
@@ -63,14 +63,14 @@ shared_examples 'plugin behavior' do |version, user, plugin, offline, config|
     # Pending
     context 'custom git repo' do
       describe 'manifest'
-      describe file('/usr/share/elasticsearch/plugins/head/')
+      describe file('/usr/share/elasticsearch-legacy/plugins/head/')
       describe server :container
     end
 
     context 'invalid plugin', :with_cleanup do
       describe 'manifest' do
         pp = <<-EOS
-          class { 'elasticsearch':
+          class { 'elasticsearch-legacy':
             config => {
               'node.name' => 'elasticearch001',
               'cluster.name' => '#{test_settings['cluster_name']}',
@@ -79,14 +79,14 @@ shared_examples 'plugin behavior' do |version, user, plugin, offline, config|
             #{config}
           }
 
-          elasticsearch::instance { 'es-01':
+          elasticsearch-legacy::instance { 'es-01':
             config => {
-              'node.name' => 'elasticsearch001',
+              'node.name' => 'elasticsearch-legacy001',
               'http.port' => '#{test_settings['port_a']}'
             }
           }
 
-          elasticsearch::plugin { 'elasticsearch/non-existing':
+          elasticsearch-legacy::plugin { 'elasticsearch-legacy/non-existing':
             instances => 'es-01'
           }
         EOS
@@ -100,26 +100,26 @@ shared_examples 'plugin behavior' do |version, user, plugin, offline, config|
     describe "running ES under #{user} user", :with_cleanup do
       describe 'manifest' do
         pp = <<-EOS
-          class { 'elasticsearch':
+          class { 'elasticsearch-legacy':
             config => {
-              'node.name' => 'elasticsearch001',
+              'node.name' => 'elasticsearch-legacy001',
               'cluster.name' => '#{test_settings['cluster_name']}',
               'network.host' => '0.0.0.0',
             },
             #{config}
-            elasticsearch_user => '#{user}',
-            elasticsearch_group => '#{user}',
+            elasticsearch-legacy_user => '#{user}',
+            elasticsearch-legacy_group => '#{user}',
             restart_on_change => true,
           }
 
-          elasticsearch::instance { 'es-01':
+          elasticsearch-legacy::instance { 'es-01':
             config => {
-              'node.name' => 'elasticsearch001',
+              'node.name' => 'elasticsearch-legacy001',
               'http.port' => '#{test_settings['port_a']}'
             }
           }
 
-          elasticsearch::plugin { '#{plugin[:prefix]}#{plugin[:name]}/#{plugin[:old]}':
+          elasticsearch-legacy::plugin { '#{plugin[:prefix]}#{plugin[:name]}/#{plugin[:old]}':
             instances => 'es-01'
           }
         EOS
@@ -132,7 +132,7 @@ shared_examples 'plugin behavior' do |version, user, plugin, offline, config|
         end
       end
 
-      describe file("/usr/share/elasticsearch/plugins/#{plugin[:name]}/") do
+      describe file("/usr/share/elasticsearch-legacy/plugins/#{plugin[:name]}/") do
         it { should be_directory }
       end
 
@@ -166,26 +166,26 @@ shared_examples 'plugin behavior' do |version, user, plugin, offline, config|
       describe 'upgrading', :with_cleanup do
         describe 'manifest' do
           pp = <<-EOS
-            class { 'elasticsearch':
+            class { 'elasticsearch-legacy':
               config => {
-                'node.name' => 'elasticsearch001',
+                'node.name' => 'elasticsearch-legacy001',
                 'cluster.name' => '#{test_settings['cluster_name']}',
                 'network.host' => '0.0.0.0',
               },
               #{config}
-              elasticsearch_user => '#{user}',
-              elasticsearch_group => '#{user}',
+              elasticsearch-legacy_user => '#{user}',
+              elasticsearch-legacy_group => '#{user}',
               restart_on_change => true,
             }
 
-            elasticsearch::instance { 'es-01':
+            elasticsearch-legacy::instance { 'es-01':
               config => {
-                'node.name' => 'elasticsearch001',
+                'node.name' => 'elasticsearch-legacy001',
                 'http.port' => '#{test_settings['port_a']}'
               }
             }
 
-            elasticsearch::plugin { '#{plugin[:prefix]}#{plugin[:name]}/#{plugin[:new]}':
+            elasticsearch-legacy::plugin { '#{plugin[:prefix]}#{plugin[:name]}/#{plugin[:new]}':
               instances => 'es-01'
             }
           EOS
@@ -222,27 +222,27 @@ shared_examples 'plugin behavior' do |version, user, plugin, offline, config|
     describe 'offline installation via puppet://', :with_cleanup do
       describe 'manifest' do
         pp = <<-EOS
-          class { 'elasticsearch':
+          class { 'elasticsearch-legacy':
             config => {
-              'node.name' => 'elasticsearch001',
+              'node.name' => 'elasticsearch-legacy001',
               'cluster.name' => '#{test_settings['cluster_name']}',
               'network.host' => '0.0.0.0',
             },
             #{config}
-            elasticsearch_user => '#{user}',
-            elasticsearch_group => '#{user}',
+            elasticsearch-legacy_user => '#{user}',
+            elasticsearch-legacy_group => '#{user}',
             restart_on_change => true,
           }
 
-          elasticsearch::instance { 'es-01':
+          elasticsearch-legacy::instance { 'es-01':
             config => {
-              'node.name' => 'elasticsearch001',
+              'node.name' => 'elasticsearch-legacy001',
               'http.port' => '#{test_settings['port_a']}'
             }
           }
 
-          elasticsearch::plugin { '#{offline}':
-            source => 'puppet:///modules/another/elasticsearch-#{offline}.zip',
+          elasticsearch-legacy::plugin { '#{offline}':
+            source => 'puppet:///modules/another/elasticsearch-legacy-#{offline}.zip',
             instances => 'es-01'
           }
         EOS
@@ -276,9 +276,9 @@ shared_examples 'plugin behavior' do |version, user, plugin, offline, config|
     describe 'installation via url', :with_cleanup do
       describe 'manifest' do
         pp = <<-EOS
-          class { 'elasticsearch':
+          class { 'elasticsearch-legacy':
             config => {
-              'node.name' => 'elasticsearch001',
+              'node.name' => 'elasticsearch-legacy001',
               'cluster.name' => '#{test_settings['cluster_name']}',
               'network.host' => '0.0.0.0',
             },
@@ -286,15 +286,15 @@ shared_examples 'plugin behavior' do |version, user, plugin, offline, config|
             restart_on_change => true,
           }
 
-          elasticsearch::instance { 'es-01':
+          elasticsearch-legacy::instance { 'es-01':
             config => {
-              'node.name' => 'elasticsearch001',
+              'node.name' => 'elasticsearch-legacy001',
               'http.port' => '#{test_settings['port_a']}'
             }
           }
 
-          elasticsearch::plugin { 'hq':
-            url => 'https://github.com/royrusso/elasticsearch-HQ/archive/v2.0.3.zip',
+          elasticsearch-legacy::plugin { 'hq':
+            url => 'https://github.com/royrusso/elasticsearch-legacy-HQ/archive/v2.0.3.zip',
             instances => 'es-01'
           }
         EOS
@@ -329,21 +329,21 @@ shared_examples 'plugin behavior' do |version, user, plugin, offline, config|
   end
 end
 
-describe 'elasticsearch::plugin' do
+describe 'elasticsearch-legacy::plugin' do
   before :all do
     shell "mkdir -p #{default['distmoduledir']}/another/files"
 
     shell %W[
-      ln -sf /tmp/elasticsearch-kopf.zip
-      #{default['distmoduledir']}/another/files/elasticsearch-kopf.zip
+      ln -sf /tmp/elasticsearch-legacy-kopf.zip
+      #{default['distmoduledir']}/another/files/elasticsearch-legacy-kopf.zip
     ].join(' ')
   end
 
   include_examples 'plugin behavior',
                    test_settings['repo_version2x'],
-                   'elasticsearch',
+                   'elasticsearch-legacy',
                    {
-                     prefix: 'lmenezes/elasticsearch-',
+                     prefix: 'lmenezes/elasticsearch-legacy-',
                      name: 'kopf',
                      old: '2.0.1',
                      new: '2.1.1'

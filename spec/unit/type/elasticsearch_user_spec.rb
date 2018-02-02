@@ -1,6 +1,6 @@
 require 'spec_helper_rspec'
 
-describe Puppet::Type.type(:elasticsearch_user) do
+describe Puppet::Type.type(:elasticsearch-legacy_user) do
   let(:resource_name) { 'elastic' }
 
   describe 'when validating attributes' do

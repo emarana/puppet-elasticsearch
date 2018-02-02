@@ -1,12 +1,12 @@
 require 'spec_helper_acceptance'
 
-describe 'elasticsearch 5.x', :if => v5x_capable? do
+describe 'elasticsearch-legacy 5.x', :if => v5x_capable? do
   describe 'basic installation', :with_cleanup do
     describe 'manifest' do
       pp = <<-EOS
-        class { 'elasticsearch':
+        class { 'elasticsearch-legacy':
           config => {
-            'node.name' => 'elasticsearch001',
+            'node.name' => 'elasticsearch-legacy001',
             'cluster.name' => '#{test_settings['cluster_name']}',
             'network.host' => '0.0.0.0',
           },
@@ -14,9 +14,9 @@ describe 'elasticsearch 5.x', :if => v5x_capable? do
           restart_on_change => true,
         }
 
-        elasticsearch::instance { 'es-01':
+        elasticsearch-legacy::instance { 'es-01':
           config => {
-            'node.name' => 'elasticsearch001',
+            'node.name' => 'elasticsearch-legacy001',
             'http.port' => '#{test_settings['port_a']}'
           }
         }

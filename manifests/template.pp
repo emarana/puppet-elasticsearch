@@ -1,4 +1,4 @@
-#  This define allows you to insert, update or delete Elasticsearch index
+#  This define allows you to insert, update or delete elasticsearch-legacy index
 #  templates.
 #
 #  Template content should be defined through either the `content` parameter
@@ -10,20 +10,20 @@
 #   the cluster.
 #
 # @param api_basic_auth_password
-#   HTTP basic auth password to use when communicating over the Elasticsearch
+#   HTTP basic auth password to use when communicating over the elasticsearch-legacy
 #   API.
 #
 # @param api_basic_auth_username
-#   HTTP basic auth username to use when communicating over the Elasticsearch
+#   HTTP basic auth username to use when communicating over the elasticsearch-legacy
 #   API.
 #
 # @param api_ca_file
 #   Path to a CA file which will be used to validate server certs when
-#   communicating with the Elasticsearch API over HTTPS.
+#   communicating with the elasticsearch-legacy API over HTTPS.
 #
 # @param api_ca_path
 #   Path to a directory with CA files which will be used to validate server
-#   certs when communicating with the Elasticsearch API over HTTPS.
+#   certs when communicating with the elasticsearch-legacy API over HTTPS.
 #
 # @param api_host
 #   Host name or IP address of the ES instance to connect to.
@@ -32,10 +32,10 @@
 #   Port number of the ES instance to connect to
 #
 # @param api_protocol
-#   Protocol that should be used to connect to the Elasticsearch API.
+#   Protocol that should be used to connect to the elasticsearch-legacy API.
 #
 # @param api_timeout
-#   Timeout period (in seconds) for the Elasticsearch API.
+#   Timeout period (in seconds) for the elasticsearch-legacy API.
 #
 # @param content
 #   Contents of the template. Can be either a puppet hash or a string
@@ -47,24 +47,24 @@
 #
 # @param validate_tls
 #   Determines whether the validity of SSL/TLS certificates received from the
-#   Elasticsearch API should be verified or ignored.
+#   elasticsearch-legacy API should be verified or ignored.
 #
-# @author Richard Pijnenburg <richard.pijnenburg@elasticsearch.com>
+# @author Richard Pijnenburg <richard.pijnenburg@elasticsearch-legacy.com>
 # @author Tyler Langlois <tyler.langlois@elastic.co>
 #
-define elasticsearch::template (
+define elasticsearch-legacy::template (
   Enum['absent', 'present']       $ensure                  = 'present',
-  Optional[String]                $api_basic_auth_password = $elasticsearch::api_basic_auth_password,
-  Optional[String]                $api_basic_auth_username = $elasticsearch::api_basic_auth_username,
-  Optional[Stdlib::Absolutepath]  $api_ca_file             = $elasticsearch::api_ca_file,
-  Optional[Stdlib::Absolutepath]  $api_ca_path             = $elasticsearch::api_ca_path,
-  String                          $api_host                = $elasticsearch::api_host,
-  Integer[0, 65535]               $api_port                = $elasticsearch::api_port,
-  Enum['http', 'https']           $api_protocol            = $elasticsearch::api_protocol,
-  Integer                         $api_timeout             = $elasticsearch::api_timeout,
+  Optional[String]                $api_basic_auth_password = $elasticsearch-legacy::api_basic_auth_password,
+  Optional[String]                $api_basic_auth_username = $elasticsearch-legacy::api_basic_auth_username,
+  Optional[Stdlib::Absolutepath]  $api_ca_file             = $elasticsearch-legacy::api_ca_file,
+  Optional[Stdlib::Absolutepath]  $api_ca_path             = $elasticsearch-legacy::api_ca_path,
+  String                          $api_host                = $elasticsearch-legacy::api_host,
+  Integer[0, 65535]               $api_port                = $elasticsearch-legacy::api_port,
+  Enum['http', 'https']           $api_protocol            = $elasticsearch-legacy::api_protocol,
+  Integer                         $api_timeout             = $elasticsearch-legacy::api_timeout,
   Optional[Variant[String, Hash]] $content                 = undef,
   Optional[String]                $source                  = undef,
-  Boolean                         $validate_tls            = $elasticsearch::validate_tls,
+  Boolean                         $validate_tls            = $elasticsearch-legacy::validate_tls,
 ) {
   if $content != undef and is_string($content) {
     $_content = parsejson($content)
@@ -83,7 +83,7 @@ define elasticsearch::template (
     port    => $api_port,
     timeout => $api_timeout,
   }
-  -> elasticsearch_template { $name:
+  -> elasticsearch-legacy_template { $name:
     ensure       => $ensure,
     content      => $_content,
     source       => $source,

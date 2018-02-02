@@ -1,5 +1,5 @@
 ---
-elasticsearch::pipelines:
+elasticsearch-legacy::pipelines:
   testpipeline:
     ensure: present
     content:

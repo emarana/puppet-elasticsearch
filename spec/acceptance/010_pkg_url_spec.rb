@@ -1,7 +1,7 @@
 require 'spec_helper_acceptance'
 require 'json'
 
-describe 'elasticsearch::package_url' do
+describe 'elasticsearch-legacy::package_url' do
   before :all do
     shell "mkdir -p #{default['distmoduledir']}/another/files"
 
@@ -14,17 +14,17 @@ describe 'elasticsearch::package_url' do
   context 'via http', :with_cleanup do
     describe 'manifest' do
       pp = <<-EOS
-        class { 'elasticsearch':
+        class { 'elasticsearch-legacy':
           manage_repo => false,
           package_url => '#{test_settings['url']}',
           config => {
-            'node.name' => 'elasticsearch001',
+            'node.name' => 'elasticsearch-legacy001',
             'cluster.name' => '#{test_settings['cluster_name']}',
             'network.host' => '0.0.0.0',
           }
         }
 
-        elasticsearch::instance{ 'es-01': }
+        elasticsearch-legacy::instance{ 'es-01': }
       EOS
 
       it 'applies cleanly ' do
@@ -69,17 +69,17 @@ describe 'elasticsearch::package_url' do
   context 'via local file', :with_cleanup do
     describe 'manifest' do
       pp = <<-EOS
-        class { 'elasticsearch':
+        class { 'elasticsearch-legacy':
           manage_repo => false,
           package_url => 'file:#{test_settings['local']}',
           config => {
-            'node.name' => 'elasticsearch001',
+            'node.name' => 'elasticsearch-legacy001',
             'cluster.name' => '#{test_settings['cluster_name']}',
             'network.host' => '0.0.0.0',
           }
         }
 
-        elasticsearch::instance { 'es-01': }
+        elasticsearch-legacy::instance { 'es-01': }
       EOS
 
       it 'applies cleanly ' do
@@ -124,18 +124,18 @@ describe 'elasticsearch::package_url' do
   context 'via puppet', :with_cleanup do
     describe 'manifest' do
       pp = <<-EOS
-        class { 'elasticsearch':
+        class { 'elasticsearch-legacy':
           manage_repo => false,
           package_url =>
             'puppet:///modules/another/#{test_settings['puppet']}',
           config => {
-            'node.name' => 'elasticsearch001',
+            'node.name' => 'elasticsearch-legacy001',
             'cluster.name' => '#{test_settings['cluster_name']}',
             'network.host' => '0.0.0.0',
           }
         }
 
-        elasticsearch::instance { 'es-01': }
+        elasticsearch-legacy::instance { 'es-01': }
       EOS
 
       it 'applies cleanly ' do

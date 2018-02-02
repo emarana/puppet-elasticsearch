@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'elasticsearch::template', :type => 'define' do
+describe 'elasticsearch-legacy::template', :type => 'define' do
   on_supported_os(
     :hardwaremodels => ['x86_64'],
     :supported_os => [
@@ -18,7 +18,7 @@ describe 'elasticsearch::template', :type => 'define' do
 
       let(:title) { 'foo' }
       let(:pre_condition) do
-        'class { "elasticsearch" : }'
+        'class { "elasticsearch-legacy" : }'
       end
 
       describe 'parameter validation' do
@@ -57,13 +57,13 @@ describe 'elasticsearch::template', :type => 'define' do
           }
         end
 
-        it { should contain_elasticsearch__template('foo') }
+        it { should contain_elasticsearch-legacy__template('foo') }
         it do
           should contain_es_instance_conn_validator('foo-template')
-            .that_comes_before('Elasticsearch_template[foo]')
+            .that_comes_before('elasticsearch-legacy_template[foo]')
         end
         it 'passes through parameters' do
-          should contain_elasticsearch_template('foo').with(
+          should contain_elasticsearch-legacy_template('foo').with(
             :ensure => 'present',
             :source => 'puppet:///path/to/foo.json',
             :protocol => 'https',
@@ -86,7 +86,7 @@ describe 'elasticsearch::template', :type => 'define' do
         end
         let(:pre_condition) do
           <<-EOS
-            class { 'elasticsearch' :
+            class { 'elasticsearch-legacy' :
               api_protocol => 'https',
               api_host => '127.0.0.1',
               api_port => 9201,
@@ -101,7 +101,7 @@ describe 'elasticsearch::template', :type => 'define' do
         end
 
         it do
-          should contain_elasticsearch_template('foo').with(
+          should contain_elasticsearch-legacy_template('foo').with(
             :ensure => 'present',
             :content => '{}',
             :protocol => 'https',
@@ -125,7 +125,7 @@ describe 'elasticsearch::template', :type => 'define' do
         end
 
         it 'removes templates' do
-          should contain_elasticsearch_template('foo').with(:ensure => 'absent')
+          should contain_elasticsearch-legacy_template('foo').with(:ensure => 'absent')
         end
       end
     end

@@ -1,13 +1,13 @@
-# This define allows you to install arbitrary Elasticsearch plugins
+# This define allows you to install arbitrary elasticsearch-legacy plugins
 # either by using the default repositories or by specifying an URL
 #
 # @example install from official repository
-#   elasticsearch::plugin {'mobz/elasticsearch-head': module_dir => 'head'}
+#   elasticsearch-legacy::plugin {'mobz/elasticsearch-legacy-head': module_dir => 'head'}
 #
 # @example installation using a custom URL
-#   elasticsearch::plugin { 'elasticsearch-jetty':
-#    module_dir => 'elasticsearch-jetty',
-#    url        => 'https://oss-es-plugins.s3.amazonaws.com/elasticsearch-jetty/elasticsearch-jetty-0.90.0.zip',
+#   elasticsearch-legacy::plugin { 'elasticsearch-legacy-jetty':
+#    module_dir => 'elasticsearch-legacy-jetty',
+#    url        => 'https://oss-es-plugins.s3.amazonaws.com/elasticsearch-legacy-jetty/elasticsearch-legacy-jetty-0.90.0.zip',
 #   }
 #
 # @param ensure
@@ -15,7 +15,7 @@
 #   Set to 'absent' to ensure a plugin is not installed
 #
 # @param configdir
-#   Path to the elasticsearch configuration directory (ES_PATH_CONF)
+#   Path to the elasticsearch-legacy configuration directory (ES_PATH_CONF)
 #   to which the plugin should be installed.
 #
 # @param instances
@@ -52,14 +52,14 @@
 # @param url
 #   Specify an URL where to download the plugin from.
 #
-# @author Richard Pijnenburg <richard.pijnenburg@elasticsearch.com>
+# @author Richard Pijnenburg <richard.pijnenburg@elasticsearch-legacy.com>
 # @author Matteo Sessa <matteo.sessa@catchoftheday.com.au>
 # @author Dennis Konert <dkonert@gmail.com>
 # @author Tyler Langlois <tyler.langlois@elastic.co>
 #
-define elasticsearch::plugin (
+define elasticsearch-legacy::plugin (
   Enum['absent', 'present']      $ensure         = 'present',
-  Stdlib::Absolutepath           $configdir      = $elasticsearch::configdir,
+  Stdlib::Absolutepath           $configdir      = $elasticsearch-legacy::configdir,
   Variant[String, Array[String]] $instances      = [],
   Array[String]                  $java_opts      = [],
   Optional[Stdlib::Absolutepath] $java_home      = undef,
@@ -72,11 +72,11 @@ define elasticsearch::plugin (
   Optional[Stdlib::HTTPUrl]      $url            = undef,
 ) {
 
-  include elasticsearch
+  include elasticsearch-legacy
 
   case $ensure {
     'present': {
-      if empty($instances) and $elasticsearch::restart_plugin_change {
+      if empty($instances) and $elasticsearch-legacy::restart_plugin_change {
         fail('no $instances defined, even though `restart_plugin_change` is set!')
       }
 
@@ -85,19 +85,19 @@ define elasticsearch::plugin (
     }
     'absent': {
       $_file_ensure = $ensure
-      $_file_before = File[$elasticsearch::plugindir]
+      $_file_before = File[$elasticsearch-legacy::plugindir]
     }
     default: { }
   }
 
-  if ! empty($instances) and $elasticsearch::restart_plugin_change {
-    Elasticsearch_plugin[$name] {
-      notify +> Elasticsearch::Instance[$instances],
+  if ! empty($instances) and $elasticsearch-legacy::restart_plugin_change {
+    elasticsearch-legacy_plugin[$name] {
+      notify +> elasticsearch-legacy::Instance[$instances],
     }
   }
 
   # set proxy by override or parse and use proxy_url from
-  # elasticsearch::proxy_url or use no proxy at all
+  # elasticsearch-legacy::proxy_url or use no proxy at all
 
   if ($proxy_host != undef and $proxy_port != undef) {
     if ($proxy_username != undef and $proxy_password != undef) {
@@ -106,8 +106,8 @@ define elasticsearch::plugin (
       $_proxy_auth = undef
     }
     $_proxy = "http://${_proxy_auth}${proxy_host}:${proxy_port}"
-  } elsif ($elasticsearch::proxy_url != undef) {
-    $_proxy = $elasticsearch::proxy_url
+  } elsif ($elasticsearch-legacy::proxy_url != undef) {
+    $_proxy = $elasticsearch-legacy::proxy_url
   } else {
     $_proxy = undef
   }
@@ -117,12 +117,12 @@ define elasticsearch::plugin (
     $filename_array = split($source, '/')
     $basefilename = $filename_array[-1]
 
-    $file_source = "${elasticsearch::package_dir}/${basefilename}"
+    $file_source = "${elasticsearch-legacy::package_dir}/${basefilename}"
 
     file { $file_source:
       ensure => 'file',
       source => $source,
-      before => Elasticsearch_plugin[$name],
+      before => elasticsearch-legacy_plugin[$name],
     }
 
   } else {
@@ -131,19 +131,19 @@ define elasticsearch::plugin (
 
   $_module_dir = es_plugin_name($module_dir, $name)
 
-  elasticsearch_plugin { $name:
+  elasticsearch-legacy_plugin { $name:
     ensure                     => $ensure,
     configdir                  => $configdir,
-    elasticsearch_package_name => $elasticsearch::package_name,
+    elasticsearch-legacy_package_name => $elasticsearch-legacy::package_name,
     java_opts                  => $java_opts,
     java_home                  => $java_home,
     source                     => $file_source,
     url                        => $url,
     proxy                      => $_proxy,
-    plugin_dir                 => $::elasticsearch::plugindir,
+    plugin_dir                 => $::elasticsearch-legacy::plugindir,
     plugin_path                => $module_dir,
   }
-  -> file { "${elasticsearch::plugindir}/${_module_dir}":
+  -> file { "${elasticsearch-legacy::plugindir}/${_module_dir}":
     ensure  => $_file_ensure,
     mode    => 'o+Xr',
     recurse => true,

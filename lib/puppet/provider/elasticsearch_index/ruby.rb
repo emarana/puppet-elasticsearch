@@ -4,7 +4,7 @@ require 'puppet/provider/elastic_rest'
 
 require 'puppet_x/elastic/deep_to_i'
 
-Puppet::Type.type(:elasticsearch_index).provide(
+Puppet::Type.type(:elasticsearch-legacy_index).provide(
   :ruby,
   :parent => Puppet::Provider::ElasticREST,
   :metadata => :settings,
@@ -17,7 +17,7 @@ Puppet::Type.type(:elasticsearch_index).provide(
   :api_resource_style => :prefix,
   :discrete_resource_creation => true
 ) do
-  desc 'A REST API based provider to manage Elasticsearch index settings.'
+  desc 'A REST API based provider to manage elasticsearch-legacy index settings.'
 
   mk_resource_methods
 end

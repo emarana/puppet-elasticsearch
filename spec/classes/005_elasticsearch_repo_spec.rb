@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'elasticsearch', :type => 'class' do
+describe 'elasticsearch-legacy', :type => 'class' do
   let(:repo_version) { '1.7' }
   let(:version) { '1.7.6' }
   let(:default_params) do
@@ -14,7 +14,7 @@ describe 'elasticsearch', :type => 'class' do
 
   let(:params) { default_params }
   let(:key_source) do
-    'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
+    'https://artifacts.elastic.co/GPG-KEY-elasticsearch-legacy'
   end
 
   # First, randomly select one of our supported OSes to run tests that apply
@@ -29,7 +29,7 @@ describe 'elasticsearch', :type => 'class' do
         let(:params) { default_params.merge(:repo_stage => 'setup') }
 
         it { should contain_stage('setup') }
-        it { should contain_class('elasticsearch::repo')
+        it { should contain_class('elasticsearch-legacy::repo')
           .with(:stage => 'setup')}
       end
     end
@@ -45,22 +45,22 @@ describe 'elasticsearch', :type => 'class' do
       describe 'distro-specific package repositories' do
         case facts[:os]['family']
         when 'Debian'
-          it { should contain_apt__source('elasticsearch')
+          it { should contain_apt__source('elasticsearch-legacy')
             .with(
-              :location => 'http://packages.elastic.co/elasticsearch/1.7/debian'
+              :location => 'http://packages.elastic.co/elasticsearch-legacy/1.7/debian'
             ) }
         when 'RedHat'
-          it { should contain_yumrepo('elasticsearch')
+          it { should contain_yumrepo('elasticsearch-legacy')
             .with(
-              :baseurl => 'http://packages.elastic.co/elasticsearch/1.7/centos'
+              :baseurl => 'http://packages.elastic.co/elasticsearch-legacy/1.7/centos'
             ) }
         when 'Suse'
-          it { should contain_exec('elasticsearch_suse_import_gpg')
+          it { should contain_exec('elasticsearch-legacy_suse_import_gpg')
             .with(:command => "rpmkeys --import #{key_source}") }
-          it { should contain_zypprepo('elasticsearch')
-            .with(:baseurl => 'http://packages.elastic.co/elasticsearch/1.7/centos') }
+          it { should contain_zypprepo('elasticsearch-legacy')
+            .with(:baseurl => 'http://packages.elastic.co/elasticsearch-legacy/1.7/centos') }
           it { should contain_exec(
-            'elasticsearch_zypper_refresh_elasticsearch'
+            'elasticsearch-legacy_zypper_refresh_elasticsearch-legacy'
           ) }
         end
       end
@@ -74,7 +74,7 @@ describe 'elasticsearch', :type => 'class' do
 
         case facts[:os]['family']
         when 'Debian'
-          it { is_expected.to contain_apt__source('elasticsearch').with(
+          it { is_expected.to contain_apt__source('elasticsearch-legacy').with(
             :key => {
               'id' => '46095ACC8548582C1A2699A9D27D666CD88E42B4',
               'source' => key_source
@@ -82,7 +82,7 @@ describe 'elasticsearch', :type => 'class' do
           )}
         when 'Suse'
           it { is_expected.to contain_exec(
-            'elasticsearch_suse_import_gpg'
+            'elasticsearch-legacy_suse_import_gpg'
           ).with_unless(
             "test $(rpm -qa gpg-pubkey | grep -i 'D88E42B4' | wc -l) -eq 1"
           )}
@@ -91,7 +91,7 @@ describe 'elasticsearch', :type => 'class' do
 
       describe 'overriding the repo source URL' do
         let(:key_source) do
-          'http://artifacts.elastic.co/GPG-KEY-elasticsearch'
+          'http://artifacts.elastic.co/GPG-KEY-elasticsearch-legacy'
         end
         let(:params) do
           default_params.merge(
@@ -101,17 +101,17 @@ describe 'elasticsearch', :type => 'class' do
 
         case facts[:os]['family']
         when 'Debian'
-          it { is_expected.to contain_apt__source('elasticsearch').with(
+          it { is_expected.to contain_apt__source('elasticsearch-legacy').with(
             :key => {
               'id' => '46095ACC8548582C1A2699A9D27D666CD88E42B4',
               'source' => key_source
             }
           )}
         when 'RedHat'
-          it { should contain_yumrepo('elasticsearch')
+          it { should contain_yumrepo('elasticsearch-legacy')
             .with(:gpgkey => key_source) }
         when 'Suse'
-          it { should contain_exec('elasticsearch_suse_import_gpg')
+          it { should contain_exec('elasticsearch-legacy_suse_import_gpg')
             .with(:command => "rpmkeys --import #{key_source}") }
         end
       end
@@ -123,7 +123,7 @@ describe 'elasticsearch', :type => 'class' do
 
         case facts[:os]['family']
         when 'RedHat'
-          it { is_expected.to contain_yumrepo('elasticsearch')
+          it { is_expected.to contain_yumrepo('elasticsearch-legacy')
             .with_proxy('http://proxy.com:8080') }
         end
       end
@@ -140,19 +140,19 @@ describe 'elasticsearch', :type => 'class' do
               if post_5?
                 "https://artifacts.elastic.co/packages/#{repo_version}"
               else
-                "http://packages.elastic.co/elasticsearch/#{repo_version}"
+                "http://packages.elastic.co/elasticsearch-legacy/#{repo_version}"
               end
             end
 
             case facts[:os]['family']
             when 'Debian'
-              it { should contain_apt__source('elasticsearch')
+              it { should contain_apt__source('elasticsearch-legacy')
                 .with_location("#{repo_base}/#{post_5? ? 'apt' : 'debian'}") }
             when 'RedHat'
-              it { should contain_yumrepo('elasticsearch')
+              it { should contain_yumrepo('elasticsearch-legacy')
                 .with_baseurl("#{repo_base}/#{post_5? ? 'yum' : 'centos'}") }
             when 'Suse'
-              it { should contain_zypprepo('elasticsearch')
+              it { should contain_zypprepo('elasticsearch-legacy')
                 .with_baseurl("#{repo_base}/#{post_5? ? 'yum' : 'centos'}") }
             end
           end
@@ -177,13 +177,13 @@ describe 'elasticsearch', :type => 'class' do
 
           case facts[:os]['family']
           when 'Debian'
-            it { should contain_apt__source('elasticsearch')
+            it { should contain_apt__source('elasticsearch-legacy')
               .with_location(repo_baseurl) }
           when 'RedHat'
-            it { should contain_yumrepo('elasticsearch')
+            it { should contain_yumrepo('elasticsearch-legacy')
               .with_baseurl(repo_baseurl) }
           when 'Suse'
-            it { should contain_zypprepo('elasticsearch')
+            it { should contain_zypprepo('elasticsearch-legacy')
               .with_baseurl(repo_baseurl) }
           end
         end

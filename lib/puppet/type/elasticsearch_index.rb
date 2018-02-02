@@ -2,13 +2,13 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', '..'))
 
 require 'puppet_x/elastic/deep_to_i'
 require 'puppet_x/elastic/deep_implode'
-require 'puppet_x/elastic/elasticsearch_rest_resource'
+require 'puppet_x/elastic/elasticsearch-legacy_rest_resource'
 
 # rubocop:disable Metrics/BlockLength
-Puppet::Type.newtype(:elasticsearch_index) do
-  extend ElasticsearchRESTResource
+Puppet::Type.newtype(:elasticsearch-legacy_index) do
+  extend elasticsearch-legacyRESTResource
 
-  desc 'Manages Elasticsearch index settings.'
+  desc 'Manages elasticsearch-legacy index settings.'
 
   ensurable
 
@@ -19,7 +19,7 @@ Puppet::Type.newtype(:elasticsearch_index) do
   newproperty(:settings) do
     desc 'Structured settings for the index in hash form.'
 
-    # The Elasticsearch index settings API returns lots of fields, including
+    # The elasticsearch-legacy index settings API returns lots of fields, including
     # fields such as creation time, shard count, and shard replicas. When
     # comparing desired settings and extant settings, only indicate that
     # settings need to be flushed when user-desired settings differ from

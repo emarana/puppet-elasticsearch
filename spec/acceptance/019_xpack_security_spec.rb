@@ -1,14 +1,14 @@
 require 'spec_helper_acceptance'
 require 'json'
 
-describe 'elasticsearch x-pack security',
+describe 'elasticsearch-legacy x-pack security',
          :if => v5x_capable?,
          :with_certificates => true,
          :then_purge => true do
   # Template manifest
   let :base_manifest do
     <<-EOF
-      class { 'elasticsearch' :
+      class { 'elasticsearch-legacy' :
         repo_version => '#{test_settings['repo_version5x']}',
         config => {
           'cluster.name' => '#{test_settings['cluster_name']}',
@@ -23,7 +23,7 @@ describe 'elasticsearch x-pack security',
         ],
       }
 
-      elasticsearch::plugin { 'x-pack' :  }
+      elasticsearch-legacy::plugin { 'x-pack' :  }
     EOF
   end
 
@@ -31,15 +31,15 @@ describe 'elasticsearch x-pack security',
     describe 'single instance manifest' do
       let :single_manifest do
         base_manifest + <<-EOF
-          elasticsearch::instance { ['es-01'] :  }
+          elasticsearch-legacy::instance { ['es-01'] :  }
 
-          Elasticsearch::Plugin { instances => ['es-01'],  }
+          elasticsearch-legacy::Plugin { instances => ['es-01'],  }
 
-          elasticsearch::user { '#{test_settings['security_user']}':
+          elasticsearch-legacy::user { '#{test_settings['security_user']}':
             password => '#{test_settings['security_password']}',
             roles    => ['superuser'],
           }
-          elasticsearch::user { '#{test_settings['security_user']}pwchange':
+          elasticsearch-legacy::user { '#{test_settings['security_user']}pwchange':
             password => '#{test_settings['security_hashed_password']}',
             roles    => ['superuser'],
           }
@@ -104,12 +104,12 @@ describe 'elasticsearch x-pack security',
     describe 'password change manifest' do
       let :passwd_manifest do
         base_manifest + <<-EOF
-          elasticsearch::instance { ['es-01'] :  }
+          elasticsearch-legacy::instance { ['es-01'] :  }
 
-          Elasticsearch::Plugin { instances => ['es-01'],  }
+          elasticsearch-legacy::Plugin { instances => ['es-01'],  }
 
           notify { 'change password' : } ~>
-          elasticsearch::user { '#{test_settings['security_user']}pwchange':
+          elasticsearch-legacy::user { '#{test_settings['security_user']}pwchange':
             password => '#{test_settings['security_password'][0..5]}',
             roles    => ['superuser'],
           }
@@ -146,11 +146,11 @@ describe 'elasticsearch x-pack security',
     describe 'single instance manifest' do
       let :single_manifest do
         base_manifest + <<-EOF
-          elasticsearch::instance { ['es-01'] :  }
+          elasticsearch-legacy::instance { ['es-01'] :  }
 
-          Elasticsearch::Plugin { instances => ['es-01'],  }
+          elasticsearch-legacy::Plugin { instances => ['es-01'],  }
 
-          elasticsearch::role { '#{@role}':
+          elasticsearch-legacy::role { '#{@role}':
             privileges => {
               'cluster' => [
                 'cluster:monitor/health',
@@ -162,7 +162,7 @@ describe 'elasticsearch x-pack security',
             }
           }
 
-          elasticsearch::user { '#{test_settings['security_user']}':
+          elasticsearch-legacy::user { '#{test_settings['security_user']}':
             password => '#{test_settings['security_password']}',
             roles    => ['#{@role}'],
           }
@@ -264,7 +264,7 @@ describe 'elasticsearch x-pack security',
       describe 'manifest' do
         let :single_manifest do
           base_manifest + <<-EOF
-            elasticsearch::instance { 'es-01':
+            elasticsearch-legacy::instance { 'es-01':
               ssl                  => true,
               ca_certificate       => '#{@tls[:ca][:cert][:path]}',
               certificate          => '#{@tls[:clients].first[:cert][:path]}',
@@ -272,9 +272,9 @@ describe 'elasticsearch x-pack security',
               keystore_password    => '#{@keystore_password}',
             }
 
-            Elasticsearch::Plugin { instances => ['es-01'],  }
+            elasticsearch-legacy::Plugin { instances => ['es-01'],  }
 
-            elasticsearch::user { '#{test_settings['security_user']}':
+            elasticsearch-legacy::user { '#{test_settings['security_user']}':
               password => '#{test_settings['security_password']}',
               roles => ['superuser'],
             }
@@ -319,13 +319,13 @@ describe 'elasticsearch x-pack security',
       describe 'manifest' do
         let :multi_manifest do
           base_manifest + %(
-            elasticsearch::user { '#{test_settings['security_user']}':
+            elasticsearch-legacy::user { '#{test_settings['security_user']}':
               password => '#{test_settings['security_password']}',
               roles => ['superuser'],
             }
           ) + @tls[:clients].each_with_index.map do |cert, i|
             format(%(
-              elasticsearch::instance { 'es-%02d':
+              elasticsearch-legacy::instance { 'es-%02d':
                 ssl                  => true,
                 ca_certificate       => '#{@tls[:ca][:cert][:path]}',
                 certificate          => '#{cert[:cert][:path]}',
@@ -339,7 +339,7 @@ describe 'elasticsearch x-pack security',
               }
             ), i + 1, @tls[:clients].length, i)
           end.join("\n") + format(%(
-            Elasticsearch::Plugin { instances => %s, }
+            elasticsearch-legacy::Plugin { instances => %s, }
           ), @tls[:clients].each_with_index.map do |_, i|
             format('es-%02d', (i + 1))
           end.to_s)
@@ -392,10 +392,10 @@ describe 'elasticsearch x-pack security',
     describe 'manifest' do
       let :removal_manifest do
         format(%(
-          class { 'elasticsearch' : ensure => absent, }
+          class { 'elasticsearch-legacy' : ensure => absent, }
 
-          Elasticsearch::Instance { ensure => absent, }
-          elasticsearch::instance { %s : }
+          elasticsearch-legacy::Instance { ensure => absent, }
+          elasticsearch-legacy::instance { %s : }
         ), @tls[:clients].each_with_index.map do |_, i|
           format('es-%02d', (i + 1))
         end.to_s)

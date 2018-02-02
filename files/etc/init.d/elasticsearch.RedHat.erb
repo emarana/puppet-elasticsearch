@@ -1,19 +1,19 @@
 #!/bin/bash
 #
-# elasticsearch<%= @resource[:instance] %> <summary>
+# elasticsearch-legacy<%= @resource[:instance] %> <summary>
 #
 # chkconfig:   2345 80 20
-# description: Starts and stops a single elasticsearch instance on this system
+# description: Starts and stops a single elasticsearch-legacy instance on this system
 #
 
 ### BEGIN INIT INFO
-# Provides: Elasticsearch-<%= @resource[:instance] %>
+# Provides: elasticsearch-legacy-<%= @resource[:instance] %>
 # Required-Start: $network $named
 # Required-Stop: $network $named
 # Default-Start: 2 3 4 5
 # Default-Stop: 0 1 6
-# Short-Description: This service manages the elasticsearch daemon
-# Description: Elasticsearch is a very scalable, schema-free and high-performance search solution supporting multi-tenancy and near realtime search.
+# Short-Description: This service manages the elasticsearch-legacy daemon
+# Description: elasticsearch-legacy is a very scalable, schema-free and high-performance search solution supporting multi-tenancy and near realtime search.
 ### END INIT INFO
 
 #
@@ -31,17 +31,17 @@ if [ -f /etc/rc.d/init.d/functions ]; then
     . /etc/rc.d/init.d/functions
 fi
 
-# Sets the default values for elasticsearch variables used in this script
-ES_USER="elasticsearch"
-ES_GROUP="elasticsearch"
-ES_HOME="/usr/share/elasticsearch"
+# Sets the default values for elasticsearch-legacy variables used in this script
+ES_USER="elasticsearch-legacy"
+ES_GROUP="elasticsearch-legacy"
+ES_HOME="/usr/share/elasticsearch-legacy"
 MAX_OPEN_FILES=65536
 MAX_MAP_COUNT=262144
 
-PID_DIR="/var/run/elasticsearch"
+PID_DIR="/var/run/elasticsearch-legacy"
 
-exec="$ES_HOME/bin/elasticsearch"
-prog="elasticsearch-<%= @resource[:instance] %>"
+exec="$ES_HOME/bin/elasticsearch-legacy"
+prog="elasticsearch-legacy-<%= @resource[:instance] %>"
 pidfile="$PID_DIR/${prog}.pid"
 
 [ -e /etc/sysconfig/$prog ] && . /etc/sysconfig/$prog
@@ -63,7 +63,7 @@ if [ -n $USER ] && [ -z $ES_USER ] ; then
 fi
 
 if [ ! -x "$exec" ]; then
-    echo "The elasticsearch startup script does not exists or it is not executable, tried: $exec"
+    echo "The elasticsearch-legacy startup script does not exists or it is not executable, tried: $exec"
     exit 1
 fi
 

@@ -37,17 +37,17 @@ RSpec.configure do |c|
   # Helper hook for module cleanup
   c.after :context, :with_cleanup do
     apply_manifest <<-EOS
-      class { 'elasticsearch':
+      class { 'elasticsearch-legacy':
         ensure      => 'absent',
         manage_repo => true,
       }
-      elasticsearch::instance { 'es-01': ensure => 'absent' }
+      elasticsearch-legacy::instance { 'es-01': ensure => 'absent' }
 
-      file { '/usr/share/elasticsearch/plugin':
+      file { '/usr/share/elasticsearch-legacy/plugin':
         ensure  => 'absent',
         force   => true,
         recurse => true,
-        require => Class['elasticsearch'],
+        require => Class['elasticsearch-legacy'],
       }
     EOS
   end
@@ -68,7 +68,7 @@ RSpec.configure do |c|
   end
 
   c.after :context, :then_purge do
-    shell 'rm -rf {/usr/share,/etc,/var/lib}/elasticsearch*'
+    shell 'rm -rf {/usr/share,/etc,/var/lib}/elasticsearch-legacy*'
   end
 end
 
@@ -128,24 +128,24 @@ hosts.each do |host|
         end
 
   snapshot_package = {
-    :src => "#{files_dir}/elasticsearch-2.3.5.#{ext}",
-    :dst => "/tmp/elasticsearch-2.3.5.#{ext}"
+    :src => "#{files_dir}/elasticsearch-legacy-2.3.5.#{ext}",
+    :dst => "/tmp/elasticsearch-legacy-2.3.5.#{ext}"
   }
 
   scp_to host,
          snapshot_package[:src],
          snapshot_package[:dst]
   scp_to host,
-         "#{files_dir}/elasticsearch-kopf.zip",
-         '/tmp/elasticsearch-kopf.zip'
+         "#{files_dir}/elasticsearch-legacy-kopf.zip",
+         '/tmp/elasticsearch-legacy-kopf.zip'
 
   RSpec.configuration.test_settings['snapshot_package'] = \
     "file:#{snapshot_package[:dst]}"
 
   test_settings['integration_package'] = {
-    :src => "#{files_dir}/elasticsearch-snapshot.#{ext}",
-    :dst => "/tmp/elasticsearch-snapshot.#{ext}",
-    :file => "file:/tmp/elasticsearch-snapshot.#{ext}"
+    :src => "#{files_dir}/elasticsearch-legacy-snapshot.#{ext}",
+    :dst => "/tmp/elasticsearch-legacy-snapshot.#{ext}",
+    :file => "file:/tmp/elasticsearch-legacy-snapshot.#{ext}"
   }
 
   Infrataster::Server.define(:docker) do |server|
@@ -206,7 +206,7 @@ RSpec.configure do |c|
         timestamp = Time.now
         log_dir = File.join('./spec/logs', timestamp.strftime('%F_%H_%M_%S'))
         FileUtils.mkdir_p(log_dir) unless File.directory?(log_dir)
-        scp_from(host, '/var/log/elasticsearch', log_dir)
+        scp_from(host, '/var/log/elasticsearch-legacy', log_dir)
       end
     end
   end
